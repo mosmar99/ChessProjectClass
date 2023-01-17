@@ -16,3 +16,5 @@ AI in C.
 
 ## Declarations
 I, Isac Paulsson, declare that I am the sole author of the content I add to this repository.
+I, Mahmut Osmanovic, declare that I am the sole author of the content I add to this repository.
+
