@@ -1,7 +1,7 @@
 # ChessProjectClass
 
 ## Collaborators
-* Mahmut Osmanovic 
+* Mahmut Osmanovic (mosmar99)
 * Linus Savinainen 
 * Besan Ewir
 * Isac Paulsson
