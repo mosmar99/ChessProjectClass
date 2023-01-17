@@ -21,3 +21,4 @@ To be decided.
 I, Isac Paulsson, declare that I am the sole author of the content I add to this repository. <br />
 I, Mahmut Osmanovic, declare that I am the sole author of the content I add to this repository. <br />
 I, Linus Savinainen, declare that I am the sole author of the content I add to this repository. <br />
+I, Besan Ewir, declare that I am the sole author of the content I add to this repository. <br />
