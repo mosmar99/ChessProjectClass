@@ -3,7 +3,7 @@
 ## Collaborators
 * Mahmut Osmanovic 
 * Linus Savinainen 
-* Besan Ewir
+* Besan 
 * Isac Paulsson
 * Sebastian Tuura
 
