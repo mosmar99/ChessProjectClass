@@ -3,8 +3,8 @@
 ## Collaborators
 * Mahmut Osmanovic (mosmar99)
 * Linus Savinainen 
-* Besan Ewir
-* Isac Paulsson
+* Besan Ewir (beew77)
+* Isac Paulsson (isacpaulsson)
 * Sebastian Tuura
 
 ## Project Description
