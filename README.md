@@ -1,17 +1,10 @@
 # ChessProjectClass
 
 ## Collaborators
-<<<<<<< HEAD
-* Mahmut Osmanovic 
-* Linus Savinainen (Linkan42)
-* Besan Ewir
-* Isac Paulsson
-=======
 * Mahmut Osmanovic (mosmar99)
-* Linus Savinainen 
+* Linus Savinainen (Linkan42)
 * Besan Ewir (beew77)
 * Isac Paulsson (isacpaulsson)
->>>>>>> bad4be03d0ef925e25c651dc25e46939629457d3
 * Sebastian Tuura
 
 ## Project Description
