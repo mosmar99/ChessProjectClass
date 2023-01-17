@@ -5,7 +5,7 @@
 * Linus Savinainen (Linkan42)
 * Besan Ewir (beew77)
 * Isac Paulsson (isacpaulsson)
-* Sebastian Tuura
+* Sebastian Tuura (tuura01)
 
 ## Project Description
 A chess game. Either player vs. player or player vs. engine. The engine runs on an AI algorithm, more specifically, the min-max algorithm.
@@ -22,3 +22,4 @@ I, Isac Paulsson, declare that I am the sole author of the content I add to this
 I, Mahmut Osmanovic, declare that I am the sole author of the content I add to this repository. <br />
 I, Linus Savinainen, declare that I am the sole author of the content I add to this repository. <br />
 I, Besan Ewir, declare that I am the sole author of the content I add to this repository. <br />
+I, Sebastian Tuura, declare that I am the sole author of the content I add to this repository. <br />
