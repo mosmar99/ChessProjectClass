@@ -2,7 +2,7 @@
 
 ## Collaborators
 * Mahmut Osmanovic 
-* Linus Savinainen 
+* Linus Savinainen (Linkan42)
 * Besan Ewir
 * Isac Paulsson
 * Sebastian Tuura
