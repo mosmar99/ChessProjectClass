@@ -13,8 +13,8 @@ ___
 A chess game. Either player vs. player or player vs. engine. The engine runs on an AI algorithm, more specifically, the min-max algorithm.
 
 ## Programming languages
-Python for UI and board game. 
-AI in C.
+Python for UI. <br />
+Game logic and AI in C.
 
 ## Build System
 To be decided, currently VS (Visual Studio)
