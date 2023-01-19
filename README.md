@@ -17,7 +17,7 @@ Python for UI. <br />
 Game logic and AI in C.
 
 ## Build System
-To be decided, currently VS (Visual Studio)
+To be decided, currently VSC (Visual Studio Code)
 
 ## Declarations
 I, Isac Paulsson, declare that I am the sole author of the content I add to this repository. <br />
