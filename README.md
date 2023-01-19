@@ -11,7 +11,7 @@ ___
 
 ## Project Description
 A chess game. Either player vs. player or player vs. engine. The engine runs on an AI algorithm, more specifically, the min-max algorithm. <br />
-[Link to kanban board](https://github.com/mosmar99/ChessProjectClass/projects?query=is%3Aopen)
+[Link to kanban board](https://github.com/users/mosmar99/projects/2)
 
 ## Programming languages
 Python for UI. <br />
