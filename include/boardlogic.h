@@ -2,23 +2,17 @@
 #define BOARDLOGIC_H
 
 #define BOARDRC 8
-#define COLOFFSET 97
-#define ROWOFFSET 49
+#define COLOFFSET 97 //int 97 unicode = 'a'
+#define ROWOFFSET 49 //int 49 unicode = '0'
 #define LOWERCASEOFFSET 32
 
 
+//indecies for allowed characters
+#define PINDEX 0
+#define COLINDEX 5
+#define ROWINDEX 13
+#define NUMALLOWEDCHARS 21
 
-// enum BRD_ALPHA{
-//     a = 1,
-//     b = 2,
-//     c = 3,
-//     d = 4,
-//     e = 5,
-//     f = 6,
-//     g = 7,
-//     h = 8
-// };
-
-
+const char ALLOWEDCHARS[NUMALLOWEDCHARS] = {'K','Q','R','B','N','a','b','c','d','e','f','g','h','1','2','3','4','5','6','7','8'}
 
 #endif

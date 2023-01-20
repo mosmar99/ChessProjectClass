@@ -1,14 +1,14 @@
 #include "stdio.h"
 #include "board.h"
 
-enum PIECE_NUMERIC **board;
+char *board[8][8];
 
 void newBrd(){
     createBrd();
     initBrd(STANDARDBOARD);
 }
 
-int getPiece(int col, int row){
+char getPiece(int col, int row){
 
 }
 
