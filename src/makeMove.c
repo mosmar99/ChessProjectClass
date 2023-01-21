@@ -6,7 +6,7 @@
 #define size (7+1)
 
 void requestMove(char *move);
-void applyMove(char *board[8][8], char *move);
+void applyMove(char *move, char *board[8][8]);
 
 // bool *checkRockMove(const char *const input, char *board[8][8];
 // bool *checkKnightMove(const char *const input, char *board[8][8]);
@@ -22,7 +22,8 @@ void play(char *board[8][8]) {
         //get next move
         char *move = malloc( sizeof(char) * size );
         requestMove(move);
-        applyMove(board, move);
+        // applyMove(move, board);
+        action(move, board);
     }
 
 }
@@ -53,7 +54,13 @@ void requestMove(char *move) {
     readInput(move);
 }
 
-void applyMove(char *board[8][8], char *move) {
+void actionPawn(char *move, char *board[8][8]) {
+    // todo manipulate board according to move
+    // put -- in old position
+    // put correctly coloured pawn in to-move-to-tile
+}
+
+void applyMove(char *move, char *board[8][8]) {
     bool *validMove;
     switch (*(move))
     {
@@ -81,10 +88,15 @@ void applyMove(char *board[8][8], char *move) {
     case 'g':
     case 'h':
         validMove = checkPawnMove(move, board);
+        if (*validMove)
+            actionPawn(move, board);        
         break;    
     
     default:
         puts("Not a valid move");
-        break;
+        return;
     }
+
+
+    
 }
