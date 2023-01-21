@@ -2,10 +2,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-int main(void) {
+void printBoard();
+void initBoard(char *board[8][8]);
 
-    const char *board[8][8];
-    for (size_t i = 0; i < 8; i++)
+int main(void) {
+    printf("%s\n", "- ------ New Game ------");
+
+    // create a 2d-array of pointers
+    char *board[8][8];
+    initBoard(board);
+    printBoard(board);
+    exit(0);
+}
+
+void initBoard(char *board[8][8]) {
+for (size_t i = 0; i < 8; i++)
     {
         for (size_t j = 0; j < 8; j++)
         {
@@ -22,14 +33,14 @@ int main(void) {
     board[0][5] = "wB";
     board[0][6] = "wN";
     board[0][7] = "wR";
-    board[1][0] = 'wp';
-    board[1][1] = 'wp';
-    board[1][2] = 'wp';
-    board[1][3] = 'wp';
-    board[1][4] = 'wp';
-    board[1][5] = 'wp';
-    board[1][6] = 'wp';
-    board[1][7] = 'wp';
+    board[1][0] = "wp";
+    board[1][1] = "wp";
+    board[1][2] = "wp";
+    board[1][3] = "wp";
+    board[1][4] = "wp";
+    board[1][5] = "wp";
+    board[1][6] = "wp";
+    board[1][7] = "wp";
 
     // black
     board[7][0] = "bR";
@@ -40,15 +51,17 @@ int main(void) {
     board[7][5] = "bB";
     board[7][6] = "bN";
     board[7][7] = "bR";
-    board[6][0] = 'bp';
-    board[6][1] = 'bp';
-    board[6][2] = 'bp';
-    board[6][3] = 'bp';
-    board[6][4] = 'bp';
-    board[6][5] = 'bp';
-    board[6][6] = 'bp';
-    board[6][7] = 'bp';
+    board[6][0] = "bp";
+    board[6][1] = "bp";
+    board[6][2] = "bp";
+    board[6][3] = "bp";
+    board[6][4] = "bp";
+    board[6][5] = "bp";
+    board[6][6] = "bp";
+    board[6][7] = "bp";
+}
 
+void printBoard(char *board[8][8]) {
     for (size_t i = 0; i < 8; i++)
     {
         for (size_t j = 0; j < 8; j++)
@@ -57,7 +70,5 @@ int main(void) {
         }
         printf("\n");
     }
-
-    system("pause");
-    return 0;
 }
+
