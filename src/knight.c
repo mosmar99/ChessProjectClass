@@ -14,7 +14,7 @@ static bool parseToken(char *token, point **p);
 static point *createPoint(unsigned int x, unsigned int y);
 static void destroyPoint(point *p);
 
-bool checkKnightMove(char *input, const char board[8][8]){
+bool checkKnightMove(char *input, const char *board[8][8]){
 
     const int pattern[8] = {1,2,2,1,-1,-2,-2,-1};
     int i = 0;
@@ -40,13 +40,13 @@ bool checkKnightMove(char *input, const char board[8][8]){
     return false; 
 }
 
-static bool isSameColour(const char piece1, const char piece2){
+static bool isSameColour(const char *piece1, const char *piece2){
 
-    // if ((piece1 < piece2 && piece1 > 'A' && piece1 < 'Z') || (piece1 > piece2 && piece1 > 'a' && piece1 < 'z')){
-    //     return false;
-    // } else {
-    //     return true;
-    // }
+    if (piece1[0] != piece2[0]){
+        return false;
+    } else {
+        return true;
+    }
 
     return false;
 }
