@@ -96,7 +96,4 @@ void applyMove(char *move, char *board[8][8]) {
         puts("Not a valid move");
         return;
     }
-
-
-    
 }

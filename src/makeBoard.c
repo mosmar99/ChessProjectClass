@@ -15,12 +15,12 @@ void printBoard(char *board[8][8]) {
 
 void initBoard(char *board[8][8]) {
     for (size_t i = 0; i < 8; i++)
+    {
+        for (size_t j = 0; j < 8; j++)
         {
-            for (size_t j = 0; j < 8; j++)
-            {
-                board[i][j] = "--";
-            }
+            board[i][j] = "--";
         }
+    }
 
     // white
     board[0][0] = "wR";
