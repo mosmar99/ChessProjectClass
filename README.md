@@ -18,7 +18,7 @@ Python for UI. <br />
 Game logic and AI in C.
 
 ## Build System
-To be decided. Currently VSC (Visual Studio Code) extension programs are being utilized. More precisely Microsofts CMake Tools extension. Users are in addition expected to have a C-compiler installed. For example, The GNU Compiler Collection (GCC), which includes The C Standard Library, The GNU Project Debugger  (GDB), and the "build tool" GNU MAKE Links to an external site.
+To be decided. Currently VSC (Visual Studio Code) extension programs are being utilized. More precisely Microsofts CMake Tools extension. Users are in addition expected to have a C-compiler installed. For example, The GNU Compiler Collection (GCC), which includes The C Standard Library, The GNU Project Debugger  (GDB), and the "build tool" GNU MAKE.
 
 ## Declarations
 I, Isac Paulsson, declare that I am the sole author of the content I add to this repository. <br />
