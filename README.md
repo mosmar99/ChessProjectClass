@@ -10,7 +10,7 @@ ___
 * Sebastian Tuura (tuura01)
 
 ## Project Description
-A chess game. Either player vs. player or player vs. engine. The engine runs on an AI algorithm, more specifically, the min-max algorithm. <br />
+A chess game. Either player vs. player or player vs. engine. The engine runs on an AI algorithm, more specifically, the min-max algorithm. Users may choose whether they desire to play through the CLI or GUI. <br />
 [Link to kanban board](https://github.com/users/mosmar99/projects/2)
 
 ## Programming languages
@@ -18,7 +18,7 @@ Python for UI. <br />
 Game logic and AI in C.
 
 ## Build System
-To be decided, currently VSC (Visual Studio Code)
+To be decided. Currently VSC (Visual Studio Code) extension programs are being utilized. More precisely Microsofts CMake Tools extension. Users are in addition expected to have a C-compiler installed. For example, The GNU Compiler Collection (GCC), which includes The C Standard Library, The GNU Project Debugger  (GDB), and the "build tool" GNU MAKE Links to an external site.
 
 ## Declarations
 I, Isac Paulsson, declare that I am the sole author of the content I add to this repository. <br />
