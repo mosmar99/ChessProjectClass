@@ -7,7 +7,7 @@
 
 void requestMove(char *move);
 void applyMove(char *move, char *board[8][8]);
-void actionPawn(char *move, char *board[8][8]);
+void action(char *move, char *board[8][8]);
 void printBoard(char *board[8][8]);
 
 // bool *checkRockMove(const char *const input, char *board[8][8];
@@ -25,7 +25,7 @@ void play(char *board[8][8]) {
         char *move = malloc( sizeof(char) * size );
         requestMove(move);
         // applyMove(move, board);
-        actionPawn(move, board);
+        action(move, board);
         printBoard(board);
     }
 
@@ -137,29 +137,41 @@ void getTransform(int *dest, char *src) {
     }    
 }
 
-void actionPawn(char *move, char *board[8][8]) {
+void action(char *move, char *board[8][8]) {
     // todo manipulate board according to move: "e2 e4"
     // put -- in old position
     // put correctly coloured pawn in to-move-to-tile
     
-    // get coordinates
     char oldChessCoord[3];
     char newChessCoord[3];
-    extractChessCoord(oldChessCoord, move, 0, 1);
-    extractChessCoord(newChessCoord, move, 3, 4);
+    int oldArrCoord[2];
+    int newArrCoord[2];
+    if (*move == 'R' || *move == 'N' || *move == 'B' || *move == 'Q' || *move == 'K')
+    {
+        // get non-pawn coordinates
+        extractChessCoord(oldChessCoord, move, 1, 2);
+        extractChessCoord(newChessCoord, move, 5, 6);
+
+    } else if (*move == 'a' || *move == 'b' || *move == 'c' || *move =='d' || *move == 'e' || *move == 'f' || *move == 'g')
+    {
+        // get pawn coordinates  
+        extractChessCoord(oldChessCoord, move, 0, 1);
+        extractChessCoord(newChessCoord, move, 3, 4);
+    } else {
+        puts("Invalid input");
+        exit(0);
+    }
 
     // put "--" in old position
     // example: "e, 2" -> "{1, 4} and "e, 4" -> {3, 4}
-    int oldArrCoord[2];
-    int newArrCoord[2];
     getTransform(oldArrCoord, oldChessCoord);
     getTransform(newArrCoord, newChessCoord);
 
+    // put piece in its correct new position
+    board[newArrCoord[0]][newArrCoord[1]] = board[oldArrCoord[0]][oldArrCoord[1]];
+
     // put "--"" in old position
     board[oldArrCoord[0]][oldArrCoord[1]] = "--";
-
-    // put piece in its correct new position
-    board[newArrCoord[0]][newArrCoord[1]] = "wp";
 }
 
 void applyMove(char *move, char *board[8][8]) {
@@ -191,7 +203,7 @@ void applyMove(char *move, char *board[8][8]) {
     case 'h':
         validMove = checkPawnMove(move, board);
         if (*validMove)
-            actionPawn(move, board);        
+            action(move, board);        
         break;    
     
     default:
