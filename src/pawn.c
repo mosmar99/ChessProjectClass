@@ -17,11 +17,24 @@ typedef struct PointPair
     Point *to, *from;
 } PointPair;
 
+typedef enum Color
+{
+    EMPTY,
+    BLACK,
+    WHITE
+} Color;
+
+typedef enum AllowedDirection
+{
+    UP,  // black may only move up
+    DOWN // white may only move down
+} AllowedDirection;
+
 // Count the number of occurrenses of a specific character in a given string.
 //      str: the string to search
 //      c: the character to count
 // Returns: The number of occurrenses found.
-static int countCharInString(const char const *str, const unsigned char c);
+static unsigned int countCharInString(const char const *str, const unsigned char c);
 
 // Get a copy of a string.
 //      str: the string to copy
@@ -38,7 +51,14 @@ static PointPair *getCoordinates(const char const *input);
 // Returns: A Point struct containing x and y coordinates.
 static Point *extractCoord(const char *const coord);
 
-bool *checkPawnMove(const char *const input, char *board[8][8])
+// Get the color of the player that tries to make the move.
+//      board: the board
+//      startPos: the position of the selected piece that tries
+//                to move, i.e. the the piece on "from" coordinate
+// Returns: the color of the selected piece.
+static Color getColor(char *const board[8][8], const Point *const startPos);
+
+bool *checkPawnMove(const char *const input, char *const board[8][8])
 {
     // check for basic validity of parameters
     assert(input != NULL && board != NULL);
@@ -52,9 +72,31 @@ bool *checkPawnMove(const char *const input, char *board[8][8])
 
     // at this point the desired move is correctly formatted and converted to workable data
     // begin check if the desired move is valid
+
+    // get color of the player and the allowed direction for that color
+    Color player = getColor(board, pair->from);
+    if (player == EMPTY)
+        return NULL;
+    AllowedDirection dir = player == BLACK ? UP : DOWN;
+
+    // check vertical direction constraint, i.e. a player may only advance a pawn
+    AllowedDirection tryDir = pair->from->y > pair->to->y ? UP : DOWN;
+    if (tryDir != dir)
+        return false;
+
+    unsigned short deltaX = abs(pair->from->x - pair->to->x);
+    unsigned short deltaY = abs(pair->from->y - pair->to->y);
+
+    // can at most move 1 horizontally and must always move 1 or 2 vertically
+    if (deltaX > 1 || deltaY < 1 || deltaY > 2)
+        return false;
+
+    // check special 2 vertical move
+    if ((deltaY == 2 && player == BLACK && pair->from->y != 6) || (player == WHITE && pair->from->y != 1))
+        return false;
 }
 
-static int countCharInString(const char const *str, const unsigned char c)
+static unsigned int countCharInString(const char const *str, const unsigned char c)
 {
     assert(str != NULL);
 
@@ -129,4 +171,21 @@ static Point *extractCoord(const char *const coord)
     p->y = 8 - p->y;
 
     return p;
+}
+
+static Color getColor(char *const board[8][8], const Point *const startPos)
+{
+    assert(startPos != NULL);
+
+    switch (*board[startPos->y][startPos->x])
+    {
+    case 'b':
+    case 'B':
+        return BLACK;
+    case 'w':
+    case 'W':
+        return WHITE;
+    default: // empty spot
+        return EMPTY;
+    }
 }
