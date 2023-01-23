@@ -1,85 +1,147 @@
-// #include <stdbool.h>
-// #include <string.h>
-// #include <ctype.h>
-// #include "boardlogic.h"
-// #include "board.h"
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <boardlogic.h>
 
-// struct point{
-//     unsigned int x;
-//     unsigned int y;
-// };
+const char ALLOWEDCHARS[NUMALLOWEDCHARS] = {'K','Q','R','B','N','a','b','c','d','e','f','g','h','1','2','3','4','5','6','7','8'};
 
-// struct move{
-//     char movingPiece;
-//     struct point *fromPoint;
+static bool parseToken(char *board[8][8], char *token, bool first, struct point **p, char *piece);
+static bool charIsValid(char c, int indexStart, int indexStop);
+static point *createPoint(unsigned int x, unsigned int y);
+static void destroyPoint(point *p);
+static move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece);
+static void destroyMove(move *move);
 
-//     char capturedPiece;
-//     struct point *toPoint;
-// };
+// parse move input string ex "Nf3 Nc6", "Nf3 c6", "f3 c6"
+// output pointer to move struct if successful
+// NULL if fail
+move *parseMove(char *board[8][8], char *string){
 
-// bool makeMove(/*pointer to board + move*/ ){
+    char *token = strtok(string, " ");
 
-// }
+    char movingPiece[3];
+    point *fromPoint = NULL;
+    char capturedPiece[3];
+    point *toPoint = NULL;
 
-// // move input string ex "Nf3 Nc6", "Nf3 c6"
-// bool parseMove(/*Board array ** to pass along to _CanMove() */char *string, struct move *move){
+    if (!parseToken(board, token, true, &fromPoint, movingPiece)){
+        destroyPoint(fromPoint);
+        destroyPoint(fromPoint);
+        return NULL;
+    }
 
-//     char *token = strtok(string, ' ');
+    token = strtok(NULL, " ");
 
-//     parseToken(token, true, move->fromPoint, (*move).movingPiece);
+    if (!parseToken(board, token, false, &toPoint, capturedPiece)){
+        return NULL;
+    }
 
-//     strtok(NULL, ' ');
+    return createMove(fromPoint, toPoint, movingPiece, capturedPiece);
+}
 
-//     parseToken(token, false, move->toPoint, (*move).capturedPiece);
+void printMove(move *m){
+    printf("Parsed move\n");
+    printf(" \"%s\" is the moving piece\n", m->movingPiece);
+    printf("the piece is moving from (%d,%d)\n", m->fromPoint->col, m->fromPoint->row);
+    printf(" \"%s\" is the captured piece\n", m->capturedPiece);
+    printf("the piece is captured at (%d,%d)\n", m->toPoint->col, m->toPoint->row);
+}
 
-//     //send to correct library/function
+static bool parseToken(char *board[8][8], char *token, bool first, struct point **p, char *piece){
 
-//     //return if move was performed
-//     return true;
-// }
+    if(!token || strlen(token) < 2 || strlen(token) > 3){ 
+        return false;
+    }
 
-// bool parseToken(char *token, bool first, struct point *p, char *c){
+    int tokenLength = strlen(token);
 
-//     if(!token || strlen(token) < 2 || strlen(token) > 3){ 
-//         return false;
-//     }
+    // Check and assign rank and file (COL and ROW)
+    if (charIsValid(token[tokenLength - 2], COLINDEX, ROWINDEX) && charIsValid(token[tokenLength - 1], ROWINDEX, NUMALLOWEDCHARS)){
+        unsigned int col = token[tokenLength - 2] - COLOFFSET;
+        unsigned int row = token[tokenLength - 1] - ROWOFFSET;
+        *p = createPoint(col,row);
+    } else {
+        return false;
+    }
 
-//     int tokenLength = strlen(token);
+    char pieceOnBoard[3];
 
-//     // Check and assign rank and file (COL and ROW)
-//     if (charIsValid(token[0], COLINDEX, ROWINDEX) && charIsValid(token[1], ROWINDEX, NUMALLOWEDCHARS)){
-//         p->x = token[tokenLength - 2] - COLOFFSET;
-//         p->y = token[tokenLength - 1] - ROWOFFSET;
-//     } else {
-//         return false;
-//     }
+    strcpy(pieceOnBoard, board[(*p)->row][(*p)->col]);
 
-//     // Check that the correct Piece is on the board location
-//     char piece = getPiece(p->x, p->y);
-//     if(tokenLength == 2 && first && (piece == 'p' || piece == 'P')){
-//         *c = piece;
-//         return true;
+    // Check that the specified Piece is on the board location
+    if(tokenLength == 2 && first && pieceOnBoard[1] == 'p'){
+        strcpy(piece, pieceOnBoard);
+        return true;
 
-//     } else if (tokenLength == 2 && !first && (piece == 'p' || piece == 'P' || piece == '-')){
-//         *c = piece;
-//         return true;
+    } else if (tokenLength == 2 && !first && (pieceOnBoard[1] == 'p' || pieceOnBoard[0] == '-')){
+        strcpy(piece, pieceOnBoard);
+        return true;
 
-//     } else if (tokenLength == 3 && (piece == token[0] || piece == token[0] - LOWERCASEOFFSET)){
-//         *c = piece;
-//         return true;
+    } else if (tokenLength == 3 && pieceOnBoard[1] == token[0]){
+        strcpy(piece, pieceOnBoard);
+        return true;
 
-//     } else {
-//         return false;
-//     }  
-// }
+    } else {
+        return false;
+    }  
+}
 
-// bool charIsValid(char *c, int indexStart, int indexStop){
-//     for (size_t i = indexStart; i < indexStop; i++)
-//     {
-//         if (c == ALLOWEDCHARS[i]){
-//             return true;
-//         }           
-//     }
+static bool charIsValid(char c, int indexStart, int indexStop){
+    for (size_t i = indexStart; i < indexStop; i++)
+    {
+        if (c == ALLOWEDCHARS[i]){
+            return true;
+        }           
+    }
 
-//     return false;  
-// }
+    return false;  
+}
+
+static point *createPoint(unsigned int col, unsigned int row){
+
+    point *p = malloc(sizeof(point));
+
+    if (p){
+        p->col = col;
+        p->row = row;
+        return p;
+    } else {
+        return NULL;
+    }
+}
+
+static void destroyPoint(point *p){
+    if (p){
+        free(p);
+    } 
+}
+
+static move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece){
+    move *newMove = malloc(sizeof(move));
+
+    if (newMove){
+        newMove->movingPiece = malloc(sizeof(char[3]));
+        newMove->capturedPiece = malloc(sizeof(char[3]));
+        strcpy(newMove->movingPiece, movingPiece);
+        strcpy(newMove->capturedPiece, CapturedPiece);
+
+        newMove->fromPoint = fromPoint;
+        newMove->toPoint = toPoint;
+    }
+    return newMove;
+}
+
+static void destroyMove(move *move){
+
+    if(move){
+        destroyPoint(move->fromPoint);
+        destroyPoint(move->toPoint);
+
+        free(move->movingPiece);
+        free(move->capturedPiece);
+
+        free(move);
+    }
+}

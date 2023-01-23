@@ -1,25 +1,25 @@
-// #include "stdio.h"
-// #include "board.h"
+#include "stdio.h"
+#include "board.h"
 
-// char *board[8][8];
+char *board[8][8];
 
-// void newBrd(){
-//     createBrd();
-//     initBrd(STANDARDBOARD);
-// }
+void newBrd(){
+    createBrd();
+    initBrd(STANDARDBOARD);
+}
 
-// char getPiece(int col, int row){
+char getPiece(int col, int row){
 
-// }
+}
 
-// void createBrd(){
-//     //allocate board
-// }
+void createBrd(){
+    //allocate board
+}
 
-// void initBrd(char *boardFEN){
+void initBrd(char *boardFEN){
 
-// }
+}
 
-// void destroyBrd(){
+void destroyBrd(){
 
-// }
+}

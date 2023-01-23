@@ -8,7 +8,7 @@ typedef struct point{
     unsigned int y;
 }point;
 
-static bool isSameColour(const char piece1, const char piece2);
+static bool isSameColour(const char *piece1, const char *piece2);
 static bool getCoords(char *input, point ** p1, point ** p2);
 static bool parseToken(char *token, point **p);
 static point *createPoint(unsigned int x, unsigned int y);
