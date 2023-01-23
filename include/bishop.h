@@ -10,12 +10,12 @@
         Nothing is in our path
         The "landing square" does not contain a piece of the same colour.
     Input: 
-        The input move I.E. "F6 C3"
+        The input move I.E. "BF6 BC3"
         The gameboard.
     Output:
         Boolean value, true if move is valid.
 
 */
-bool checkBishopMove(char *input, char *board[8][8]);
+bool * checkBishopMove(char *input, char *board[8][8]);
 
 #endif

@@ -2,11 +2,12 @@
 #include "stdlib.h"
 
 void printBoard(char *board[8][8]) {
+    printf("\n");
     for (size_t i = 0; i < 8; i++)
     {
         for (size_t j = 0; j < 8; j++)
         {
-            printf("%s ", board[i][j]);
+            printf("%s ", board[7-i][j]);
         }
         printf("\n");
     }

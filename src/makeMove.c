@@ -7,6 +7,8 @@
 
 void requestMove(char *move);
 void applyMove(char *move, char *board[8][8]);
+void actionPawn(char *move, char *board[8][8]);
+void printBoard(char *board[8][8]);
 
 // bool *checkRockMove(const char *const input, char *board[8][8];
 // bool *checkKnightMove(const char *const input, char *board[8][8]);
@@ -23,7 +25,8 @@ void play(char *board[8][8]) {
         char *move = malloc( sizeof(char) * size );
         requestMove(move);
         // applyMove(move, board);
-        action(move, board);
+        actionPawn(move, board);
+        printBoard(board);
     }
 
 }
@@ -54,10 +57,109 @@ void requestMove(char *move) {
     readInput(move);
 }
 
+// input para: dest and src are given
+// cpyFrom start at char you want to cpy 
+// cpyTo end at char you want to cpy to
+void extractChessCoord(char *dest, char *src, int cpyFrom, int cpyTo) {
+    size_t i = cpyFrom;
+    size_t j = 0;
+    for (; i <= cpyTo; i++, j++)
+    {
+        *(dest+j) = *(src+i);
+    }
+    *(dest+j) = '\n';
+}
+
+// only gets input like "e2" and makes it into {1, 4}
+void getTransform(int *dest, char *src) {
+    switch (*(src+0))
+    {
+    case 'a':
+        *(dest+1) = 0;
+        break;
+    case 'b':
+        *(dest+1) = 1;
+        break;
+    case 'c':
+        *(dest+1) = 2;
+        break;
+    case 'd':
+        *(dest+1) = 3;
+        break;
+    case 'e':
+        *(dest+1) = 4;
+        break;
+    case 'f':
+        *(dest+1) = 5;
+        break;
+    case 'g':
+        *(dest+1) = 6;
+        break;
+    case 'h':
+        *(dest+1) = 7;
+        break;
+
+    default:
+        puts("Could not extract valid coordinates");
+        break;
+    }    
+
+    switch (*(src+1))
+    {
+    case '1':
+        *(dest+0) = 0;
+        break;
+    case '2':
+        *(dest+0) = 1;
+        break;
+    case '3':
+        *(dest+0) = 2;
+        break;
+    case '4':
+        *(dest+0) = 3;
+        break;
+    case '5':
+        *(dest+0) = 4;
+        break;
+    case '6':
+        *(dest+0) = 5;
+        break;
+    case '7':
+        *(dest+0) = 6;
+        break;
+    case '8':
+        *(dest+0) = 7;
+        break;
+
+    default:
+        puts("Could not extract valid coordinates");
+        break;
+    }    
+}
+
 void actionPawn(char *move, char *board[8][8]) {
-    // todo manipulate board according to move
+    // todo manipulate board according to move: "e2 e4"
     // put -- in old position
     // put correctly coloured pawn in to-move-to-tile
+    
+    // get coordinates
+    char oldChessCoord[3];
+    char newChessCoord[3];
+    extractChessCoord(oldChessCoord, move, 0, 1);
+    extractChessCoord(newChessCoord, move, 3, 4);
+
+    // put "--" in old position
+    // example: "e, 2" -> "{1, 4} and "e, 4" -> {3, 4}
+    int oldArrCoord[2];
+    int newArrCoord[2];
+    getTransform(oldArrCoord, oldChessCoord);
+    getTransform(newArrCoord, newChessCoord);
+
+    // put "--"" in old position
+    board[oldArrCoord[0]][oldArrCoord[1]] = "--";
+
+    // put piece in its correct new position
+    board[newArrCoord[0]][newArrCoord[1]] = "wp";
 }
 
 void applyMove(char *move, char *board[8][8]) {

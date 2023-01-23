@@ -1,4 +1,4 @@
-#include "bishop.h"
+#include "queen.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -19,7 +19,7 @@ static bool checkInput(char *input, char *board[8][8]);
 static char * getDirection(Point *from, Point *to);
 static bool * exploreDirection (char *dir, Point *from, Point *to, char *board[8][8]);
 
-bool * checkBishopMove(char *input, char *board[8][8]){
+bool * checkQueenMove(char *input, char *board[8][8]){
     if(!checkInput){
         return NULL;
     }
@@ -29,13 +29,15 @@ bool * checkBishopMove(char *input, char *board[8][8]){
     from = pA[1].p;
     to = pA[0].p;
     char *dir = getDirection(from, to);
-    //direction was invalid I.e we did not perform a diagonal move.
     if(dir == NULL){
         return false;
     }
     //explore direction
     bool * validDir = exploreDirection(dir, from, to, board);
+    free(from);
+    free(to);
     return validDir;
+
 }
 
 bool checkInput(char *input, char *board[8][8]){
@@ -72,6 +74,7 @@ PointArray * getCoordinates(char *input){
     }
     pA[1].p = from;
     pA[0].p = to;
+    free(cordsToSplit);
     return pA;
 }
 
@@ -87,32 +90,51 @@ char * getDirection(Point *from, Point *to){
     char *direction;
     int deltaX = abs(from->x - to->x);
     int deltaY = abs(from->y - to->y);
-    //Bishop moves on the diagonal
-    //we need to check that the absolute values of delta x and delta y are equal otherwise and illegal move has been made
+    //diagonal move
     if(deltaX == deltaY){
-        if(from->x > to->x && from->y > to->y){
+        if(from->x > to->x && from->y < to->y){
             return direction = "nw";
         }
-        if(from->x > to->x && from->y < to->y){
+        if(from->x < to->x && from->y < to->y){
             return direction = "ne";
         }
-        if(from->x < to->x && from->y < to->y){
+        if(from->x < to->x && from->y > to->y){
             return direction = "se";
         }
-        if(from->x < to->x && from->y > to->y){
+        if(from->x > to->x && from->y > to->y){
             return direction = "sw";
+        }
+    }
+    //move was not diagonal
+    //may or may not still be valid since queen has the combined moveset of the bishop and rook.
+    //either delta y or delta x must equal 0
+    if(deltaY == 0){
+        if(from->x > to->x){
+            return direction = "n";
+        }
+        else{
+            return direction = "s";
+        }
+    }
+    if(deltaX == 0){
+        if(from->y > to->y){
+            return direction = "w";
+        }
+        else{
+            return direction = "e";
         }
     }
     return direction = NULL;
 }
 
 bool * exploreDirection (char *dir, Point *from, Point *to, char *board[8][8]){
+    bool * invalidMove = false;
     //explore nw
     if(strcmp(dir, "nw") == 0){
         int i = from->x - 1 , j = from->y + 1;
         while(i > to->x && j < to->y){
             if(strcmp(board[i][j], "--") != 0){
-                return false;
+                return invalidMove;
             }
             i--;
             j++;
@@ -123,7 +145,7 @@ bool * exploreDirection (char *dir, Point *from, Point *to, char *board[8][8]){
         int i = from->x + 1 , j = from->y + 1;
         while(i < to->x && j < to->y){
             if(strcmp(board[i][j], "--") != 0){
-                return false;
+                return invalidMove;
             }
             i++;
             j++;
@@ -134,7 +156,7 @@ bool * exploreDirection (char *dir, Point *from, Point *to, char *board[8][8]){
         int i = from->x + 1 , j = from->y - 1;
         while(i < to->x && j > to->y){
             if(strcmp(board[i][j], "--") != 0){
-                return false;
+                return invalidMove;
             }
             i++;
             j--;
@@ -145,9 +167,49 @@ bool * exploreDirection (char *dir, Point *from, Point *to, char *board[8][8]){
         int i = from->x - 1 , j = from->y - 1;
         while(i > to->x && j > to->y){
             if(strcmp(board[i][j], "--") != 0){
-                return false;
+                return invalidMove;
             }
             i--;
+            j--;
+        }
+    }
+    //explore n
+    if(strcmp(dir, "n") == 0){
+        int i = from->x - 1 , j = from->y;
+        while(i > to->x){
+            if(strcmp(board[i][j], "--") != 0){
+                return invalidMove;
+            }
+            i--;
+        }
+    }
+    //explore e
+    if(strcmp(dir, "e") == 0){
+        int i = from->x, j = from->y + 1;
+        while(j < to->y){
+            if(strcmp(board[i][j], "--") != 0){
+                return invalidMove;
+            }
+            j++;
+        }
+    }
+    //explore s
+    if(strcmp(dir, "s") == 0){
+        int i = from->x + 1 , j = from->y;
+        while(i > to->x){
+            if(strcmp(board[i][j], "--") != 0){
+                return invalidMove;
+            }
+            i++;
+        }
+    }
+    //explore w
+    if(strcmp(dir, "w") == 0){
+        int i = from->x, j = from->y - 1;
+        while(j > to->y){
+            if(strcmp(board[i][j], "--") != 0){
+                return invalidMove;
+            }
             j--;
         }
     }
@@ -155,7 +217,7 @@ bool * exploreDirection (char *dir, Point *from, Point *to, char *board[8][8]){
     char * toSquare = board[to->x][to->y];
     char * fromSquare = board[from->x][from->y];
     if(fromSquare[0] == toSquare[0]){
-        return false;
+        return invalidMove;
     }
     //all test passed it is a valid move.
     return (bool *)true;
