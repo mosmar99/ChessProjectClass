@@ -58,3 +58,9 @@ void initBoard(char *board[8][8]) {
     board[6][6] = "bp";
     board[6][7] = "bp";
 }
+int main ()
+{
+    char * board [8][8];
+    initBoard(board);
+    printBoard(board);
+}
