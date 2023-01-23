@@ -7,6 +7,6 @@
 //      input: a string representation of the desired move, e.g. "A2 A4"
 //      board: the string matrix representation of the current board state
 // Returns: true if allowed, false if disallowed, NULL if invalid parameter(s)
-bool *checkPawnMove(const char *const input, char *board[8][8]);
+bool *checkPawnMove(const char *const input, const char *const board[8][8]);
 
 #endif
