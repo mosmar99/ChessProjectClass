@@ -94,6 +94,8 @@ bool *checkPawnMove(const char *const input, char *const board[8][8])
     // check special 2 vertical move
     if ((deltaY == 2 && player == BLACK && pair->from->y != 6) || (player == WHITE && pair->from->y != 1))
         return false;
+    
+    //test
 }
 
 static unsigned int countCharInString(const char const *str, const unsigned char c)
