@@ -56,9 +56,9 @@ static Point *extractCoord(const char *const coord);
 //      startPos: the position of the selected piece that tries
 //                to move, i.e. the the piece on "from" coordinate
 // Returns: the color of the selected piece.
-static Color getColor(char *const board[8][8], const Point *const startPos);
+static Color getColor(const char *const board[8][8], const Point *const startPos);
 
-bool *checkPawnMove(const char *const input, char *const board[8][8])
+bool *checkPawnMove(const char *const input, const char *const board[8][8])
 {
     // check for basic validity of parameters
     assert(input != NULL && board != NULL);
@@ -175,7 +175,7 @@ static Point *extractCoord(const char *const coord)
     return p;
 }
 
-static Color getColor(char *const board[8][8], const Point *const startPos)
+static Color getColor(const char *const board[8][8], const Point *const startPos)
 {
     assert(startPos != NULL);
 
