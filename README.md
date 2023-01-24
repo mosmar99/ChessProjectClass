@@ -21,10 +21,10 @@ Game logic and AI in C.
 To be decided. Currently VSC (Visual Studio Code) extension programs are being utilized. More precisely Microsofts CMake Tools extension. Users are in addition expected to have a C-compiler installed. For example, The GNU Compiler Collection (GCC), which includes The C Standard Library, The GNU Project Debugger  (GDB), and the "build tool" GNU MAKE.
 
 ## VSCode setup
-You need to have .vscode files setup to run it, which are individually configured.
-indows: https://code.visualstudio.com/docs/cpp/config-mingw
-Mac: https://code.visualstudio.com/docs/cpp/config-clang-mac
-Linux: https://code.visualstudio.com/docs/cpp/config-linux
+You need to have .vscode files setup to run it, which are individually configured.<br />
+indows: https://code.visualstudio.com/docs/cpp/config-mingw<br />
+Mac: https://code.visualstudio.com/docs/cpp/config-clang-mac<br />
+Linux: https://code.visualstudio.com/docs/cpp/config-linux<br />
 
 **Sample Configuration (Ubuntu 20.4 LTS)**<br />
 Look at already configured files (.vscode) found within map ".vscode". These are working configurations in Ubuntu, version 20.4 LTS. Since local compiler paths are PC dependent one would need to updated certain fields manually. The fields in question are: "compilerPath": in c_cpp_properties.json, put gcc path. "command" in tasks, put gcc path. Lastly, within "launch.json" file, locate the field "miDebuggerPath" and put your own debugger path (gdb).
