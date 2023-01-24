@@ -26,7 +26,7 @@ indows: https://code.visualstudio.com/docs/cpp/config-mingw
 Mac: https://code.visualstudio.com/docs/cpp/config-clang-mac
 Linux: https://code.visualstudio.com/docs/cpp/config-linux
 
-**Sample Configuration (Ubuntu 20.4 LTS)**
+**Sample Configuration (Ubuntu 20.4 LTS)**<br />
 Look at already configured files (.vscode) found within map ".vscode". These are working configurations in Ubuntu, version 20.4 LTS. Since local compiler paths are PC dependent one would need to updated certain fields manually. The fields in question are: "compilerPath": in c_cpp_properties.json, put gcc path. "command" in tasks, put gcc path. Lastly, within "launch.json" file, locate the field "miDebuggerPath" and put your own debugger path (gdb).
 
 Execute each row below, one by one, in your terminal (Command Prompt (CMD) on Windows, Terminal on Mac and The Shell on Ubuntu), which will install Visual Studio Code Extensions for C:
