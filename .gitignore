@@ -1,4 +1,7 @@
 *.json
 *.exe
+<<<<<<< HEAD
 *.html
+=======
+>>>>>>> 60efa3a358b950639a966a788a2eac7dfc8d3d10
 *.log
