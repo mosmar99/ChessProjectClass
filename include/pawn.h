@@ -8,6 +8,6 @@
 //      move: a move struct filled with neccessary information for the desired move.
 //      board: the string matrix representation of the current board state.
 // Returns: true if allowed, false if disallowed.
-bool checkPawnMove(move *move, const char *const board[8][8]);
+bool checkPawnMove(const move *const move, char *const board[8][8]);
 
 #endif

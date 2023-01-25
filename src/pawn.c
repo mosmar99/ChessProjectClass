@@ -8,15 +8,21 @@
 typedef enum Color
 {
     EMPTY,
-    BLACK,
-    WHITE
+    BLACK, // black initially at row 6, 7
+    WHITE  // white initially at row 0, 1
 } Color;
 
 typedef enum AllowedDirection
 {
-    UP,  // black may only move up
-    DOWN // white may only move down
+    UP,  // white may only move up
+    DOWN // black may only move down
 } AllowedDirection;
+
+// Get the color of the player that tries to make the move.
+//      board: the board
+//      piece: the string representation of a piece
+// Returns: the color of the selected piece.
+static Color getColor(char *const board[8][8], const char *const piece);
 
 // Count the number of occurrenses of a specific character in a given string.
 //      str: the string to search
@@ -29,23 +35,14 @@ static unsigned int countCharInString(const char const *str, const unsigned char
 // Returns: a string.
 static char *getCopyOfString(const char *const str);
 
-// Get the color of the player that tries to make the move.
-//      board: the board
-//      startPos: the position of the selected piece that tries
-//                to move, i.e. the the piece on "from" coordinate
-// Returns: the color of the selected piece.
-static Color getColor(const char *const board[8][8], const char *const movingPiece);
-
-bool checkPawnMove(move *move, const char *const board[8][8])
+bool checkPawnMove(const move *const move, char *const board[8][8])
 {
-    // check for basic validity of parameters
     assert(move != NULL && board != NULL);
 
     // get color of the player and the allowed direction for that color
     Color player = getColor(board, move->movingPiece);
-    if (player == EMPTY)
-        return NULL;
-    AllowedDirection dir = player == BLACK ? UP : DOWN;
+    assert(player == WHITE || player == BLACK);
+    AllowedDirection dir = player == WHITE ? UP : DOWN;
 
     // check vertical direction constraint, i.e. a player may only advance a pawn
     AllowedDirection tryDir = move->fromPoint->row > move->toPoint->row ? UP : DOWN;
@@ -55,13 +52,25 @@ bool checkPawnMove(move *move, const char *const board[8][8])
     unsigned short deltaX = abs(move->fromPoint->col - move->toPoint->col);
     unsigned short deltaY = abs(move->fromPoint->row - move->toPoint->row);
 
-    // can at most move 1 horizontally and must always move 1 or 2 vertically
-    if (deltaX > 1 || deltaY < 1 || deltaY > 2)
+    // check simple distance constraints
+    // either 1 or 2 vertically, 0 or 1 horizontally
+    if (!(deltaY == 1 || deltaY == 2) || !(deltaX == 0 || deltaX == 1))
         return false;
+}
 
-    // check special 2 vertical move
-    if ((deltaY == 2 && player == BLACK && move->fromPoint->row != 6) || (player == WHITE && move->fromPoint->row != 1))
-        return false;
+static Color getColor(char *const board[8][8], const char *const piece)
+{
+    assert(board != NULL && piece != NULL);
+
+    switch (*piece)
+    {
+    case 'b':
+        return BLACK;
+    case 'w':
+        return WHITE;
+    case '-': // intentionally not a "default:", used to discover bugs
+        return EMPTY;
+    }
 }
 
 static unsigned int countCharInString(const char const *str, const unsigned char c)
@@ -87,9 +96,4 @@ static char *getCopyOfString(const char *const str)
     strncpy(newStr, str, strlen(str));
 
     return newStr;
-}
-
-static Color getColor(const char *const board[8][8], const char *const movingPiece)
-{
-    assert(board != NULL && movingPiece != NULL);
 }
