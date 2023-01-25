@@ -2,11 +2,12 @@
 #define _PAWN_H
 
 #include <stdbool.h>
+#include "makemove.h"
 
 // Decides whether or not the desired move is allowed or not.
-//      input: a string representation of the desired move, e.g. "A2 A4"
-//      board: the string matrix representation of the current board state
-// Returns: true if allowed, false if disallowed, NULL if invalid parameter(s)
-bool *checkPawnMove(const char *const input, const char *const board[8][8]);
+//      move: a move struct filled with neccessary information for the desired move.
+//      board: the string matrix representation of the current board state.
+// Returns: true if allowed, false if disallowed.
+bool checkPawnMove(move *move, const char *const board[8][8]);
 
 #endif
