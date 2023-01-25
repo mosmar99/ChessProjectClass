@@ -5,18 +5,6 @@
 #include <string.h>
 #include <ctype.h>
 
-#define NULL ((void *)0)
-
-typedef struct Point
-{
-    unsigned short x, y;
-} Point;
-
-typedef struct PointPair
-{
-    Point *to, *from;
-} PointPair;
-
 typedef enum Color
 {
     EMPTY,
