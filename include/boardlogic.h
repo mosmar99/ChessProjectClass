@@ -30,4 +30,5 @@ typedef struct move{
 move *parseMove(char *board[8][8], char *string);
 void printMove(move *m);
 
+
 #endif
