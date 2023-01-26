@@ -1,7 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "makeMove.h"
 #include "knight.h"
 
 static bool isSameColour(const char *piece1, const char *piece2);

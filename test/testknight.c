@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "makemove.h"
+#include "makeMove.h"
 #include "knight.h"
 #include "boardlogic.h"
 
