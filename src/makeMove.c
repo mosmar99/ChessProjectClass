@@ -24,11 +24,11 @@ void play(char *board[size][size]) {
     }
 }
 
-void moveHistory(mx) {
+void moveHistory(move *mx) {
 
 }
 
-bool moveConditions(move mx) {
+bool passedMoveConditions(move *mx) {
 
 }
 
@@ -42,21 +42,11 @@ void catchErrors(bool isValidMove) {
 }
 
 move *setupMoveData(char *input, char *board[size][size]) {
-    move *mx = malloc(sizeof(move));
-    mx->fromPoint = malloc(sizeof(point));
-    mx->toPoint = malloc(sizeof(point));
-    mx->capturedPiece = malloc(sizeof(char)*3);
-    mx->movingPiece = malloc(sizeof(char)*3);
+
     char oldChessCoord[3];
     char newChessCoord[3];
     unsigned int oldArrCoord[2];
     unsigned int newArrCoord[2];
-
-    if (mx == NULL)
-    {
-        puts("Error: failed to allocate memory for move.");
-        return NULL;
-    }
 
     if (*input == 'R' || *input == 'N' || *input == 'B' || *input == 'Q' || *input == 'K')
     {
@@ -79,16 +69,7 @@ move *setupMoveData(char *input, char *board[size][size]) {
     getTransform(oldArrCoord, oldChessCoord);
     getTransform(newArrCoord, newChessCoord);
 
-    // store data in struct move
-    mx->fromPoint->col = oldArrCoord[1];
-    mx->fromPoint->row = oldArrCoord[0];
-    mx->toPoint->col = newArrCoord[1];
-    mx->toPoint->row = newArrCoord[0];
-   
-    mx->movingPiece = board[oldArrCoord[0]][oldArrCoord[1]];
-    mx->capturedPiece = board[newArrCoord[0]][newArrCoord[1]];
-
-    return mx;
+    return createMove(createPoint(oldArrCoord[1],oldArrCoord[0]),createPoint(newArrCoord[1],newArrCoord[0]),board[oldArrCoord[0]][oldArrCoord[1]],board[newArrCoord[0]][newArrCoord[1]]);
 }
 
 void readInput(char *move) {
