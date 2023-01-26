@@ -4,7 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include <boardlogic.h>
+#include <makeMove.h>
 
 static bool checkInput(char *input, char *board[8][8]);
 static char * getDirection(move *m);

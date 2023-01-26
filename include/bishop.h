@@ -2,7 +2,7 @@
 #define BISHOP_H
 
 #include <stdbool.h>
-#include <boardlogic.h>
+#include <makeMove.h>
 
 bool checkBishopMove(move *m, char *board[8][8]);
 
