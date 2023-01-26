@@ -11,8 +11,8 @@ void play(char *board[size][size]) {
     {
         char *input = requestMove();
         move *mx = setupMoveData(input, board);
-        //applyMove(mx, board);
-        action(mx, board);
+        applyMove(mx, board);
+        //action(mx, board);
         printBoard(board);
     }
 
