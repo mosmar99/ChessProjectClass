@@ -21,9 +21,10 @@ typedef enum VerticalDirection
 // Check for collisions given the desired move.
 //      move: a move struct filled with neccessary information for the desired move.
 //      board: the string matrix representation of the current board state.
-//      dir: the direction.
+//      deltaX: the delta in horizontal movement.
+//      deltaY: the delta in vertical movement.
 // Returns: true if collision is detected, false otherwise.
-static bool checkCollision(const move *const move, char *const board[8][8], short deltaX, short deltaY);
+static bool checkCollisions(const move *const move, char *const board[8][8], short deltaX, short deltaY);
 
 // Get the color of the player that tries to make the move.
 //      piece: the string representation of a piece.
@@ -82,12 +83,12 @@ bool checkPawnMove(const move *const move, char *const board[8][8])
 
     // at this point the desired move is plausible from the given 'to' and 'from' coordinates
     // check collisions
-    if (checkCollision(move, board, deltaX, deltaY))
+    if (checkCollisions(move, board, deltaX, deltaY))
         return false;
     return true;
 }
 
-static bool checkCollision(const move *const move, char *const board[8][8], short deltaX, short deltaY)
+static bool checkCollisions(const move *const move, char *const board[8][8], short deltaX, short deltaY)
 {
     assert(move != NULL && board != NULL);
 
