@@ -66,7 +66,7 @@ bool checkPawnMove(const move *const move, char *const board[8][8])
     // check simple distance constraints:
     // 2 vertically and 0 horizontally
     // 1 vertically and either 0 or 1 horizontally
-    if (!((deltaY == 2 && deltaX == 0) || (deltaY == 1 && (deltaX == 0 || deltaX == 1))))
+    if (!((abs(deltaY) == 2 && deltaX == 0) || (abs(deltaY) == 1 && (deltaX == 0 || abs(deltaX) == 1))))
         return false;
 
     // check vertical direction constraint, i.e. a player may only advance a pawn
@@ -95,17 +95,30 @@ static bool checkCollisions(const move *const move, char *const board[8][8], sho
     unsigned short checkRow = move->fromPoint->row;
     unsigned short checkCol = move->fromPoint->col;
 
-    if (abs(deltaX) == 1) // desire to move diagonally 1 step, i.e. attack a black piece
+    if (abs(deltaX) == 1) // desire to move diagonally 1 step, i.e. attack an enemy piece
     {
         assert(abs(deltaY) == 1);
 
+        // advance 1 step diagonally
+        checkRow += deltaY;
+        checkCol += deltaX;
+
         // check border
-        if (checkRow + deltaY > 7 || checkRow + deltaY < 0 || checkCol + deltaX > 7 || checkCol + deltaX < 0)
+        if (checkRow > 7 || checkRow < 0 || checkCol > 7 || checkCol < 0)
             return true;
 
-        // diagonal will "collide" on any non-black piece
-        if (*(board[checkRow + deltaY][checkCol + deltaX]) != 'b')
-            return true;
+        switch (*(move->movingPiece))
+        {
+        case 'w':
+            if (*(move->capturedPiece) != 'b')
+                return true;
+            break;
+        case 'b':
+            if (*(move->capturedPiece) != 'w')
+                return true;
+            break;
+        }
+
         return false;
     }
 
