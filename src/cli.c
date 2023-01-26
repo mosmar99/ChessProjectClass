@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "makeMove.h"
 
-void printBoard();
+void printBoard(char *board[8][8]);
 void initBoard(char *board[8][8]);
-void play(char *board[8][8]); 
+void play(char *board[size][size]);
 
 int main(void) {
 
