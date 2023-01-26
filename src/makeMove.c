@@ -1,34 +1,68 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
+#include "makeMove.h"
 
-#define size (7+1)
-
-void requestMove(char *move);
-void applyMove(char *move, char *board[8][8]);
-void action(char *move, char *board[8][8]);
-void printBoard(char *board[8][8]);
-
-// bool *checkRockMove(const char *const input, char *board[8][8];
-// bool *checkKnightMove(const char *const input, char *board[8][8]);
-// bool *checkBishopMove(const char *const input, char *board[8][8]);
-// bool *checkQueenMove(const char *const input, char *board[8][8]);
-// bool *checkKingMove(const char *const input, char *board[8][8]);
-bool *checkPawnMove(const char *const input, char *board[8][8]);
-
-void play(char *board[8][8]) {
+void play(char *board[size][size]) {
     bool play = true;
     while (play)
     {
-        //get next move
-        char *move = malloc( sizeof(char) * size );
-        requestMove(move);
-        // applyMove(move, board);
-        action(move, board);
+        char *input = requestMove();
+        move *mx = setupMoveData(input, board);
+        //applyMove(mx, board);
+        action(mx, board);
         printBoard(board);
     }
 
+}
+
+move *setupMoveData(char *input, char *board[size][size]) {
+    move *mx = malloc(sizeof(move));
+    mx->fromPoint = malloc(sizeof(point));
+    mx->toPoint = malloc(sizeof(point));
+    mx->capturedPiece = malloc(sizeof(char)*3);
+    mx->movingPiece = malloc(sizeof(char)*3);
+    char oldChessCoord[3];
+    char newChessCoord[3];
+    unsigned int oldArrCoord[2];
+    unsigned int newArrCoord[2];
+    if (mx == NULL)
+    {
+        puts("Error: failed to allocate memory for move.");
+        return NULL;
+    }
+
+    if (*input == 'R' || *input == 'N' || *input == 'B' || *input == 'Q' || *input == 'K')
+    {
+        // get non-pawn coordinates
+        extractChessCoord(oldChessCoord, input, 1, 2);
+        extractChessCoord(newChessCoord, input, 5, 6);
+
+    } else if (*input == 'a' || *input == 'b' || *input == 'c' || *input =='d' || *input == 'e' || *input == 'f' || *input == 'g')
+    {
+        // get pawn coordinates  
+        extractChessCoord(oldChessCoord, input, 0, 1);
+        extractChessCoord(newChessCoord, input, 3, 4);
+    } else {
+        puts("Invalid input");
+        exit(0);
+    }
+
+    // put "--" in old position
+    // example: "e, 2" -> "{1, 4} and "e, 4" -> {3, 4}
+    getTransform(oldArrCoord, oldChessCoord);
+    getTransform(newArrCoord, newChessCoord);
+
+    // store data in struct move
+    mx->fromPoint->col = oldArrCoord[1];
+    mx->fromPoint->row = oldArrCoord[0];
+    mx->toPoint->col = newArrCoord[1];
+    mx->toPoint->row = newArrCoord[0];
+   
+    mx->movingPiece = board[oldArrCoord[0]][oldArrCoord[1]];
+    mx->capturedPiece = board[newArrCoord[0]][newArrCoord[1]];
+
+    return mx;
 }
 
 void readInput(char *move) {
@@ -48,13 +82,17 @@ void readInput(char *move) {
     }
 }
 
-void requestMove(char *move) {
+char *requestMove() {
+    char *input = malloc( sizeof(char) * size );
+
     // prompt user for move
     printf("Enter white's move [Piece][Square]-->[Piece][Square]: ");
     fflush(stdout);
 
     // collect all input until eol
-    readInput(move);
+    readInput(input);
+
+    return input;
 }
 
 // input para: dest and src are given
@@ -137,46 +175,21 @@ void getTransform(int *dest, char *src) {
     }    
 }
 
-void action(char *move, char *board[8][8]) {
+void action(move *mx, char *board[size][size]) {
     // todo manipulate board according to move: "e2 e4"
-    // put -- in old position
-    // put correctly coloured pawn in to-move-to-tile
-    
-    char oldChessCoord[3];
-    char newChessCoord[3];
-    int oldArrCoord[2];
-    int newArrCoord[2];
-    if (*move == 'R' || *move == 'N' || *move == 'B' || *move == 'Q' || *move == 'K')
-    {
-        // get non-pawn coordinates
-        extractChessCoord(oldChessCoord, move, 1, 2);
-        extractChessCoord(newChessCoord, move, 5, 6);
-
-    } else if (*move == 'a' || *move == 'b' || *move == 'c' || *move =='d' || *move == 'e' || *move == 'f' || *move == 'g')
-    {
-        // get pawn coordinates  
-        extractChessCoord(oldChessCoord, move, 0, 1);
-        extractChessCoord(newChessCoord, move, 3, 4);
-    } else {
-        puts("Invalid input");
-        exit(0);
-    }
-
     // put "--" in old position
-    // example: "e, 2" -> "{1, 4} and "e, 4" -> {3, 4}
-    getTransform(oldArrCoord, oldChessCoord);
-    getTransform(newArrCoord, newChessCoord);
+    // put correctly coloured pawn in to-move-to-tile
 
     // put piece in its correct new position
-    board[newArrCoord[0]][newArrCoord[1]] = board[oldArrCoord[0]][oldArrCoord[1]];
+    board[mx->toPoint->row][mx->toPoint->col] = board[mx->fromPoint->row][mx->fromPoint->col];
 
     // put "--"" in old position
-    board[oldArrCoord[0]][oldArrCoord[1]] = "--";
+    board[mx->fromPoint->row][mx->fromPoint->col] = "--";
 }
 
-void applyMove(char *move, char *board[8][8]) {
-    bool *validMove;
-    switch (*(move))
+void applyMove(move *mx, char *board[size][size]) {
+    bool validMove;
+    switch (mx->movingPiece[1])
     {
     case 'R':
         // validMove = checkRockMove(move, board);
@@ -201,9 +214,9 @@ void applyMove(char *move, char *board[8][8]) {
     case 'f':
     case 'g':
     case 'h':
-        validMove = checkPawnMove(move, board);
-        if (*validMove)
-            action(move, board);        
+        validMove = checkPawnMove(mx, board);
+        if (validMove)
+            action(mx, board);        
         break;    
     
     default:
