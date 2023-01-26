@@ -25,7 +25,7 @@ void extractChessCoord(char *dest, char *src, int cpyFrom, int cpyTo);
 void getTransform(int *dest, char *src);
 void catchErrors(bool isValidMove); 
 void moveHistory(move *mx);
-bool passedMoveConditionsN(move *mx);
+bool passedMoveConditions(move *mx);
 bool applyMove(move *mx, char *board[size][size]);
 void action(move *mx, char *board[size][size]);
 void printBoard(char *board[size][size]);

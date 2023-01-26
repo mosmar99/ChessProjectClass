@@ -29,7 +29,7 @@ void moveHistory(move *mx) {
 }
 
 bool passedMoveConditions(move *mx) {
-
+    return true;
 }
 
 
@@ -37,7 +37,17 @@ void catchErrors(bool isValidMove) {
     if (!isValidMove)
     {
         puts("---> Error: Not a valid move");
+        puts("---> Error: Not a valid move");
+        puts("---> Error: Not a valid move");
+        //puts("---> Error: Not a valid move");
+        puts("---> Error: Not a valid move");
+        puts("---> Error: Not a valid move");
+        puts("---> Error: Not a valid move");
+    } else
+    {
+        puts("Errrrr");
     }
+    
     
 }
 
@@ -45,8 +55,6 @@ move *setupMoveData(char *input, char *board[size][size]) {
 
     char oldChessCoord[3];
     char newChessCoord[3];
-    unsigned int oldArrCoord[2];
-    unsigned int newArrCoord[2];
 
     if (*input == 'R' || *input == 'N' || *input == 'B' || *input == 'Q' || *input == 'K')
     {
@@ -66,10 +74,18 @@ move *setupMoveData(char *input, char *board[size][size]) {
 
     // put "--" in old position
     // example: "e, 2" -> "{1, 4} and "e, 4" -> {3, 4}
+    unsigned int oldArrCoord[2];
+    unsigned int newArrCoord[2];
     getTransform(oldArrCoord, oldChessCoord);
     getTransform(newArrCoord, newChessCoord);
 
-    return createMove(createPoint(oldArrCoord[1],oldArrCoord[0]),createPoint(newArrCoord[1],newArrCoord[0]),board[oldArrCoord[0]][oldArrCoord[1]],board[newArrCoord[0]][newArrCoord[1]]);
+    // put in substructs
+    point *from = createPoint(oldArrCoord[1],oldArrCoord[0]);
+    point *to = createPoint(newArrCoord[1],newArrCoord[0]);
+    char *movingPiece = board[oldArrCoord[0]][oldArrCoord[1]];
+    char *capturingPiece = board[newArrCoord[0]][newArrCoord[1]];
+
+    return createMove(from, to, movingPiece, capturingPiece);
 }
 
 void readInput(char *move) {
