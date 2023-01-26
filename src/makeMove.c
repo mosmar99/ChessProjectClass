@@ -5,17 +5,40 @@
 #include "knight.h"
 #include "pawn.h"
 
+static point *createPoint(unsigned int x, unsigned int y);
+static void destroyPoint(point *p);
+static move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece);
+static void destroyMove(move *move);
+
 void play(char *board[size][size]) {
     bool play = true;
     while (play)
     {
         char *input = requestMove();
         move *mx = setupMoveData(input, board);
-        applyMove(mx, board);
-        //action(mx, board);
-        printBoard(board);
+        if(passedMoveConditions(mx)) {
+            catchErrors(applyMove(mx, board));
+            printBoard(board);
+            moveHistory(mx);
+        }
     }
+}
 
+void moveHistory(mx) {
+
+}
+
+bool moveConditions(move mx) {
+
+}
+
+
+void catchErrors(bool isValidMove) {
+    if (!isValidMove)
+    {
+        puts("---> Error: Not a valid move");
+    }
+    
 }
 
 move *setupMoveData(char *input, char *board[size][size]) {
@@ -28,6 +51,7 @@ move *setupMoveData(char *input, char *board[size][size]) {
     char newChessCoord[3];
     unsigned int oldArrCoord[2];
     unsigned int newArrCoord[2];
+
     if (mx == NULL)
     {
         puts("Error: failed to allocate memory for move.");
@@ -140,7 +164,7 @@ void getTransform(int *dest, char *src) {
         break;
 
     default:
-        puts("Could not extract valid coordinates");
+        puts("---> Could not extract valid coordinates");
         break;
     }    
 
@@ -172,7 +196,7 @@ void getTransform(int *dest, char *src) {
         break;
 
     default:
-        puts("Could not extract valid coordinates");
+        puts("---> Could not extract valid coordinates");
         break;
     }    
 }
@@ -189,7 +213,7 @@ void action(move *mx, char *board[size][size]) {
     board[mx->fromPoint->row][mx->fromPoint->col] = "--";
 }
 
-void applyMove(move *mx, char *board[size][size]) {
+bool applyMove(move *mx, char *board[size][size]) {
     bool validMove;
     switch (mx->movingPiece[1])
     {
@@ -200,7 +224,7 @@ void applyMove(move *mx, char *board[size][size]) {
         validMove = checkKnightMove(mx, board);
         if (validMove)
             action(mx, board);        
-        break;    
+        return validMove;    
     case 'B':
         // validMove = checkBishopkMove(move, board);
         break;
@@ -210,21 +234,60 @@ void applyMove(move *mx, char *board[size][size]) {
     case 'K':
         // validMove = checkKingMove(move, board);
         break;
-    case 'a':
-    case 'b':
-    case 'c':
-    case 'd':
-    case 'e':
-    case 'f':
-    case 'g':
-    case 'h':
+    case 'p':
         validMove = checkPawnMove(mx, board);
         if (validMove)
-            action(mx, board);        
-        break;    
+            action(mx, board);   
+        return validMove;     
     
     default:
-        puts("---> Error: Not a valid move");
-        return;
+        return false;
+    }
+}
+
+static point *createPoint(unsigned int col, unsigned int row){
+
+    point *p = malloc(sizeof(point));
+
+    if (p){
+        p->col = col;
+        p->row = row;
+        return p;
+    } else {
+        return NULL;
+    }
+}
+
+static void destroyPoint(point *p){
+    if (p){
+        free(p);
+    } 
+}
+
+static move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece){
+    move *newMove = malloc(sizeof(move));
+
+    if (newMove){
+        newMove->movingPiece = malloc(sizeof(char[3]));
+        newMove->capturedPiece = malloc(sizeof(char[3]));
+        strcpy(newMove->movingPiece, movingPiece);
+        strcpy(newMove->capturedPiece, CapturedPiece);
+
+        newMove->fromPoint = fromPoint;
+        newMove->toPoint = toPoint;
+    }
+    return newMove;
+}
+
+static void destroyMove(move *move){
+
+    if(move){
+        destroyPoint(move->fromPoint);
+        destroyPoint(move->toPoint);
+
+        free(move->movingPiece);
+        free(move->capturedPiece);
+
+        free(move);
     }
 }
