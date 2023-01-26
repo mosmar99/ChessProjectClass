@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "makeMove.h"
+#include "knight.h"
+#include "pawn.h"
 
 void play(char *board[size][size]) {
     bool play = true;
@@ -195,8 +197,10 @@ void applyMove(move *mx, char *board[size][size]) {
         // validMove = checkRockMove(move, board);
         break;
     case 'N':
-        // validMove = checkKnightMove(move, board);
-        break;
+        validMove = checkKnightMove(mx, board);
+        if (validMove)
+            action(mx, board);        
+        break;    
     case 'B':
         // validMove = checkBishopkMove(move, board);
         break;
@@ -220,7 +224,7 @@ void applyMove(move *mx, char *board[size][size]) {
         break;    
     
     default:
-        puts("Not a valid move");
+        puts("---> Error: Not a valid move");
         return;
     }
 }

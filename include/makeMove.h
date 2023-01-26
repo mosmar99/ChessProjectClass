@@ -26,11 +26,4 @@ void applyMove(move *mx, char *board[size][size]);
 void action(move *mx, char *board[size][size]);
 void printBoard(char *board[size][size]);
 
-// bool checkRockMove(const char *const input, char *board[8][8];
-// bool checkKnightMove(const char *const input, char *board[8][8]);
-// bool checkBishopMove(const char *const input, char *board[8][8]);
-// bool checkQueenMove(const char *const input, char *board[8][8]);
-// bool checkKingMove(const char *const input, char *board[8][8]);
-bool checkPawnMove(const move *const move, char *const board[8][8]);
-
 #endif

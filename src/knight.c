@@ -5,7 +5,7 @@
 
 static bool isSameColour(const char *piece1, const char *piece2);
 
-bool checkKnightMove(move *move, const char *board[8][8]){
+bool checkKnightMove(const move *const move, char *const board[8][8]) {
 
     const int pattern[8] = {1,2,2,1,-1,-2,-2,-1};
     int i = 0;
