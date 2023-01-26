@@ -1,7 +1,6 @@
 #ifndef _PAWN_H
 #define _PAWN_H
 
-#include <stdbool.h>
 #include "makemove.h"
 
 // Decides whether or not the desired move is allowed or not.
