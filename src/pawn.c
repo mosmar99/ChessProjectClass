@@ -95,7 +95,7 @@ static bool checkCollisions(const move *const move, char *const board[8][8], sho
     unsigned short checkRow = move->fromPoint->row;
     unsigned short checkCol = move->fromPoint->col;
 
-    if (abs(deltaX) == 1) // desire to move diagonally 1 step
+    if (abs(deltaX) == 1) // desire to move diagonally 1 step, i.e. attack a black piece
     {
         assert(abs(deltaY) == 1);
 
@@ -103,7 +103,8 @@ static bool checkCollisions(const move *const move, char *const board[8][8], sho
         if (checkRow + deltaY > 7 || checkRow + deltaY < 0 || checkCol + deltaX > 7 || checkCol + deltaX < 0)
             return true;
 
-        if (strcmp(board[checkRow + deltaY][checkCol + deltaX], "--") != 0)
+        // diagonal will "collide" on any non-black piece
+        if (*(board[checkRow + deltaY][checkCol + deltaX]) != 'b')
             return true;
         return false;
     }
