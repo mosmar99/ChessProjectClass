@@ -22,8 +22,11 @@ void play(char *board[size][size]);
 char *requestMove();
 move *setupMoveData(char *input, char *board[size][size]);
 void extractChessCoord(char *dest, char *src, int cpyFrom, int cpyTo);
-void getTransform(int *dest, char *src); 
-void applyMove(move *mx, char *board[size][size]);
+void getTransform(int *dest, char *src);
+void catchErrors(bool isValidMove); 
+void moveHistory(mx);
+bool moveConditions(move mx);
+bool applyMove(move *mx, char *board[size][size]);
 void action(move *mx, char *board[size][size]);
 void printBoard(char *board[size][size]);
 
