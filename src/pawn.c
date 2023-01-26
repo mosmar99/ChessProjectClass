@@ -12,21 +12,35 @@ typedef enum Color
     WHITE  // white initially at row 0, 1
 } Color;
 
-typedef enum AllowedDirection
+typedef enum VerticalDirection
 {
     UP,  // white may only move up
     DOWN // black may only move down
-} AllowedDirection;
+} VerticalDirection;
+
+// Check for collisions given the desired move.
+//      move: a move struct filled with neccessary information for the desired move.
+//      board: the string matrix representation of the current board state.
+//      dir: the direction.
+// Returns: true if collision is detected, false otherwise.
+static bool checkCollision(const move *const move, char *const board[8][8], short deltaX, short deltaY);
 
 // Get the color of the player that tries to make the move.
-//      board: the board
-//      piece: the string representation of a piece
+//      piece: the string representation of a piece.
 // Returns: the color of the selected piece.
-static Color getColor(char *const board[8][8], const char *const piece);
+static Color getColor(const char *const piece);
+
+// Asserts that the move is properly filled with valid information.
+//      move: a move struct filled with neccessary information for the desired move.
+static void assertMove(const move *const move);
+
+// Asserts that the board is properly properly configured.
+//      board: the string matrix representation of the current board state.
+static void assertBoard(char *const board[8][8]);
 
 // Count the number of occurrenses of a specific character in a given string.
-//      str: the string to search
-//      c: the character to count
+//      str: the string to search.
+//      c: the character to count.
 // Returns: The number of occurrenses found.
 static unsigned int countCharInString(const char const *str, const unsigned char c);
 
@@ -37,30 +51,87 @@ static char *getCopyOfString(const char *const str);
 
 bool checkPawnMove(const move *const move, char *const board[8][8])
 {
-    assert(move != NULL && board != NULL);
+    assertMove(move);
+    assertBoard(board);
 
     // get color of the player and the allowed direction for that color
-    Color player = getColor(board, move->movingPiece);
+    Color player = getColor(move->movingPiece);
     assert(player == WHITE || player == BLACK);
-    AllowedDirection dir = player == WHITE ? UP : DOWN;
+    VerticalDirection dir = player == WHITE ? UP : DOWN;
+
+    short deltaX = move->toPoint->col - move->fromPoint->col;
+    short deltaY = move->toPoint->row - move->fromPoint->row;
+
+    // check simple distance constraints:
+    // 2 vertically and 0 horizontally
+    // 1 vertically and either 0 or 1 horizontally
+    if (!((deltaY == 2 && deltaX == 0) || (deltaY == 1 && (deltaX == 0 || deltaX == 1))))
+        return false;
 
     // check vertical direction constraint, i.e. a player may only advance a pawn
-    AllowedDirection tryDir = move->fromPoint->row > move->toPoint->row ? UP : DOWN;
+    VerticalDirection tryDir = deltaY >= 0 ? UP : DOWN;
     if (tryDir != dir)
         return false;
 
-    unsigned short deltaX = abs(move->fromPoint->col - move->toPoint->col);
-    unsigned short deltaY = abs(move->fromPoint->row - move->toPoint->row);
+    // simple check for special 2 vertical move from starting position
+    if (deltaY == 2)
+        if (player == WHITE && move->fromPoint->row != 1)
+            return false;
+        else if (player == BLACK && move->fromPoint->row != 6)
+            return false;
 
-    // check simple distance constraints
-    // either 1 or 2 vertically, 0 or 1 horizontally
-    if (!(deltaY == 1 || deltaY == 2) || !(deltaX == 0 || deltaX == 1))
+    // at this point the desired move is plausible from the given 'to' and 'from' coordinates
+    // check collisions
+    if (checkCollision(move, board, deltaX, deltaY))
         return false;
+    return true;
 }
 
-static Color getColor(char *const board[8][8], const char *const piece)
+static bool checkCollision(const move *const move, char *const board[8][8], short deltaX, short deltaY)
 {
-    assert(board != NULL && piece != NULL);
+    assert(move != NULL && board != NULL);
+
+    unsigned short checkRow = move->fromPoint->row;
+    unsigned short checkCol = move->fromPoint->col;
+
+    if (abs(deltaX) == 1) // desire to move diagonally 1 step
+    {
+        assert(abs(deltaY) == 1);
+
+        // check border
+        if (checkRow + deltaY > 7 || checkRow + deltaY < 0 || checkCol + deltaX > 7 || checkCol + deltaX < 0)
+            return true;
+
+        if (strcmp(board[checkRow + deltaY][checkCol + deltaX], "--") != 0)
+            return true;
+        return false;
+    }
+
+    assert(deltaX == 0 && abs(deltaY) <= 2);
+
+    while (deltaY != 0)
+    {
+        // advance 1 step
+        checkRow += deltaY > 0 ? 1 : -1;
+
+        // check border
+        if (checkRow > 7 || checkRow < 0)
+            return true;
+
+        // check if there is a piece
+        if (strcmp(board[checkRow][checkCol], "--") != 0)
+            return true;
+
+        // increment/decrement
+        deltaY += deltaY > 0 ? -1 : 1;
+    }
+
+    return false;
+}
+
+static Color getColor(const char *const piece)
+{
+    assert(piece != NULL);
 
     switch (*piece)
     {
@@ -70,6 +141,38 @@ static Color getColor(char *const board[8][8], const char *const piece)
         return WHITE;
     case '-': // intentionally not a "default:", used to discover bugs
         return EMPTY;
+    }
+}
+
+static void assertMove(const move *const move)
+{
+    assert(move != NULL);
+    assert(move->movingPiece != NULL);
+    assert(move->fromPoint != NULL);
+    assert(move->capturedPiece != NULL);
+    assert(move->toPoint != NULL);
+
+    assert(strlen(move->movingPiece) == 2);
+    assert(strlen(move->capturedPiece) == 2);
+    assert(move->movingPiece[0] == 'b' || move->movingPiece[0] == 'w');
+    assert(move->movingPiece[1] == 'p');
+    assert(strlen(move->capturedPiece) == 2);
+
+    assert(move->fromPoint->col >= 0 && move->fromPoint->col <= 7);
+    assert(move->fromPoint->row >= 0 && move->fromPoint->row <= 7);
+    assert(move->toPoint->col >= 0 && move->toPoint->col <= 7);
+    assert(move->toPoint->row >= 0 && move->toPoint->row <= 7);
+}
+
+static void assertBoard(char *const board[8][8])
+{
+    assert(board != NULL);
+
+    for (unsigned short row = 0; row < 8; row++)
+    {
+        assert(board[row] != NULL);
+        for (unsigned short col = 0; col < 8; col++)
+            assert(strlen(board[row][col]) == 2);
     }
 }
 
