@@ -1,8 +1,7 @@
 #ifndef _PAWN_H
 #define _PAWN_H
 
-#include <stdbool.h>
-#include "makemove.h"
+#include "makeMove.h"
 
 // Decides whether or not the desired move is allowed or not.
 //      move: a move struct filled with neccessary information for the desired move.
