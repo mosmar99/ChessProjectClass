@@ -5,6 +5,11 @@
 #include "knight.h"
 #include "pawn.h"
 
+static point *createPoint(unsigned int x, unsigned int y);
+static void destroyPoint(point *p);
+static move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece);
+static void destroyMove(move *move);
+
 void play(char *board[size][size]) {
     bool play = true;
     while (play)
@@ -237,5 +242,52 @@ bool applyMove(move *mx, char *board[size][size]) {
     
     default:
         return false;
+    }
+}
+
+static point *createPoint(unsigned int col, unsigned int row){
+
+    point *p = malloc(sizeof(point));
+
+    if (p){
+        p->col = col;
+        p->row = row;
+        return p;
+    } else {
+        return NULL;
+    }
+}
+
+static void destroyPoint(point *p){
+    if (p){
+        free(p);
+    } 
+}
+
+static move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece){
+    move *newMove = malloc(sizeof(move));
+
+    if (newMove){
+        newMove->movingPiece = malloc(sizeof(char[3]));
+        newMove->capturedPiece = malloc(sizeof(char[3]));
+        strcpy(newMove->movingPiece, movingPiece);
+        strcpy(newMove->capturedPiece, CapturedPiece);
+
+        newMove->fromPoint = fromPoint;
+        newMove->toPoint = toPoint;
+    }
+    return newMove;
+}
+
+static void destroyMove(move *move){
+
+    if(move){
+        destroyPoint(move->fromPoint);
+        destroyPoint(move->toPoint);
+
+        free(move->movingPiece);
+        free(move->capturedPiece);
+
+        free(move);
     }
 }
