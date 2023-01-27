@@ -4,112 +4,46 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <makeMove.h>
 
-typedef struct Point{
-    unsigned int x, y;
-}Point;
+static char * getDirection(move *m);
+static bool exploreDirection (char *dir, move *m, char *board[8][8]);
 
-typedef struct PointArray{
-    Point *p;
-} PointArray;
-
-static PointArray * getCoordinates(char *input);
-static Point * translateCoordiantes (char *coordinate);
-static bool checkInput(char *input, char *board[8][8]);
-static char * getDirection(Point *from, Point *to);
-static bool * exploreDirection (char *dir, Point *from, Point *to, char *board[8][8]);
-
-bool * checkQueenMove(char *input, char *board[8][8]){
-    if(!checkInput){
-        return NULL;
-    }
-    Point *from, *to;
-    PointArray *pA;
-    pA = getCoordinates(input);
-    from = pA[1].p;
-    to = pA[0].p;
-    char *dir = getDirection(from, to);
+bool checkQueenMove(move *m, char *board[8][8]){
+    char *dir = getDirection(m);
     if(dir == NULL){
         return false;
     }
     //explore direction
-    bool * validDir = exploreDirection(dir, from, to, board);
-    free(from);
-    free(to);
+    bool validDir = exploreDirection(dir, m, board);
     return validDir;
 
 }
 
-bool checkInput(char *input, char *board[8][8]){
-    if(input == NULL || board == NULL || strlen(input) != 7){
-        return false;
-    }
-    for(int i = 0; i < 2; i++){
-        if(!isalpha(input[i]) && !isalpha(input[i+1]) && !isdigit(input[i+2])){
-            return false;
-        }
-    }
-    return true;
-}
-
-PointArray * getCoordinates(char *input){
-    char *cordsToSplit, *fromCord, *toCord;
-    Point *from, *to;
-
-    cordsToSplit = calloc(strlen(input) + 1, sizeof(char));
-
-    strncpy(cordsToSplit, input, strlen(input)+1);
-
-    fromCord = strtok(cordsToSplit, " ");
-    toCord = strtok(NULL, " ");
-
-    //translate the coordinates from alphabetical to numerical
-    from = translateCoordiantes(fromCord);
-    to = translateCoordiantes(toCord);
-
-    //a point array is used to return the two points.
-    PointArray * pA = malloc(sizeof(PointArray));
-    for(int i = 0; i < 2; i++){
-        pA[i].p = (Point *)malloc(sizeof(Point));
-    }
-    pA[1].p = from;
-    pA[0].p = to;
-    free(cordsToSplit);
-    return pA;
-}
-
-Point * translateCoordiantes (char *coordinate){
-    Point *p = malloc(sizeof(Point));
-    p->x = coordinate[2] - '0' - 1;
-    p->y = coordinate[1] - 'A';
-    p->y = 8 - p->y - 1;
-    return p;
-}
-
-char * getDirection(Point *from, Point *to){
+char * getDirection(move *m){
     char *direction;
-    int deltaX = abs(from->x - to->x);
-    int deltaY = abs(from->y - to->y);
+    int deltaX = abs(m->fromPoint->row - m->toPoint->row);
+    int deltaY = abs(m->fromPoint->col - m->toPoint->col);
     //diagonal move
     if(deltaX == deltaY){
-        if(from->x > to->x && from->y < to->y){
+        if(m->fromPoint->row <  m->toPoint->row && m->fromPoint->col > m->toPoint->col){
             return direction = "nw";
         }
-        if(from->x < to->x && from->y < to->y){
+        if(m->fromPoint->row <  m->toPoint->row && m->fromPoint->col < m->toPoint->col){
             return direction = "ne";
         }
-        if(from->x < to->x && from->y > to->y){
+        if(m->fromPoint->row >  m->toPoint->row && m->fromPoint->col < m->toPoint->col){
             return direction = "se";
         }
-        if(from->x > to->x && from->y > to->y){
+        if(m->fromPoint->row >  m->toPoint->row && m->fromPoint->col > m->toPoint->col){
             return direction = "sw";
-        }
+        } 
     }
     //move was not diagonal
     //may or may not still be valid since queen has the combined moveset of the bishop and rook.
     //either delta y or delta x must equal 0
     if(deltaY == 0){
-        if(from->x > to->x){
+        if(m->fromPoint->row < m->toPoint->row){
             return direction = "n";
         }
         else{
@@ -117,7 +51,7 @@ char * getDirection(Point *from, Point *to){
         }
     }
     if(deltaX == 0){
-        if(from->y > to->y){
+        if(m->fromPoint->col < m->toPoint->col){
             return direction = "w";
         }
         else{
@@ -127,14 +61,13 @@ char * getDirection(Point *from, Point *to){
     return direction = NULL;
 }
 
-bool * exploreDirection (char *dir, Point *from, Point *to, char *board[8][8]){
-    bool * invalidMove = false;
+bool exploreDirection (char *dir, move *m, char *board[8][8]){
     //explore nw
     if(strcmp(dir, "nw") == 0){
-        int i = from->x - 1 , j = from->y + 1;
-        while(i > to->x && j < to->y){
+        int i = m->fromPoint->row - 1 , j = m->fromPoint->col + 1;
+        while(i > m->toPoint->row && j < m->toPoint->col){
             if(strcmp(board[i][j], "--") != 0){
-                return invalidMove;
+                return false;
             }
             i--;
             j++;
@@ -142,10 +75,10 @@ bool * exploreDirection (char *dir, Point *from, Point *to, char *board[8][8]){
     }
     //explore ne
     if(strcmp(dir, "ne") == 0){
-        int i = from->x + 1 , j = from->y + 1;
-        while(i < to->x && j < to->y){
+        int i = m->fromPoint->row + 1 , j = m->fromPoint->col + 1;
+        while(i < m->toPoint->row && j < m->toPoint->col){
             if(strcmp(board[i][j], "--") != 0){
-                return invalidMove;
+                return false;
             }
             i++;
             j++;
@@ -153,10 +86,10 @@ bool * exploreDirection (char *dir, Point *from, Point *to, char *board[8][8]){
     }
     //explore se
     if(strcmp(dir, "se") == 0){
-        int i = from->x + 1 , j = from->y - 1;
-        while(i < to->x && j > to->y){
+        int i = m->fromPoint->row + 1 , j = m->fromPoint->col - 1;
+        while(i < m->toPoint->row && j > m->toPoint->col){
             if(strcmp(board[i][j], "--") != 0){
-                return invalidMove;
+                return false;
             }
             i++;
             j--;
@@ -164,10 +97,10 @@ bool * exploreDirection (char *dir, Point *from, Point *to, char *board[8][8]){
     }
     //explore sw
     if(strcmp(dir, "sw") == 0){
-        int i = from->x - 1 , j = from->y - 1;
-        while(i > to->x && j > to->y){
+        int i = m->fromPoint->row - 1 , j = m->fromPoint->col - 1;
+        while(i > m->toPoint->row && j > m->toPoint->col){
             if(strcmp(board[i][j], "--") != 0){
-                return invalidMove;
+                return false;
             }
             i--;
             j--;
@@ -175,50 +108,50 @@ bool * exploreDirection (char *dir, Point *from, Point *to, char *board[8][8]){
     }
     //explore n
     if(strcmp(dir, "n") == 0){
-        int i = from->x - 1 , j = from->y;
-        while(i > to->x){
+        int i = m->fromPoint->row + 1 , j = m->fromPoint->col;
+        while(i > m->toPoint->row){
             if(strcmp(board[i][j], "--") != 0){
-                return invalidMove;
-            }
-            i--;
-        }
-    }
-    //explore e
-    if(strcmp(dir, "e") == 0){
-        int i = from->x, j = from->y + 1;
-        while(j < to->y){
-            if(strcmp(board[i][j], "--") != 0){
-                return invalidMove;
-            }
-            j++;
-        }
-    }
-    //explore s
-    if(strcmp(dir, "s") == 0){
-        int i = from->x + 1 , j = from->y;
-        while(i > to->x){
-            if(strcmp(board[i][j], "--") != 0){
-                return invalidMove;
+                return false;
             }
             i++;
         }
     }
-    //explore w
-    if(strcmp(dir, "w") == 0){
-        int i = from->x, j = from->y - 1;
-        while(j > to->y){
+    //explore e
+    if(strcmp(dir, "e") == 0){
+        int i = m->fromPoint->row, j = m->fromPoint->col - 1;
+        while(j < m->toPoint->col){
             if(strcmp(board[i][j], "--") != 0){
-                return invalidMove;
+                return false;
             }
             j--;
         }
     }
+    //explore s
+    if(strcmp(dir, "s") == 0){
+        int i = m->fromPoint->row - 1 , j = m->fromPoint->col;
+        while(i > m->toPoint->row){
+            if(strcmp(board[i][j], "--") != 0){
+                return false;
+            }
+            i--;
+        }
+    }
+    //explore w
+    if(strcmp(dir, "w") == 0){
+        int i = m->fromPoint->row, j = m->fromPoint->col + 1;
+        while(j > m->toPoint->col){
+            if(strcmp(board[i][j], "--") != 0){
+                return false;
+            }
+            j++;
+        }
+    }
     //direction was valid now check landing square
-    char * toSquare = board[to->x][to->y];
-    char * fromSquare = board[from->x][from->y];
+    char * toSquare = board[m->toPoint->row][m->toPoint->col];
+    char * fromSquare = board[m->fromPoint->row][m->fromPoint->col];
     if(fromSquare[0] == toSquare[0]){
-        return invalidMove;
+        return false;
     }
     //all test passed it is a valid move.
-    return (bool *)true;
+    return true;
 }
