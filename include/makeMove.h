@@ -20,7 +20,7 @@ typedef struct move{
 
 void play(char *board[size][size]);
 char *requestMove();
-move *setupMoveData(char *input, char *board[size][size]);
+move *constructMove(char *input, char *board[size][size]);
 void extractChessCoord(char *dest, char *src, int cpyFrom, int cpyTo);
 void getTransform(int *dest, char *src);
 void moveHistory(move *mx);

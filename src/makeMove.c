@@ -15,12 +15,12 @@ void play(char *board[size][size]) {
     while (play)
     {
         char *input = requestMove();
-        move *mx = setupMoveData(input, board);
+        move *mx = constructMove(input, board);
         if(catchGeneralErrors(mx)) {
             // move is never applied if there are general piece errors
             if (catchSpecificErrors(mx, applyMove(mx, board)))
             {
-                // board is printed, with the desired valid move
+                // board is printed, with the desired valid move if its passed both general and specific piece errors
                 printBoard(board);
 
                 // move is added to move history
@@ -111,7 +111,7 @@ bool catchSpecificErrors(move *mx, bool isValidMove) {
     return true;
 }
 
-move *setupMoveData(char *input, char *board[size][size]) {
+move *constructMove(char *input, char *board[size][size]) {
 
     char oldChessCoord[3];
     char newChessCoord[3];
