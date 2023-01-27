@@ -16,11 +16,17 @@ void play(char *board[size][size]) {
     {
         char *input = requestMove();
         move *mx = setupMoveData(input, board);
-        if(passedMoveConditions(mx)) {
-            catchErrors(applyMove(mx, board));
-            printBoard(board);
-            moveHistory(mx);
-        }
+        if(catchGeneralErrors(mx)) {
+            // move is never applied if there are general piece errors
+            if (catchSpecificErrors(mx, applyMove(mx, board)))
+            {
+                // board is printed, with the desired valid move
+                printBoard(board);
+
+                // move is added to move history
+                moveHistory(mx);
+            }
+        } 
     }
 }
 
@@ -28,27 +34,81 @@ void moveHistory(move *mx) {
 
 }
 
-bool passedMoveConditions(move *mx) {
+bool catchGeneralErrors(move *mx) {
+    // general conditions that hold for all pieces
+    // Ex: No piece can capture another ally piece
+
+    // check that destination move already doesn't contain an allied piece
+    if (*(mx->movingPiece) == *(mx->capturedPiece))
+    {
+        puts("---> Error: Not a valid move");
+        puts("---> Reason: Can not capture same colored piece");
+        return false;
+    }
+
     return true;
 }
 
+void getPieceString(move *mx, char *piece) {
+    switch (*(mx->movingPiece+1))
+    {
+        case 'R':
+            *(piece+0) = 'R';
+            *(piece+0) = 'O';
+            *(piece+0) = 'C';
+            *(piece+0) = 'K';
+            break;
+        case 'N':
+            *(piece+0) = 'K';
+            *(piece+1) = 'n';
+            *(piece+2) = 'i';
+            *(piece+3) = 'g';
+            *(piece+4) = 'h';
+            *(piece+5) = 't';
+            break;
+        case 'B':
+            *(piece+0) = 'B';
+            *(piece+1) = 'i';
+            *(piece+2) = 's';
+            *(piece+3) = 'h';
+            *(piece+4) = 'o';
+            *(piece+5) = 'p';
+            break;
+        case 'Q':
+            *(piece+0) = 'Q';
+            *(piece+1) = 'u';
+            *(piece+2) = 'e';
+            *(piece+3) = 'e';
+            *(piece+4) = 'n';
+            break;
+        case 'K':
+            *(piece+0) = 'K';
+            *(piece+1) = 'i';
+            *(piece+2) = 'n';
+            *(piece+3) = 'g';
+            break;
+        case 'p':
+            *(piece+0) = 'P';
+            *(piece+1) = 'a';
+            *(piece+2) = 'w';
+            *(piece+3) = 'n';
+            break;
 
-void catchErrors(bool isValidMove) {
+    }
+}
+
+bool catchSpecificErrors(move *mx, bool isValidMove) {
+    // if the desired move isn't a valid piece specific move, an error message will be printed
     if (!isValidMove)
     {
-        puts("---> Error: Not a valid move");
-        puts("---> Error: Not a valid move");
-        puts("---> Error: Not a valid move");
-        //puts("---> Error: Not a valid move");
-        puts("---> Error: Not a valid move");
-        puts("---> Error: Not a valid move");
-        puts("---> Error: Not a valid move");
-    } else
-    {
-        puts("Errrrr");
-    }
-    
-    
+        char *piece;
+        piece = malloc(sizeof(char)*size);
+        getPieceString(mx, piece);
+        printf("---> Error: The %s does not move in that way\n", piece);
+        return false;
+    } 
+
+    return true;
 }
 
 move *setupMoveData(char *input, char *board[size][size]) {
