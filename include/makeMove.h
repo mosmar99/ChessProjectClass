@@ -4,19 +4,25 @@
 #include <stdbool.h>
 
 #define size (7+1)
+#define NULL ((void *)0)
 
-typedef struct point{
+typedef struct point {
     unsigned int col;
     unsigned int row;
 } point;
 
-typedef struct move{
+typedef struct move {
     char *movingPiece;
     char *capturedPiece;
 
     point *fromPoint;
     point *toPoint;
 } move;
+
+typedef struct history {
+    move *mx;
+    struct history *next;
+} history;
 
 void play(char *board[size][size]);
 char *requestMove();

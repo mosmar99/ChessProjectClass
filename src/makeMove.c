@@ -9,13 +9,43 @@ static point *createPoint(unsigned int x, unsigned int y);
 static void destroyPoint(point *p);
 static move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece);
 static void destroyMove(move *move);
+static void printMoves(history *head, int *iter);
+
+history *head = NULL;
 
 void play(char *board[size][size]) {
     bool play = true;
     while (play)
     {
         char *input = requestMove();
+
+        if (strcmp(input, "exit\n") == 0)
+        {
+            play = false;
+            continue;
+        }
+        
+
+        if (strcmp(input, "history\n") == 0)
+        {
+            if (head == NULL)
+            {
+                puts("");
+                puts("No moves have been made");
+            }
+            else
+            {
+                puts("");
+                int *iter = malloc(sizeof(int));
+                *iter = 1;
+                printMoves(head, iter);
+                puts("");
+            }
+            continue;
+        }
+
         move *mx = constructMove(input, board);
+
         if(catchGeneralErrors(mx)) {
             // move is never applied if there are general piece errors
             if (catchSpecificErrors(mx, applyMove(mx, board)))
@@ -25,13 +55,53 @@ void play(char *board[size][size]) {
 
                 // move is added to move history
                 moveHistory(mx);
+                continue;
             }
-        } 
+        }
+        destroyMove(mx);
     }
 }
 
-void moveHistory(move *mx) {
+/* Function to reverse the linked list */
+void printMoves(history *curr, int *iter)
+{
+    // Base case 
+    if (curr == NULL) {
+        return;
+    }
+ 
+    // print the list after head node
+    printMoves(curr->next, iter);
+    
+ 
+    // After everything else is printed, print head
+    char letter = (curr->mx->toPoint->col + 49) + '0';
+    int digit = curr->mx->toPoint->row + 1;
 
+    if (curr->mx->movingPiece[1] == 'p')
+    {
+        printf("%2d.%4c%d\n", *iter, letter, digit);
+    } 
+    else
+    {
+        printf("%2d.%4c%c%d\n", *iter, curr->mx->movingPiece[1], letter, digit);
+    }
+    (*iter)++;
+}
+
+void moveHistory(move *mx) {
+    history *curr =  malloc(sizeof(history));
+    if (head == NULL)
+    {
+        curr->mx = mx;
+        head = curr;
+    }
+    else
+    {
+        curr->mx = mx;
+        curr->next = head;
+        head = curr;
+    }
 }
 
 bool catchGeneralErrors(move *mx) {

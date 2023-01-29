@@ -3,22 +3,23 @@
 #include "knight.h"
 #include "boardlogic.h"
 
-void testKnight(){
+void testKnight()
+{
     char *board[8][8];
     initBoard(board);
-    move * move1 = createMove(createPoint(0,0),createPoint(1,2),"wN", "bP");
+    move *move1 = createMove(createPoint(0, 0), createPoint(1, 2), "wN", "bP");
     assert(checkKnightMove(move1, board) == true);
 
-    move * move2 = createMove(createPoint(2,1),createPoint(1,2),"wN", "bP");
-    assert(checkKnightMove(move1, board) == true);
-    
-    move * move3 = createMove(createPoint(8,8),createPoint(7,6),"wN", "bP");
+    move *move2 = createMove(createPoint(2, 1), createPoint(1, 2), "wN", "bP");
     assert(checkKnightMove(move1, board) == true);
 
-    move * move4 = createMove(createPoint(5,5),createPoint(8,8),"wN", "bP");
+    move *move3 = createMove(createPoint(8, 8), createPoint(7, 6), "wN", "bP");
+    assert(checkKnightMove(move1, board) == true);
+
+    move *move4 = createMove(createPoint(5, 5), createPoint(8, 8), "wN", "bP");
     assert(checkKnightMove(move1, board) == false);
 
-    move * move5 = createMove(createPoint(0,0),createPoint(1,2),"wN", "wP");
+    move *move5 = createMove(createPoint(0, 0), createPoint(1, 2), "wN", "wP");
     assert(checkKnightMove(move1, board) == false);
 
     destroyMove(move1);
@@ -26,10 +27,10 @@ void testKnight(){
     destroyMove(move3);
     destroyMove(move4);
     destroyMove(move5);
-
 }
 
-void initBoard(char *board[8][8]) {
+void initBoard(char *board[8][8])
+{
     for (size_t i = 0; i < 8; i++)
     {
         for (size_t j = 0; j < 8; j++)
