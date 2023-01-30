@@ -57,9 +57,6 @@ void play(char *board[size][size])
                 continue;
             }
         }
-
-        destroyMove(mx);
-
     }
 }
 
