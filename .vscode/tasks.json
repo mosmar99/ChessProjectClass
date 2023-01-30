@@ -2,19 +2,17 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "C/C++: gcc-11 build active file",
-            "command": "/usr/bin/gcc-11",
+            "label": "C/C++: gcc.exe build active file",
+            "command": "C:\\msys64\\mingw64\\bin\\gcc.exe",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "src/*.c",
-                "-I",
-                "include",
+                "${file}",
                 "-o",
-                "${workspaceFolder}/bin/main.exe"
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "${fileDirname}"
             },
             "problemMatcher": [
                 "$gcc"
