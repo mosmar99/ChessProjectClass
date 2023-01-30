@@ -129,6 +129,7 @@ void printMoves(history *curr, int *iter)
     }
 
     (*iter)++;
+    
 }
 
 void moveHistory(move *mx)
