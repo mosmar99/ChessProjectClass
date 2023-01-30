@@ -41,7 +41,7 @@ Execute each row below, one by one, in your terminal (Command Prompt (CMD) on Wi
 ## Linter instructions to linter C/C++ code from terminal
 - Manual: https://clang.llvm.org/docs/ClangFormat.html
 - Download on Ubuntu: sudo apt install clang-format
-- Command to format: ```clang-Format FILE```
+- Command to format: ```clang-format FILE```
 
 
 ## Declarations
