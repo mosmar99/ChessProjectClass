@@ -19,19 +19,24 @@ typedef struct move {
     point *toPoint;
 } move;
 
+enum player {
+    BLANCO, // white in spanish
+    NEGRO   // black in spanish
+};
+
 typedef struct history {
     move *mx;
     struct history *next;
 } history;
 
 void play(char *board[size][size]);
-char *requestMove();
+char *requestMove(enum player turn);
 move *constructMove(char *input, char *board[size][size]);
 void extractChessCoord(char *dest, char *src, int cpyFrom, int cpyTo);
 void getTransform(int *dest, char *src);
 void moveHistory(move *mx);
 bool catchSpecificErrors(move *mx, bool isValidMove); 
-bool catchGeneralErrors(move *mx);
+bool catchGeneralErrors(move *mx, enum player turn);
 bool applyMove(move *mx, char *board[size][size]);
 void action(move *mx, char *board[size][size]);
 void printBoard(char *board[size][size]);
