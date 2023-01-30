@@ -2,7 +2,7 @@
 #define _ROOK_H
 
 #include <stdbool.h>
-#include "makemove.h"
+#include "makeMove.h"
 
 
 bool checkRookMove(const move *const move, char *const board[8][8]);

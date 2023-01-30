@@ -4,6 +4,7 @@
 #include "makeMove.h"
 #include "knight.h"
 #include "pawn.h"
+#include "rook.h"
 
 static point *createPoint(unsigned int x, unsigned int y);
 static void destroyPoint(point *p);
@@ -37,6 +38,9 @@ void play(char *board[size][size])
 
         move *mx = constructMove(input, board);
 
+        if (mx == NULL)
+            continue;
+
         if (catchGeneralErrors(mx, turn))
         {
             // move is never applied if there are general piece errors
@@ -53,7 +57,9 @@ void play(char *board[size][size])
                 continue;
             }
         }
+
         destroyMove(mx);
+
     }
 }
 
@@ -174,9 +180,9 @@ void getPieceString(move *mx, char *piece)
     {
     case 'R':
         *(piece + 0) = 'R';
-        *(piece + 0) = 'O';
-        *(piece + 0) = 'C';
-        *(piece + 0) = 'K';
+        *(piece + 1) = 'o';
+        *(piece + 2) = 'o';
+        *(piece + 3) = 'k';
         break;
     case 'N':
         *(piece + 0) = 'K';
@@ -243,7 +249,7 @@ move *constructMove(char *input, char *board[size][size])
         extractChessCoord(oldChessCoord, input, 1, 2);
         extractChessCoord(newChessCoord, input, 5, 6);
     }
-    else if (*input == 'a' || *input == 'b' || *input == 'c' || *input == 'd' || *input == 'e' || *input == 'f' || *input == 'g')
+    else if (*input == 'a' || *input == 'b' || *input == 'c' || *input == 'd' || *input == 'e' || *input == 'f' || *input == 'g' || *input == 'h')
     {
         // get pawn coordinates
         extractChessCoord(oldChessCoord, input, 0, 1);
@@ -252,7 +258,7 @@ move *constructMove(char *input, char *board[size][size])
     else
     {
         puts("Invalid input");
-        exit(0);
+        return NULL;
     }
 
     // put "--" in old position
@@ -274,6 +280,7 @@ move *constructMove(char *input, char *board[size][size])
 void readInput(char *move)
 {
     char c;
+    fflush(stdin);
     for (size_t i = 0; i < size; i++)
     {
         c = getchar();
@@ -357,7 +364,7 @@ void getTransform(int *dest, char *src)
 
     default:
         puts("---> Could not extract valid coordinates");
-        break;
+        return;
     }
 
     switch (*(src + 1))
@@ -389,7 +396,7 @@ void getTransform(int *dest, char *src)
 
     default:
         puts("---> Could not extract valid coordinates");
-        break;
+        return;
     }
 }
 
@@ -412,8 +419,10 @@ bool applyMove(move *mx, char *board[size][size])
     switch (mx->movingPiece[1])
     {
     case 'R':
-        // validMove = checkRockMove(move, board);
-        break;
+        validMove = checkRookMove(mx, board);
+        if (validMove)
+            action(mx, board);
+        return validMove;
     case 'N':
         validMove = checkKnightMove(mx, board);
         if (validMove)
