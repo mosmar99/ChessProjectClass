@@ -35,7 +35,8 @@ Execute each row below, one by one, in your terminal (Command Prompt (CMD) on Wi
 - code --install-extension ms-vscode.makefile-tools
 
 ## Linter instructions
-https://github.com/marketplace/actions/c-c-linter [![cpp-linter](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml/badge.svg)](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml)
+- https://github.com/marketplace/actions/c-c-linter [![cpp-linter] <br />
+- (https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml/badge.svg)](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml)
 
 ## Declarations
 I, Isac Paulsson, declare that I am the sole author of the content I add to this repository. <br />
