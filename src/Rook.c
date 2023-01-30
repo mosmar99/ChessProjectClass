@@ -1,45 +1,60 @@
-// #include <stdio.h>
-// #include <stdbool.h>
-// #include <stdlib.h>
-// #include <string.h>
-// //#include "rook.h"
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include "rook.h"
 
-// bool is_valid_rook_move(char* startPos, char* endPos, char* board[8][8]) 
-// {
-//     int start_x = startPos[0] - 'a';
-//     int start_y = startPos[1] - '1';
-//     int end_x = endPos[0] - 'a';
-//     int end_y = endPos[1] - '1';
-//     // check if starting and end positions are on the board. If it is not return NULL
-//     if(start_x < 0 || start_x > 7 || start_y < 0 || start_y > 7 || end_x < 0 || end_x > 7 || end_y < 0 || end_y > 7)
-//      return NULL;
 
-//     if (start_x == end_x || start_y == end_y) 
-//     {
-//         //check if there is no piece blocking the path
-//         if(start_x == end_x) //vertical move 
-//         {
-//             int min_y = start_y < end_y ? start_y : end_y;
-//             int max_y = start_y > end_y ? start_y : end_y;
-//             for(int i = min_y + 1; i < max_y; i++){
-//                 if(board[start_x][i] != '.')
-//                  return false;
-//             }
-//         }
-//         else
-//         { // start_y == end_y means horizontal move
-//             int min_x = start_x < end_x ? start_x : end_x;
-//             int max_x = start_x > end_x ? start_x : end_x;
-//             for(int i = min_x + 1; i < max_x; i++)
-//             {
-//                 if(board[i][start_y] != '.') 
-//                 return false;
-//             }
-//         }
-//         return true;
-//     }
-//     else 
-//     {
-//         return false;
-//     }
-// }
+bool checkPieceColor(const move *const move, char *const board[8][8])
+{
+    //get the color of the moving piece
+    char movingPieceColor = move->movingPiece[0];
+    //get the color of the captured piece
+    char capturedPieceColor = board[move->toPoint->row][move->toPoint->col][0];
+    // check if the moving piece and captured piece are different color
+    if(movingPieceColor != capturedPieceColor && capturedPieceColor != '\0')
+    {
+        return true;
+    }
+   
+}
+
+bool checkRookMove(const move *const move, char *const board[8][8])
+{  
+    // check is to see if the move is either horizontal or vertical.
+    // It checks if the starting and ending positions have the same row or column value respectively.
+    if (move->fromPoint->col == move->toPoint->col || move->fromPoint->row == move->toPoint->row)
+    {
+        //vertical move
+        if (move->fromPoint->col == move->toPoint->col) 
+        {
+            //rowdiff calculates the difference in row values between the starting and ending positions of the move. 
+            //This value will be positive if the move is going down and negative if the move is going up.
+            int rowDiff = move->toPoint->row - move->fromPoint->row;
+            int rowDirection = rowDiff / abs(rowDiff);
+            for (int i = move->fromPoint->row + rowDirection; i != move->toPoint->row; i += rowDirection) 
+            {
+                if (board[i][move->fromPoint->col] != NULL) 
+                {
+                    checkPieceColor(move,board);
+                }
+                return false;
+            }
+        } else 
+        {
+            int colDiff = move->toPoint->col - move->fromPoint->col;
+            int colDirection = colDiff / abs(colDiff);
+            for (int i = move->fromPoint->col + colDirection; i != move->toPoint->col; i += colDirection)
+            {
+                if (board[move->fromPoint->row][i] != NULL) 
+                {
+                     checkPieceColor(move,board);
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
