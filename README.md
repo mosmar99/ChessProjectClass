@@ -34,9 +34,15 @@ Execute each row below, one by one, in your terminal (Command Prompt (CMD) on Wi
 - code --install-extension ms-vscode.cpptools
 - code --install-extension ms-vscode.makefile-tools
 
-## Linter instructions
+## Linter instructions for Github Action
 - https://github.com/marketplace/actions/c-c-linter <br />
-- [![cpp-linter](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml/badge.svg)](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml)
+- [![cpp-linter](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml/badge.svg)](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml) 
+
+## Linter instructions to linter C/C++ code from terminal
+- Manual: https://clang.llvm.org/docs/ClangFormat.html
+- Download on Ubuntu: sudo apt install clang-format
+- Command to format: ```clang-Format FILE```
+
 
 ## Declarations
 I, Isac Paulsson, declare that I am the sole author of the content I add to this repository. <br />
