@@ -57,7 +57,7 @@ To see the code coverage enter the following:
 
     gcov test\testQueen-queen.gcda
     
-If one prefers to run the test autonomously, that is also possible through the make file. <br />
+OR: If one prefers to run the test autonomously, that is also possible through the make file. <br />
 Using the terminal whilst within the workspaceFolder enter command:
 
     make testSelfCapture
