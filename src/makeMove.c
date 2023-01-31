@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "makeMove.h"
 #include "knight.h"
 #include "pawn.h"
@@ -13,6 +10,7 @@ static void destroyMove(move *move);
 static void printMoves(history *head, int *iter);
 static enum player switchTurn(enum player turn);
 static void printHistory();
+void printBoard(char *board[8][8]);
 
 history *head = NULL;
 

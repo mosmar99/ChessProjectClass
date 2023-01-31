@@ -1,7 +1,11 @@
 #ifndef MAKEMOVE_H
 #define MAKEMOVE_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
+#include "makeBoard.h"
 
 #define size (7+1)
 #define NULL ((void *)0)
@@ -39,6 +43,5 @@ bool catchSpecificErrors(move *mx, bool isValidMove);
 bool catchGeneralErrors(move *mx, enum player turn);
 bool applyMove(move *mx, char *board[size][size]);
 void action(move *mx, char *board[size][size]);
-void printBoard(char *board[size][size]);
 
 #endif
