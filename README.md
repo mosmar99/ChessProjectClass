@@ -43,6 +43,19 @@ Execute each row below, one by one, in your terminal (Command Prompt (CMD) on Wi
 - Download on Ubuntu: sudo apt install clang-format
 - Command to format: ```clang-format FILE```
 
+## Instructions for running unit tests
+To run the the unit tests for the Queen piece enter the following into the cmd while being in the project folder:
+
+    gcc -fprofile-arcs -ftest-coverage test\testQueen.c src\knight.c src\makeBoard.c src\makeMove.c src\pawn.c src\queen.c src\Rook.c -I include -o test\testQueen.exe
+
+Now run the exe generated:
+    test\testQueen.exe
+
+A message displaying "valid" should now be visable.
+To see the code coverage enter the following:
+    gcov test\testQueen-queen.gcda
+
+
 
 ## Declarations
 I, Isac Paulsson, declare that I am the sole author of the content I add to this repository. <br />
