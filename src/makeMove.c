@@ -6,10 +6,10 @@
 #include "pawn.h"
 #include "rook.h"
 
-static point *createPoint(unsigned int x, unsigned int y);
+point *createPoint(unsigned int x, unsigned int y);
 static void destroyPoint(point *p);
-static move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece);
-static void destroyMove(move *move);
+move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece);
+void destroyMove(move *move);
 static void printMoves(history *head, int *iter);
 static enum player switchTurn(enum player turn);
 static void printHistory();
@@ -446,7 +446,7 @@ bool applyMove(move *mx, char *board[size][size])
     }
 }
 
-static point *createPoint(unsigned int col, unsigned int row)
+point *createPoint(unsigned int col, unsigned int row)
 {
 
     point *p = malloc(sizeof(point));
@@ -471,7 +471,7 @@ static void destroyPoint(point *p)
     }
 }
 
-static move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece)
+move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece)
 {
     move *newMove = malloc(sizeof(move));
 
@@ -488,7 +488,7 @@ static move *createMove(point *fromPoint, point *toPoint, char *movingPiece, cha
     return newMove;
 }
 
-static void destroyMove(move *move)
+void destroyMove(move *move)
 {
 
     if (move)

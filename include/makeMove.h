@@ -41,4 +41,8 @@ bool applyMove(move *mx, char *board[size][size]);
 void action(move *mx, char *board[size][size]);
 void printBoard(char *board[size][size]);
 
+point *createPoint(unsigned int x, unsigned int y);
+move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece);
+void destroyMove(move *move);
+
 #endif
