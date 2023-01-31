@@ -49,14 +49,17 @@ To run the the unit tests for the Queen piece enter the following into the cmd w
     gcc -fprofile-arcs -ftest-coverage test\testQueen.c src\knight.c src\makeBoard.c src\makeMove.c src\pawn.c src\queen.c src\Rook.c -I include -o test\testQueen.exe
 
 Now run the exe generated:
+
     test\testQueen.exe
 
 A message displaying "valid" should now be visable.
 To see the code coverage enter the following:
+
     gcov test\testQueen-queen.gcda
     
 If one prefers to run the test autonomously, that is also possible through the make file. <br />
 Using the terminal whilst within the workspaceFolder enter command:
+
     make testSelfCapture
 There will be two types of output. Firstly the tests will be ran, secondly, its code-coverage will be outputed.
 
