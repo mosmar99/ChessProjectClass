@@ -54,8 +54,11 @@ Now run the exe generated:
 A message displaying "valid" should now be visable.
 To see the code coverage enter the following:
     gcov test\testQueen-queen.gcda
-
-
+    
+If one prefers to run the test autonomously, that is also possible through the make file. <br />
+Using the terminal whilst within the workspaceFolder enter command:
+    make testSelfCapture
+There will be two types of output. Firstly the tests will be ran, secondly, its code-coverage will be outputed.
 
 ## Declarations
 I, Isac Paulsson, declare that I am the sole author of the content I add to this repository. <br />
