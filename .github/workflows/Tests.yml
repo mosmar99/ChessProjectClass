@@ -1,0 +1,14 @@
+name: Tests
+run-name: unit-tests
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: gcc ..\..\test\testQueen.c ..\..\src\knight.c ..\..\src\makeBoard.c ..\..\src\makeMove.c ..\..\src\pawn.c ..\..\src\queen.c ..\..\src\Rook.c -I ..\..\include
