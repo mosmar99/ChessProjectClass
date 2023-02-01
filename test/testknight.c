@@ -1,35 +1,40 @@
 #include <assert.h>
 #include "makeMove.h"
 #include "knight.h"
-#include "boardlogic.h"
 
-void testKnight()
-{
+static void initBoard(char *board[8][8]);
+
+int main(){
     char *board[8][8];
     initBoard(board);
+
     move *move1 = createMove(createPoint(0, 0), createPoint(1, 2), "wN", "bP");
     assert(checkKnightMove(move1, board) == true);
 
     move *move2 = createMove(createPoint(2, 1), createPoint(1, 2), "wN", "bP");
-    assert(checkKnightMove(move1, board) == true);
+    assert(checkKnightMove(move2, board) == false);
 
     move *move3 = createMove(createPoint(8, 8), createPoint(7, 6), "wN", "bP");
-    assert(checkKnightMove(move1, board) == true);
+    assert(checkKnightMove(move3, board) == true);
 
     move *move4 = createMove(createPoint(5, 5), createPoint(8, 8), "wN", "bP");
-    assert(checkKnightMove(move1, board) == false);
+    assert(checkKnightMove(move4, board) == false);
 
-    move *move5 = createMove(createPoint(0, 0), createPoint(1, 2), "wN", "wP");
-    assert(checkKnightMove(move1, board) == false);
+    move *move5 = createMove(createPoint(8, 8), createPoint(7, 6), "wN", "wP");
+    assert(checkKnightMove(move5, board) == true);
 
     destroyMove(move1);
     destroyMove(move2);
     destroyMove(move3);
     destroyMove(move4);
     destroyMove(move5);
+
+    printf("KNIGHT TEST PASSED\n");
+    
+    system("pause");
 }
 
-void initBoard(char *board[8][8])
+static void initBoard(char *board[8][8])
 {
     for (size_t i = 0; i < 8; i++)
     {

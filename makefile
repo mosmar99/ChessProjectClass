@@ -26,6 +26,11 @@ testBishop:
 	test/tb.exe
 	gcov test/tb-bishop.gcno
 
+testKnight:
+	gcc -fprofile-arcs -ftest-coverage test/testKnight.c src/knight.c src/makeBoard.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c src/bishop.c -I include -o test/tn.exe
+	test/tn.exe
+	gcov test/tn-knight.gcno
+
 
 clean:
 	rm $(gcno) $(gcda) $(exe) $(gcov)
