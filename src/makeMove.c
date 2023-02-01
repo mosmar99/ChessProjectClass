@@ -2,6 +2,7 @@
 #include "knight.h"
 #include "pawn.h"
 #include "rook.h"
+#include "bishop.h"
 
 point *createPoint(unsigned int x, unsigned int y);
 static void destroyPoint(point *p);
