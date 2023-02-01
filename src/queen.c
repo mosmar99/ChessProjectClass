@@ -20,8 +20,8 @@ bool checkQueenMove(move *m, char *board[8][8]){
     m->fromPoint->row = tempCol;
     m->fromPoint->col = tempRow;
 
-    tempRow = m->toPoint->row - 2;
-    tempCol = m->toPoint->col - 2;
+    tempRow = m->toPoint->row - 1;
+    tempCol = m->toPoint->col - 1;
     
     m->toPoint->row = tempCol;
     m->toPoint->col = tempRow;
@@ -33,7 +33,7 @@ bool checkQueenMove(move *m, char *board[8][8]){
     }
     //explore direction
     bool validDir = exploreDirection(dir, m, board);
-    return !validDir;
+    return validDir;
 
 }
 

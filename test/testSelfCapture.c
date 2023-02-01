@@ -24,5 +24,5 @@ int main() {
     move *m6 = createMove(createPoint(1,5), createPoint(5,0), "bp", "bp");
     assert(!catchGeneralErrors(m6, turn) == true);
     
-    puts("TEST PASSED");
+    puts("SELF-CAPTURE TEST PASSED");
 }
