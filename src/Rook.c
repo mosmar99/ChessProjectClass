@@ -38,7 +38,7 @@ bool checkRookMove(const move *const move, char *const board[8][8])
                 {
                     checkPieceColor(move,board);
                 }
-                return false;
+                return true;
             }
         } else 
         {
@@ -50,7 +50,7 @@ bool checkRookMove(const move *const move, char *const board[8][8])
                 {
                      checkPieceColor(move,board);
                 }
-                return false;
+                return true;
             }
         }
         return true;
