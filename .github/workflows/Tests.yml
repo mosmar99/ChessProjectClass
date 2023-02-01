@@ -11,4 +11,4 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
-      - run: gcc ..\\..\\test\\testQueen.c ..\\..\\src\\knight.c ..\\..\\src\\makeBoard.c ..\\..\\src\\makeMove.c ..\\..\\src\\pawn.c ..\\..\\src\\queen.c ..\\..\\src\\Rook.c -I include
+      - run: make unitTests
