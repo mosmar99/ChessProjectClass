@@ -39,8 +39,8 @@ move *constructMove(char *input, char *board[size][size]);
 void extractChessCoord(char *dest, char *src, int cpyFrom, int cpyTo);
 void getTransform(int *dest, char *src);
 void moveHistory(move *mx);
-bool catchSpecificErrors(move *mx, bool isValidMove); 
-bool catchGeneralErrors(move *mx, enum player turn);
+bool noSpecificErrors(move *mx, bool isValidMove); 
+bool noGeneralErrors(move *mx, enum player turn);
 bool applyMove(move *mx, char *board[size][size]);
 void action(move *mx, char *board[size][size]);
 
