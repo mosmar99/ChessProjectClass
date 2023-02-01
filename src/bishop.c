@@ -11,6 +11,23 @@ static char * getDirection(move *m);
 static bool exploreDirection (char *dir, move *m, char *board[8][8]);
 
 bool checkBishopMove(move *m, char *board[8][8]){
+
+    int tempRow;
+    int tempCol;
+
+    tempRow = m->fromPoint->row - 1;
+    tempCol = m->fromPoint->col - 1;
+    
+    m->fromPoint->row = tempCol;
+    m->fromPoint->col = tempRow;
+
+    tempRow = m->toPoint->row - 1;
+    tempCol = m->toPoint->col - 1;
+    
+    m->toPoint->row = tempCol;
+    m->toPoint->col = tempRow;
+
+
     char *dir = getDirection(m);
     //direction was invalid I.e we did not perform a diagonal move.
     if(dir == NULL){
