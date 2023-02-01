@@ -64,7 +64,7 @@ int main(){
     destroyMove(m7);
     destroyMove(m8);
 
-    printf("valid\n");
+    printf("QUEEN TEST PASSED\n");
     
     system("pause");
 }
