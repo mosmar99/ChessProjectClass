@@ -27,7 +27,13 @@ You need to have .vscode files setup to run it, which are individually configure
 - Linux: https://code.visualstudio.com/docs/cpp/config-linux<br />
 
 **Sample Configuration (Ubuntu 20.4 LTS)**<br />
-Look at already configured files (.vscode) found within map ".vscode". These are working configurations in Ubuntu, version 20.4 LTS. Since local compiler paths are PC dependent, one might need to update certain fields by hand. The fields in question are: "compilerPath": in c_cpp_properties.json, put gcc path. "command" in tasks, put gcc path. Lastly, within "launch.json" file, locate the field "miDebuggerPath" and put your own debugger path (gdb).
+Look at already configured files (.vscode) found within map ".vscode". These are working configurations in Ubuntu, version 20.4 LTS. Since local compiler paths are PC dependent, one might need to update certain fields by hand. The fields in question are: "compilerPath": in c_cpp_properties.json, put gcc path. "command" in tasks, put gcc path. Lastly, within "launch.json" file, locate the field "miDebuggerPath" and put your own debugger path (gdb). To facilitate locating these items type this command in the windows terminal:
+
+    where ITEM
+
+OR: in Ubuntu
+
+    whereis ITEM
 
 Execute each row below, one by one, in your terminal (Command Prompt (CMD) on Windows, Terminal on Mac and The Shell on Ubuntu), which will install Visual Studio Code Extensions for C:
 
