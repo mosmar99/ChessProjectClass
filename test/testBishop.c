@@ -47,7 +47,7 @@ int main(){
     destroyMove(m4);
     destroyMove(m5);
 
-    printf("TESTS PASSED!\n");
+    printf("BISHOP TEST PASSED\n");
     
     system("pause");
 }
