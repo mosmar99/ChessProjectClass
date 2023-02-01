@@ -40,7 +40,7 @@ void play(char *board[size][size])
         if (mx == NULL)
             continue;
 
-        if (catchGeneralErrors(mx, turn))
+        if (!catchGeneralErrors(mx, turn))
         {
             // move is never applied if there are general piece errors
             if (catchSpecificErrors(mx, applyMove(mx, board)))
