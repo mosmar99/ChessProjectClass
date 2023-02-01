@@ -64,7 +64,9 @@ int main(){
     destroyMove(m7);
     destroyMove(m8);
 
-    printf("valid");
+    printf("valid\n");
+    
+    system("pause");
 }
 
 static void initBoard(char *board[8][8]) {
