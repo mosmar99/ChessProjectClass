@@ -157,7 +157,7 @@ bool noGeneralErrors(move *mx, enum player turn)
     {
         puts("---> Error: Not a valid move");
         puts("---> Reason: Can not capture same colored piece");
-        return true;
+        return false;
     }
 
     // if it is whites turn, they can not move blacks pieces and vice versa
@@ -165,10 +165,10 @@ bool noGeneralErrors(move *mx, enum player turn)
     {
         puts("---> Error: Not a valid move");
         puts("---> Reason: Can not move opponents pieces");
-        return true;
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 void getPieceString(move *mx, char *piece)
