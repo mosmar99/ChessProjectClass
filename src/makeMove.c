@@ -157,7 +157,7 @@ bool catchGeneralErrors(move *mx, enum player turn)
     {
         puts("---> Error: Not a valid move");
         puts("---> Reason: Can not capture same colored piece");
-        return false;
+        return true;
     }
 
     // if it is whites turn, they can not move blacks pieces and vice versa
@@ -165,7 +165,7 @@ bool catchGeneralErrors(move *mx, enum player turn)
     {
         puts("---> Error: Not a valid move");
         puts("---> Reason: Can not move opponents pieces");
-        return false;
+        return true;
     }
 
     return false;
