@@ -1,3 +1,4 @@
+
 gcno=test/*.gcno
 gcda=test/*.gcda
 exe=test/*.exe
@@ -13,6 +14,7 @@ testSelfCapture:
 	gcov test/testSelfCapture-testSelfCapture.gcno
 
 unitTests:
-	gcc test/testQueen.c src/knight.c src/makeBoard.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c -I include
+	gcc test/testQueen.c src/knight.c src/makeBoard.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c -I include -o test/tq.exe
+	test/tq.exe
 clean:
 	rm $(gcno) $(gcda) $(exe) $(gcov)
