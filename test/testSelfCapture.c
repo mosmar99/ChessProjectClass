@@ -23,6 +23,13 @@ int main() {
     
     move *m6 = createMove(createPoint(1,5), createPoint(5,0), "bp", "bp");
     assert(!catchGeneralErrors(m6, turn) == true);
+
+    destroyMove(m1);
+    destroyMove(m2);
+    destroyMove(m3);
+    destroyMove(m4);
+    destroyMove(m5);
+    destroyMove(m6);
     
     puts("SELF-CAPTURE TEST PASSED");
 }
