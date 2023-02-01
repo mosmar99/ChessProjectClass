@@ -1,5 +1,5 @@
 name: Tests
-run-name: unit-tests
+run-name: testQueen
 
 on: [push]
 
@@ -11,4 +11,4 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
-      - run: make unitTests
+      - run: make testQueen
