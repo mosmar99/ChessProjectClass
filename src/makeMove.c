@@ -167,7 +167,7 @@ bool catchGeneralErrors(move *mx, enum player turn)
         return false;
     }
 
-    return true;
+    return false;
 }
 
 void getPieceString(move *mx, char *piece)
