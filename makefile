@@ -9,7 +9,7 @@ default:
 	./bin/main.exe
 
 .PHONY: test
-test: testSelfCapture testQueen testBishop
+test: testSelfCapture testQueen testBishop testKing
 
 testSelfCapture:
 	gcc -fprofile-arcs -ftest-coverage test/testSelfCapture.c src/knight.c src/makeBoard.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c -I include -o test/tSC.exe
@@ -31,6 +31,10 @@ testKnight:
 	test/tn.exe
 	gcov test/tn-knight.gcno
 
+testKing:
+	gcc -fprofile-arcs -ftest-coverage test/testKing.c src/king.c src/bishop.c src/makeBoard.c src/knight.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c -I include -o test/tk.exe
+	test/tk.exe
+	gcov test/tk-king.gcno
 
 clean:
 	rm $(gcno) $(gcda) $(exe) $(gcov)
