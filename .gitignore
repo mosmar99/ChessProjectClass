@@ -1,5 +1,8 @@
 *.json
 *.exe
+*.gcov
+*.gcda
+*.gcno
 <<<<<<< HEAD
 *.html
 =======

@@ -1,18 +1,17 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "makeMove.h"
 #include "knight.h"
 #include "pawn.h"
 #include "rook.h"
+#include "bishop.h"
 
-static point *createPoint(unsigned int x, unsigned int y);
+point *createPoint(unsigned int x, unsigned int y);
 static void destroyPoint(point *p);
-static move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece);
-static void destroyMove(move *move);
+move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece);
+void destroyMove(move *move);
 static void printMoves(history *head, int *iter);
 static enum player switchTurn(enum player turn);
 static void printHistory();
+void printBoard(char *board[8][8]);
 
 history *head = NULL;
 
@@ -41,7 +40,7 @@ void play(char *board[size][size])
         if (mx == NULL)
             continue;
 
-        if (catchGeneralErrors(mx, turn))
+        if (!catchGeneralErrors(mx, turn))
         {
             // move is never applied if there are general piece errors
             if (catchSpecificErrors(mx, applyMove(mx, board)))
@@ -169,7 +168,7 @@ bool catchGeneralErrors(move *mx, enum player turn)
         return false;
     }
 
-    return true;
+    return false;
 }
 
 void getPieceString(move *mx, char *piece)
@@ -446,7 +445,7 @@ bool applyMove(move *mx, char *board[size][size])
     }
 }
 
-static point *createPoint(unsigned int col, unsigned int row)
+point *createPoint(unsigned int col, unsigned int row)
 {
 
     point *p = malloc(sizeof(point));
@@ -471,7 +470,7 @@ static void destroyPoint(point *p)
     }
 }
 
-static move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece)
+move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece)
 {
     move *newMove = malloc(sizeof(move));
 
@@ -488,7 +487,7 @@ static move *createMove(point *fromPoint, point *toPoint, char *movingPiece, cha
     return newMove;
 }
 
-static void destroyMove(move *move)
+void destroyMove(move *move)
 {
 
     if (move)
