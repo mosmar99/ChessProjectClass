@@ -9,7 +9,7 @@ default:
 	./bin/main.exe
 
 .PHONY: test
-test: testSelfCapture testQueen testBishop
+test: testSelfCapture testQueen testBishop testPawn
 
 testSelfCapture:
 	gcc -fprofile-arcs -ftest-coverage test/testSelfCapture.c src/knight.c src/makeBoard.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c -I include -o test/tSC.exe
