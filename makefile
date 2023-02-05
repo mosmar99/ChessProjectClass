@@ -31,6 +31,10 @@ testKnight:
 	test/tn.exe
 	gcov test/tn-knight.gcno
 
+testPawn:
+	gcc -fprofile-arcs -ftest-coverage test/testPawn.c src/knight.c src/makeBoard.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c src/bishop.c -I include -o test/tp.exe
+	test/tp.exe
+	gcov test/tp-pawn.gcno
 
 clean:
 	rm $(gcno) $(gcda) $(exe) $(gcov)
