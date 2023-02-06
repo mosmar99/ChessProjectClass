@@ -40,8 +40,9 @@ OR: in Ubuntu
 
 Execute each row below, one by one, in your terminal (Command Prompt (CMD) on Windows, Terminal on Mac and The Shell on Ubuntu), which will install Visual Studio Code Extensions for C:
 
-- code --install-extension ms-vscode.cpptools
-- code --install-extension ms-vscode.makefile-tools
+    - code --install-extension ms-vscode.cpptools
+
+    - code --install-extension ms-vscode.makefile-tools
 
 ## Linter instructions for Github Action
 - https://github.com/marketplace/actions/c-c-linter <br />
