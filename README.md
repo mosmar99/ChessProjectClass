@@ -1,6 +1,9 @@
 ![Ultra Deluxe Chess](https://github.com/mosmar99/ChessProjectClass/blob/main/chess_pic.png "Ultra Deluxe Chess")
 ___
 # ChessProjectClass
+[![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Tests.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Tests.yml)
+[![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Tests.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Build.yml)
+[![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Tests.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/linter.yml)
 
 ## Collaborators
 * Mahmut Osmanovic (mosmar99)
