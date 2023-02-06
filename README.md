@@ -45,7 +45,6 @@ Execute each row below, one by one, in your terminal (Command Prompt (CMD) on Wi
 
 ## Linter instructions for Github Action
 - https://github.com/marketplace/actions/c-c-linter <br />
-- [![cpp-linter](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml/badge.svg)](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml) 
 
 ## Linter instructions to linter C/C++ code from terminal
 - Manual: https://clang.llvm.org/docs/ClangFormat.html
