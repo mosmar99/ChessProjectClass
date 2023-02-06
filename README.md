@@ -2,8 +2,8 @@
 ___
 # ChessProjectClass
 [![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Tests.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Tests.yml)
-[![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Tests.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Build.yml)
-[![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Tests.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/linter.yml)
+[![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Build.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Build.yml)
+[![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/linter.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/linter.yml)
 
 ## Collaborators
 * Mahmut Osmanovic (mosmar99)
