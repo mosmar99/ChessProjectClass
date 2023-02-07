@@ -8,6 +8,10 @@ default:
 	gcc src/*.c -I include/ -o ./bin/main.exe
 	./bin/main.exe
 
+dea:
+	gcc test/*.c -I include/ -o ./bin/main.exe
+	./bin/main.exe
+
 
 .PHONY: test
 test: testSelfCapture testQueen testBishop
