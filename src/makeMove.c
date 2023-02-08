@@ -3,6 +3,7 @@
 #include "pawn.h"
 #include "rook.h"
 #include "bishop.h"
+#include "king.h"
 
 point *createPoint(unsigned int x, unsigned int y);
 static void destroyPoint(point *p);
@@ -432,7 +433,10 @@ bool applyMove(move *mx, char *board[size][size])
         // validMove = checkQueenMove(move, board);
         break;
     case 'K':
-        // validMove = checkKingMove(move, board);
+        validMove = checkKingMove(mx, board);
+        if(validMove)
+            action(mx, board);
+        return validMove;
         break;
     case 'p':
         validMove = checkPawnMove(mx, board);

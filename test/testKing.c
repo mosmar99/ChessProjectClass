@@ -9,37 +9,37 @@ void main (){
     char *board[8][8];
     bool validMove[8];
     initBoard(board);
-
+    //COL, ROW
     //d4 - d5
-    move * m1 = createMove(createPoint(4,4), createPoint(5,4), "wK", "--");
+    move * m1 = createMove(createPoint(3,3), createPoint(3,4), "wK", "--");
     validMove[0] = checkKingMove(m1, board);
 
     //d4 - e5
-    move * m2 = createMove(createPoint(4,4), createPoint(5,5), "wK", "--");
+    move * m2 = createMove(createPoint(3,3), createPoint(4,4), "wK", "--");
     validMove[1] = checkKingMove(m2, board);
 
     //d4 - e4
-    move * m3 = createMove(createPoint(4,4), createPoint(4,5), "wK", "--");
+    move * m3 = createMove(createPoint(3,3), createPoint(4,3), "wK", "--");
     validMove[2] = checkKingMove(m3, board);
 
     //d4 - e3
-    move * m4 = createMove(createPoint(4,4), createPoint(3,5), "wK", "--");
+    move * m4 = createMove(createPoint(3,3), createPoint(4,2), "wK", "--");
     validMove[3] = checkKingMove(m4, board);
 
     //d4 - d3
-    move * m5 = createMove(createPoint(4,4), createPoint(3,4), "wK", "--");
+    move * m5 = createMove(createPoint(3,3), createPoint(3,2), "wK", "--");
     validMove[4] = checkKingMove(m5, board);
 
     //d4 - c3
-    move * m6 = createMove(createPoint(4,4), createPoint(3,3), "wK", "bR");
+    move * m6 = createMove(createPoint(3,3), createPoint(2,2), "wK", "bR");
     validMove[5] = checkKingMove(m6, board);
 
     //d4 - c4
-    move * m7 = createMove(createPoint(4,4), createPoint(4,3), "wK", "--");
+    move * m7 = createMove(createPoint(3,3), createPoint(2,3), "wK", "--");
     validMove[6] = checkKingMove(m7, board);
 
     //d4 - c5
-    move * m8 = createMove(createPoint(4,4), createPoint(5,3), "wK", "--");
+    move * m8 = createMove(createPoint(3,3), createPoint(2,4), "wK", "--");
     validMove[7] = checkKingMove(m8, board);
 
     assert(validMove[0] == false);

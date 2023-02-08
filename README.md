@@ -1,6 +1,9 @@
 ![Ultra Deluxe Chess](https://github.com/mosmar99/ChessProjectClass/blob/main/chess_pic.png "Ultra Deluxe Chess")
 ___
 # ChessProjectClass
+[![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Tests.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Tests.yml)
+[![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Build.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Build.yml)
+[![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/linter.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/linter.yml)
 
 ## Collaborators
 * Mahmut Osmanovic (mosmar99)
@@ -37,12 +40,12 @@ OR: in Ubuntu
 
 Execute each row below, one by one, in your terminal (Command Prompt (CMD) on Windows, Terminal on Mac and The Shell on Ubuntu), which will install Visual Studio Code Extensions for C:
 
-- code --install-extension ms-vscode.cpptools
-- code --install-extension ms-vscode.makefile-tools
+    - code --install-extension ms-vscode.cpptools
+
+    - code --install-extension ms-vscode.makefile-tools
 
 ## Linter instructions for Github Action
 - https://github.com/marketplace/actions/c-c-linter <br />
-- [![cpp-linter](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml/badge.svg)](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml) 
 
 ## Linter instructions to linter C/C++ code from terminal
 - Manual: https://clang.llvm.org/docs/ClangFormat.html
