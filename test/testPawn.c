@@ -3,80 +3,155 @@
 #include "makeMove.h"
 #include "pawn.h"
 
-void setupBoard(char *board[8][8]);
+static void printBoard(char *board[8][8]);
 
 int main()
 {
-    char *board[8][8];
-    setupBoard(board);
+    char *board[8][8] = {
+        {"bp", "wp", "--", "--", "--", "--", "--", "wp"}, // 0
+        {"wp", "--", "--", "--", "bp", "--", "--", "--"}, // 1
+        {"--", "--", "--", "--", "bp", "--", "--", "--"}, // 2
+        {"--", "--", "wp", "wp", "--", "--", "--", "wp"}, // 3
+        {"--", "--", "bp", "--", "bp", "--", "--", "--"}, // 4
+        {"--", "--", "--", "--", "--", "bp", "bp", "--"}, // 5
+        {"--", "--", "--", "bp", "--", "--", "--", "--"}, // 6
+        {"wp", "--", "--", "--", "--", "--", "--", "bp"}  // 7
+    };
+    //    0     1     2     3     4     5     6     7
 
-    move *adv1succ = createMove(createPoint(0, 1), createPoint(0, 2), "wp", "--");
-    assert(checkPawnMove(adv1succ, board));
-    destroyMove(adv1succ);
+    // printBoard(board);
 
-    move *adv2succ = createMove(createPoint(0, 1), createPoint(0, 3), "wp", "--");
-    assert(checkPawnMove(adv2succ, board));
-    destroyMove(adv2succ);
+#pragma region ***Out of bounds ***
+    move *SW00 = createMove(createPoint(0, 0), createPoint(-1, -1), "bp", "--");
+    assert(!checkPawnMove(SW00, board));
+    destroyMove(SW00);
 
-    move *adv2fail = createMove(createPoint(1, 0), createPoint(1, 2), "wp", "--");
-    assert(!checkPawnMove(adv2fail, board));
-    destroyMove(adv2fail);
+    move *NW70 = createMove(createPoint(7, 0), createPoint(8, -1), "wp", "--");
+    assert(!checkPawnMove(NW70, board));
+    destroyMove(NW70);
 
-    move *side = createMove(createPoint(1, 0), createPoint(0, 0), "wp", "--");
-    assert(!checkPawnMove(side, board));
-    destroyMove(side);
+    move *NE77 = createMove(createPoint(7, 7), createPoint(8, 8), "bp", "--");
+    assert(!checkPawnMove(NE77, board));
+    destroyMove(NE77);
 
-    move *attackfail = createMove(createPoint(0, 1), createPoint(1, 2), "wp", "--");
-    assert(!checkPawnMove(attackfail, board));
-    destroyMove(attackfail);
+    move *SW07 = createMove(createPoint(0, 7), createPoint(-1, 8), "wp", "--");
+    assert(!checkPawnMove(SW07, board));
+    destroyMove(SW07);
+#pragma endregion
 
-    move *wretreat = createMove(createPoint(2, 3), createPoint(2, 2), "wp", "--");
-    assert(!checkPawnMove(wretreat, board));
-    destroyMove(wretreat);
+#pragma region ***Two step FAIL ***
+    move *w37 = createMove(createPoint(7, 3), createPoint(7, 5), "wp", "--");
+    assert(!checkPawnMove(w37, board));
+    destroyMove(w37);
 
-    move *bretreat = createMove(createPoint(5, 5), createPoint(5, 6), "bp", "--");
-    assert(!checkPawnMove(bretreat, board));
-    destroyMove(bretreat);
+    move *w01 = createMove(createPoint(1, 0), createPoint(1, 2), "wp", "--");
+    assert(!checkPawnMove(w01, board));
+    destroyMove(w01);
 
-    move *wattack1succ = createMove(createPoint(2, 3), createPoint(1, 4), "wp", "--");
-    assert(checkPawnMove(wattack1succ, board));
-    destroyMove(wattack1succ);
+    move *b44 = createMove(createPoint(4, 4), createPoint(4, 2), "bp", "--");
+    assert(!checkPawnMove(b44, board));
+    destroyMove(b44);
 
-    move *wattack2succ = createMove(createPoint(2, 3), createPoint(3, 4), "wp", "--");
-    assert(checkPawnMove(wattack2succ, board));
-    destroyMove(wattack2succ);
+    move *b42 = createMove(createPoint(2, 4), createPoint(2, 2), "bp", "--");
+    assert(!checkPawnMove(b42, board));
+    destroyMove(b42);
+#pragma endregion
 
-    move *battack1succ = createMove(createPoint(2, 4), createPoint(1, 3), "bp", "--");
-    assert(checkPawnMove(battack1succ, board));
-    destroyMove(battack1succ);
+#pragma region ***Two step SUCC ***
+    move *w10 = createMove(createPoint(0, 1), createPoint(0, 3), "wp", "--");
+    assert(checkPawnMove(w10, board));
+    destroyMove(w10);
 
-    move *battack2succ = createMove(createPoint(2, 4), createPoint(3, 3), "bp", "--");
-    assert(checkPawnMove(battack2succ, board));
-    destroyMove(battack2succ);
+    move *b63 = createMove(createPoint(3, 6), createPoint(3, 4), "bp", "--");
+    assert(checkPawnMove(b63, board));
+    destroyMove(b63);
+#pragma endregion
 
-    move *wblock = createMove(createPoint(2, 3), createPoint(2, 4), "wp", "bp");
-    assert(!checkPawnMove(wblock, board));
-    destroyMove(wblock);
+#pragma region ***One step FAIL ***
+    move *w32 = createMove(createPoint(2, 3), createPoint(2, 4), "wp", "bp");
+    assert(!checkPawnMove(w32, board));
+    destroyMove(w32);
 
-    move *bblock = createMove(createPoint(2, 4), createPoint(2, 3), "bp", "wp");
-    assert(!checkPawnMove(bblock, board));
-    destroyMove(bblock);
+    move *b24 = createMove(createPoint(4, 2), createPoint(4, 1), "bp", "bp");
+    assert(!checkPawnMove(b24, board));
+    destroyMove(b24);
+#pragma endregion
+
+#pragma region ***One step SUCC ***
+    move *b55 = createMove(createPoint(5, 5), createPoint(5, 4), "bp", "--");
+    assert(checkPawnMove(b55, board));
+    destroyMove(b55);
+
+    move *w33 = createMove(createPoint(3, 3), createPoint(3, 4), "wp", "--");
+    assert(checkPawnMove(w33, board));
+    destroyMove(w33);
+#pragma endregion
+
+#pragma region ***Direction FAIL ***
+    move *b56 = createMove(createPoint(6, 5), createPoint(6, 6), "bp", "--");
+    assert(!checkPawnMove(b56, board));
+    destroyMove(b56);
+
+    w32 = createMove(createPoint(2, 3), createPoint(2, 2), "wp", "--");
+    assert(!checkPawnMove(w32, board));
+    destroyMove(w32);
+#pragma endregion
+
+#pragma region ***Attack SUCC ***
+    w33 = createMove(createPoint(3, 3), createPoint(4, 4), "wp", "bp");
+    assert(checkPawnMove(w33, board));
+    destroyMove(w33);
+
+    b44 = createMove(createPoint(4, 4), createPoint(3, 3), "bp", "wp");
+    assert(checkPawnMove(b44, board));
+    destroyMove(b44);
+#pragma endregion
+
+#pragma region ***Attack FAIL ***
+    move *b14 = createMove(createPoint(4, 1), createPoint(3, 0), "bp", "--");
+    assert(!checkPawnMove(b14, board));
+    destroyMove(b14);
+
+    b56 = createMove(createPoint(6, 5), createPoint(7, 5), "bp", "--");
+    assert(!checkPawnMove(b56, board));
+    destroyMove(b56);
+
+    w32 = createMove(createPoint(2, 3), createPoint(1, 4), "wp", "--");
+    assert(!checkPawnMove(w32, board));
+    destroyMove(w32);
+
+    w32 = createMove(createPoint(2, 3), createPoint(3, 4), "wp", "--");
+    assert(!checkPawnMove(w32, board));
+    destroyMove(w32);
+#pragma endregion
 
     printf("%s\n", "PAWN TEST PASSED");
     system("pause");
 }
 
-void setupBoard(char *board[8][8])
+static void printBoard(char *board[8][8])
 {
-    for (int row = 0; row < 8; row++)
-        for (int col = 0; col < 8; col++)
-            board[row][col] = "--";
+    char numbers[8] = {'1', '2', '3', '4', '5', '6', '7', '8'};
+    char letters[8] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 
-    board[1][0] = "wp";
-    board[0][1] = "wp";
-    board[3][2] = "wp";
+    printf("\n");
+    for (size_t i = 0; i < 8; i++)
+    {
+        printf("%c   ", *(numbers + (7 - i)));
+        for (size_t j = 0; j < 8; j++)
+        {
+            printf("%s  ", board[7 - i][j]);
+        }
+        printf("\n");
+    }
 
-    board[4][2] = "bp";
-    board[2][4] = "bp";
-    board[5][5] = "bp";
+    printf("\n    ");
+    fflush(stdout);
+
+    for (size_t i = 0; i < 8; i++)
+    {
+        printf("%c   ", *(letters + i));
+    }
+
+    printf("\n\n");
 }

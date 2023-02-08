@@ -33,45 +33,35 @@ static Color getColor(const char *const piece);
 
 // Asserts that the move is properly filled with valid information.
 //      move: a move struct filled with neccessary information for the desired move.
-static void assertMove(const move *const move);
+// Returns: true if OK, false otherwise.
+static bool assertMove(const move *const move);
 
 // Asserts that the board is properly properly configured.
 //      board: the string matrix representation of the current board state.
-static void assertBoard(char *const board[8][8]);
-
-// Count the number of occurrenses of a specific character in a given string.
-//      str: the string to search.
-//      c: the character to count.
-// Returns: The number of occurrenses found.
-static unsigned int countCharInString(const char const *str, const unsigned char c);
-
-// Get a copy of a string.
-//      str: the string to copy
-// Returns: a string.
-static char *getCopyOfString(const char *const str);
+// Returns: true if OK, false otherwise.
+static bool assertBoard(char *const board[8][8]);
 
 bool checkPawnMove(const move *const move, char *const board[8][8])
 {
-    assertMove(move);
-    assertBoard(board);
+    if (!assertMove(move) || !assertBoard(board))
+        return false;
 
-    // get color of the player and the allowed direction for that color
+    // get color of the player
     Color player = getColor(move->movingPiece);
-    assert(player == WHITE || player == BLACK);
-    VerticalDirection dir = player == WHITE ? UP : DOWN;
+    if (player != WHITE && player != BLACK)
+        return false;
 
-    short deltaX = move->toPoint->col - move->fromPoint->col;
-    short deltaY = move->toPoint->row - move->fromPoint->row;
+    const short deltaX = move->toPoint->col - move->fromPoint->col;
+    const short deltaY = move->toPoint->row - move->fromPoint->row;
+
+    // check vertical direction constraint, i.e. a player may only advance a pawn
+    if ((deltaY >= 0 ? UP : DOWN) != (player == WHITE ? UP : DOWN))
+        return false;
 
     // check simple distance constraints:
     // 2 vertically and 0 horizontally
     // 1 vertically and either 0 or 1 horizontally
     if (!((abs(deltaY) == 2 && deltaX == 0) || (abs(deltaY) == 1 && (deltaX == 0 || abs(deltaX) == 1))))
-        return false;
-
-    // check vertical direction constraint, i.e. a player may only advance a pawn
-    VerticalDirection tryDir = deltaY >= 0 ? UP : DOWN;
-    if (tryDir != dir)
         return false;
 
     // simple check for special 2 vertical move from starting position
@@ -85,64 +75,45 @@ bool checkPawnMove(const move *const move, char *const board[8][8])
     // check collisions
     if (checkCollisions(move, board, deltaX, deltaY))
         return false;
+
     return true;
 }
 
-static bool checkCollisions(const move *const move, char *const board[8][8], short deltaX, short deltaY)
+static bool checkCollisions(const move *const move, char *const board[8][8], const short deltaX, const short deltaY)
 {
-    assert(move != NULL && board != NULL);
-
-    unsigned short checkRow = move->fromPoint->row;
-    unsigned short checkCol = move->fromPoint->col;
+    if (move == NULL || board == NULL)
+        return false;
 
     if (abs(deltaX) == 1) // desire to move diagonally 1 step, i.e. attack an enemy piece
     {
-        assert(abs(deltaY) == 1);
+        if (abs(deltaY) != 1)
+            return false;
 
-        // advance 1 step diagonally
-        checkRow += deltaY;
-        checkCol += deltaX;
-
-        // check border
-        if (checkRow > 7 || checkRow < 0 || checkCol > 7 || checkCol < 0)
-            return true;
-
-        // the spot the pawn is moving to must be empty
-        if (strcmp(board[checkRow][checkCol], "--") != 0)
-            return true;
-
-        // the piece directly ahead of your piece must be an enemy
-        if (strcmp(board[checkRow][checkCol - deltaX], *(move->movingPiece) == 'w' ? "bp" : "wp") != 0)
+        // the piece the pawn is moving to must be an enemy
+        if (strcmp(board[move->toPoint->row][move->toPoint->col], *(move->movingPiece) == 'w' ? "bp" : "wp") != 0)
             return true;
 
         return false;
     }
 
-    assert(deltaX == 0 && abs(deltaY) <= 2);
+    if (deltaX != 0 || abs(deltaY) > 2)
+        return false;
 
-    while (deltaY != 0)
-    {
-        // advance 1 step
-        checkRow += deltaY > 0 ? 1 : -1;
+    // start at fromPoint and explore direction to toPoint, checks for any obstacle
+    // fromPoint and toPoint have already been checked for invalid indices
 
-        // check border
-        if (checkRow > 7 || checkRow < 0)
+    const short offset = deltaY > 0 ? 1 : -1;
+    for (unsigned short row = move->fromPoint->row; row != move->toPoint->row && row >= 0; row += offset)
+        if (row + offset > 7 || strcmp(board[row + offset][move->fromPoint->col], "--") != 0)
             return true;
-
-        // check if there is a piece
-        if (strcmp(board[checkRow][checkCol], "--") != 0)
-            return true;
-
-        // increment/decrement
-        deltaY += deltaY > 0 ? -1 : 1;
-    }
 
     return false;
 }
 
 static Color getColor(const char *const piece)
 {
-    assert(piece != NULL);
+    if (piece == NULL)
+        return EMPTY;
 
     switch (*piece)
     {
@@ -150,64 +121,49 @@ static Color getColor(const char *const piece)
         return BLACK;
     case 'w':
         return WHITE;
-    case '-': // intentionally not a "default:", used to discover bugs
+    default:
         return EMPTY;
     }
 }
 
-static void assertMove(const move *const move)
+static bool assertMove(const move *const move)
 {
-    assert(move != NULL);
-    assert(move->movingPiece != NULL);
-    assert(move->fromPoint != NULL);
-    assert(move->capturedPiece != NULL);
-    assert(move->toPoint != NULL);
+    if (move == NULL)
+        return false;
+    if (move->movingPiece == NULL || move->fromPoint == NULL)
+        return false;
+    if (move->capturedPiece == NULL || move->toPoint == NULL)
+        return false;
 
-    assert(strlen(move->movingPiece) == 2);
-    assert(strlen(move->capturedPiece) == 2);
-    assert(move->movingPiece[0] == 'b' || move->movingPiece[0] == 'w');
-    assert(move->movingPiece[1] == 'p');
-    assert(strlen(move->capturedPiece) == 2);
+    if (strlen(move->movingPiece) != 2 || strlen(move->capturedPiece) != 2)
+        return false;
+    if (!(move->movingPiece[0] == 'b' || move->movingPiece[0] == 'w'))
+        return false;
+    if (move->movingPiece[1] != 'p' || strlen(move->capturedPiece) != 2)
+        return false;
 
-    assert(move->fromPoint->col >= 0 && move->fromPoint->col <= 7);
-    assert(move->fromPoint->row >= 0 && move->fromPoint->row <= 7);
-    assert(move->toPoint->col >= 0 && move->toPoint->col <= 7);
-    assert(move->toPoint->row >= 0 && move->toPoint->row <= 7);
+    // 'col' and 'row' are unsigned
+    if (move->fromPoint->col > 7 || move->fromPoint->row > 7)
+        return false;
+    if (move->toPoint->col > 7 || move->toPoint->row > 7)
+        return false;
+
+    return true;
 }
 
-static void assertBoard(char *const board[8][8])
+static bool assertBoard(char *const board[8][8])
 {
-    assert(board != NULL);
+    if (board == NULL)
+        return false;
 
     for (unsigned short row = 0; row < 8; row++)
     {
-        assert(board[row] != NULL);
+        if (board[row] == NULL)
+            return false;
         for (unsigned short col = 0; col < 8; col++)
-            assert(strlen(board[row][col]) == 2);
+            if (strlen(board[row][col]) != 2)
+                return false;
     }
-}
 
-static unsigned int countCharInString(const char const *str, const unsigned char c)
-{
-    assert(str != NULL);
-
-    int counter = 0;
-    for (const char *ptr = str; *ptr != 0; ptr++)
-        if (*ptr == c)
-            counter++;
-
-    return counter;
-}
-
-static char *getCopyOfString(const char *const str)
-{
-    assert(str != NULL);
-
-    // +1 for null termimator
-    char *newStr = calloc(strlen(str) + 1, sizeof(char));
-    assert(newStr != NULL);
-
-    strncpy(newStr, str, strlen(str));
-
-    return newStr;
+    return true;
 }
