@@ -16,11 +16,17 @@ bool checkPieceColor(const move *const move, char *const board[8][8])
     {
         return true;
     }
-   
+    else
+     return false;
 }
 
 bool checkRookMove(const move *const move, char *const board[8][8])
 {  
+  // Check if the moving piece is a rook
+    if (*(move->movingPiece) != 'R') 
+    {
+        return false;
+    }
     // check is to see if the move is either horizontal or vertical.
     // It checks if the starting and ending positions have the same row or column value respectively.
     if (move->fromPoint->col == move->toPoint->col || move->fromPoint->row == move->toPoint->row)
@@ -38,7 +44,7 @@ bool checkRookMove(const move *const move, char *const board[8][8])
                 {
                     checkPieceColor(move,board);
                 }
-                return false;
+                return true;
             }
         } else 
         {
@@ -50,11 +56,10 @@ bool checkRookMove(const move *const move, char *const board[8][8])
                 {
                      checkPieceColor(move,board);
                 }
-                return false;
+                return true;
             }
         }
         return true;
     }
     return false;
 }
-

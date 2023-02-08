@@ -50,7 +50,7 @@ void initBoard(char *board[8][8]) {
     board[1][1] = "wp";
     board[1][2] = "wp";
     board[1][3] = "wp";
-    board[1][4] = "wp";
+    board[1][4] = "--";
     board[1][5] = "wp";
     board[1][6] = "wp";
     board[1][7] = "wp";
