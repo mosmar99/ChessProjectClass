@@ -30,13 +30,8 @@ testKnight:
 	test/tn.exe
 	gcov test/tn-knight.gcno
 
-testKing:
-	gcc -fprofile-arcs -ftest-coverage test/testKing.c src/king.c src/knight.c src/makeBoard.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c src/bishop.c -I include -o test/tk.exe
-	test/tk.exe
-	gcov test/tk-king.gcno
-
 testPawn:
-	gcc -fprofile-arcs -ftest-coverage test/testPawn.c src/king.c src/knight.c src/makeBoard.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c src/bishop.c -I include -o test/tp.exe
+	gcc -fprofile-arcs -ftest-coverage test/testPawn.c src/knight.c src/makeBoard.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c src/bishop.c -I include -o test/tp.exe
 	test/tp.exe
 	gcov test/tp-pawn.gcno
 
