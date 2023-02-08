@@ -5,6 +5,9 @@
 #include "rook.h"
 
 
+
+
+
 bool checkPieceColor(const move *const move, char *const board[8][8])
 {
     //get the color of the moving piece
@@ -16,11 +19,13 @@ bool checkPieceColor(const move *const move, char *const board[8][8])
     {
         return true;
     }
-   
+    else
+     return false;
 }
 
 bool checkRookMove(const move *const move, char *const board[8][8])
 {  
+  
     // check is to see if the move is either horizontal or vertical.
     // It checks if the starting and ending positions have the same row or column value respectively.
     if (move->fromPoint->col == move->toPoint->col || move->fromPoint->row == move->toPoint->row)
@@ -38,7 +43,7 @@ bool checkRookMove(const move *const move, char *const board[8][8])
                 {
                     checkPieceColor(move,board);
                 }
-                return false;
+                return true;
             }
         } else 
         {
@@ -50,7 +55,7 @@ bool checkRookMove(const move *const move, char *const board[8][8])
                 {
                      checkPieceColor(move,board);
                 }
-                return false;
+                return true;
             }
         }
         return true;
