@@ -8,13 +8,9 @@ default:
 	gcc src/*.c -I include/ -o ./bin/main.exe
 	./bin/main.exe
 
-dea:
-	gcc test/*.c -I include/ -o ./bin/main.exe
-	./bin/main.exe
-
 
 .PHONY: test
-test: testSelfCapture testQueen testBishop
+test: testSelfCapture testQueen testBishop testRook
 
 testSelfCapture:
 	gcc -fprofile-arcs -ftest-coverage test/testSelfCapture.c src/knight.c src/makeBoard.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c -I include -o test/tSC.exe
@@ -36,6 +32,10 @@ testKnight:
 	test/tn.exe
 	gcov test/tn-knight.gcno
 
+testRook:
+	gcc -fprofile-arcs -ftest-coverage test/testRook.c src/knight.c src/makeBoard.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c src/bishop.c -I include -o test/tr.exe
+	test/tr.exe
+	gcov test/tr-rook.gcno 
 
 clean:
 	rm $(gcno) $(gcda) $(exe) $(gcov)
