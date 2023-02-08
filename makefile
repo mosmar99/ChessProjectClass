@@ -31,7 +31,7 @@ testKnight:
 	gcov test/tn-knight.gcno
 
 testKing:
-	gcc -fprofile-arcs -ftest-coverage test/testKing.c src/king.c src/bishop.c src/makeBoard.c src/knight.c src/king.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c -I include -o test/tk.exe
+	gcc -fprofile-arcs -ftest-coverage test/testKing.c src/king.c src/bishop.c src/makeBoard.c src/knight.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c -I include -o test/tk.exe
 	test/tk.exe
 	gcov test/tk-king.gcno
 	
