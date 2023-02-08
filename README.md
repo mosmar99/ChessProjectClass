@@ -1,6 +1,9 @@
 ![Ultra Deluxe Chess](https://github.com/mosmar99/ChessProjectClass/blob/main/chess_pic.png "Ultra Deluxe Chess")
 ___
 # ChessProjectClass
+[![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Tests.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Tests.yml)
+[![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Build.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/Build.yml)
+[![build status for ChessProjectClass](https://github.com/mosmar99/ChessProjectClass/actions/workflows/linter.yml/badge.svg)](https://github.com/mosmar99/ChessProjectClass/actions/workflows/linter.yml)
 
 ## Collaborators
 * Mahmut Osmanovic (mosmar99)
@@ -27,16 +30,22 @@ You need to have .vscode files setup to run it, which are individually configure
 - Linux: https://code.visualstudio.com/docs/cpp/config-linux<br />
 
 **Sample Configuration (Ubuntu 20.4 LTS)**<br />
-Look at already configured files (.vscode) found within map ".vscode". These are working configurations in Ubuntu, version 20.4 LTS. Since local compiler paths are PC dependent, one might need to update certain fields by hand. The fields in question are: "compilerPath": in c_cpp_properties.json, put gcc path. "command" in tasks, put gcc path. Lastly, within "launch.json" file, locate the field "miDebuggerPath" and put your own debugger path (gdb).
+Look at already configured files (.vscode) found within map ".vscode". These are working configurations in Ubuntu, version 20.4 LTS. Since local compiler paths are PC dependent, one might need to update certain fields by hand. The fields in question are: "compilerPath": in c_cpp_properties.json, put gcc path. "command" in tasks, put gcc path. Lastly, within "launch.json" file, locate the field "miDebuggerPath" and put your own debugger path (gdb). To facilitate locating these items type this command in the windows terminal:
+
+    where ITEM
+
+OR: in Ubuntu
+
+    whereis ITEM
 
 Execute each row below, one by one, in your terminal (Command Prompt (CMD) on Windows, Terminal on Mac and The Shell on Ubuntu), which will install Visual Studio Code Extensions for C:
 
-- code --install-extension ms-vscode.cpptools
-- code --install-extension ms-vscode.makefile-tools
+    - code --install-extension ms-vscode.cpptools
+
+    - code --install-extension ms-vscode.makefile-tools
 
 ## Linter instructions for Github Action
 - https://github.com/marketplace/actions/c-c-linter <br />
-- [![cpp-linter](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml/badge.svg)](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml) 
 
 ## Linter instructions to linter C/C++ code from terminal
 - Manual: https://clang.llvm.org/docs/ClangFormat.html

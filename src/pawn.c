@@ -107,17 +107,13 @@ static bool checkCollisions(const move *const move, char *const board[8][8], sho
         if (checkRow > 7 || checkRow < 0 || checkCol > 7 || checkCol < 0)
             return true;
 
-        switch (*(move->movingPiece))
-        {
-        case 'w':
-            if (*(move->capturedPiece) != 'b')
-                return true;
-            break;
-        case 'b':
-            if (*(move->capturedPiece) != 'w')
-                return true;
-            break;
-        }
+        // the spot the pawn is moving to must be empty
+        if (strcmp(board[checkRow][checkCol], "--") != 0)
+            return true;
+
+        // the piece directly ahead of your piece must be an enemy
+        if (strcmp(board[checkRow][checkCol - deltaX], *(move->movingPiece) == 'w' ? "bp" : "wp") != 0)
+            return true;
 
         return false;
     }

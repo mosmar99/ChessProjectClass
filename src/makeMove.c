@@ -40,10 +40,10 @@ void play(char *board[size][size])
         if (mx == NULL)
             continue;
 
-        if (!catchGeneralErrors(mx, turn))
+        if (noGeneralErrors(mx, turn))
         {
             // move is never applied if there are general piece errors
-            if (catchSpecificErrors(mx, applyMove(mx, board)))
+            if (noSpecificErrors(mx, applyMove(mx, board)))
             {
                 // board is printed, with the desired valid move if its passed both general and specific piece errors
                 printBoard(board);
@@ -147,7 +147,7 @@ void moveHistory(move *mx)
     }
 }
 
-bool catchGeneralErrors(move *mx, enum player turn)
+bool noGeneralErrors(move *mx, enum player turn)
 {
     // general conditions that hold for all pieces
     // Ex: No piece can capture another ally piece
@@ -168,7 +168,7 @@ bool catchGeneralErrors(move *mx, enum player turn)
         return false;
     }
 
-    return false;
+    return true;
 }
 
 void getPieceString(move *mx, char *piece)
@@ -219,7 +219,7 @@ void getPieceString(move *mx, char *piece)
     }
 }
 
-bool catchSpecificErrors(move *mx, bool isValidMove)
+bool noSpecificErrors(move *mx, bool isValidMove)
 {
     // if the desired move isn't a valid piece specific move, an error message will be printed
     if (!isValidMove)
