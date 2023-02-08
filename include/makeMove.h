@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 #include "makeBoard.h"
 
 #define size (7+1)
@@ -43,6 +44,7 @@ bool noSpecificErrors(move *mx, bool isValidMove);
 bool noGeneralErrors(move *mx, enum player turn);
 bool applyMove(move *mx, char *board[size][size]);
 void action(move *mx, char *board[size][size]);
+bool isWrongInput(char *input);
 
 point *createPoint(unsigned int x, unsigned int y);
 move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece);

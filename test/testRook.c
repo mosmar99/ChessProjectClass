@@ -26,9 +26,6 @@ static void initBoard(char *board[8][8]) {
     board[5][5] = "bp";
 }
 
-
-
-
 int main() {
     char *board[8][8];
     initBoard(board);

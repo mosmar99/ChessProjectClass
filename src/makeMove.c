@@ -13,6 +13,7 @@ void destroyMove(move *move);
 static void printMoves(history *head, int *iter);
 static enum player switchTurn(enum player turn);
 static void printHistory();
+bool isWrongInput(char *input);
 void printBoard(char *board[8][8]);
 
 history *head = NULL;
@@ -36,6 +37,13 @@ void play(char *board[size][size])
             printHistory();
             continue;
         }
+
+        if (isWrongInput(input))
+        {
+            puts("---> Invalid input, please re-enter a valid move");
+            continue;
+        }
+        
 
         move *mx = constructMove(input, board);
 
@@ -61,16 +69,118 @@ void play(char *board[size][size])
     }
 }
 
+bool isWrongInput(char *input) {
+
+    char c;
+    bool leftBound;
+    bool rightBound;
+    for(int iter = 0; iter < 8; iter++) { // "Nb1 Nc3\n" "e9 f8\n"
+        c = *(input+iter);
+
+        switch (iter)
+        {
+        case 0:
+            if (!((c == 'R') || (c == 'N') || (c == 'B') || (c == 'Q') || (c == 'K') || (c == 'a') || (c == 'b') || (c == 'c') || (c == 'd') || (c == 'e') || (c == 'f') || (c == 'g') ||  (c == 'h')))
+            {
+                return true;
+            }                        
+            break;
+        case 1:
+            if (!(((c == 'a') || (c == 'b') || (c == 'c') || (c == 'd') || (c == 'e') || (c == 'f') || (c == 'g') ||  (c == 'h')) || (isdigit(c))))
+            {
+                return true;   
+            }
+
+            if (isdigit(c))
+            {
+                leftBound = (0 >= (int)(c)-48);
+                rightBound = ((int)(c)-48 >= 9);  
+                if ((leftBound || rightBound))
+                {
+                    return true;
+                }
+            }            
+            break;
+        case 2:
+            if (!(isdigit(c) || isspace((c))))
+            {
+                return true;
+            }
+
+            if (isdigit(c))
+            {
+                leftBound = (0 >= (int)(c)-48);
+                rightBound = ((int)(c)-48 >= 9);  
+                if ((leftBound || rightBound))
+                {
+                    return true;
+                }
+            }            
+            break;
+        case 3:
+            if (!(isspace((c)) || (c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h')))
+            {
+                return true;
+            }            
+            break;
+        case 4:
+            if (!((c == 'R' || c == 'N' || c == 'B' || c == 'Q' || c == 'K') || isdigit(c)))
+            {
+                return true;
+            }
+
+            if (isdigit(c))
+            {
+                leftBound = (0 >= (int)(c)-48);
+                rightBound = ((int)(c)-48 >= 9);  
+                if ((leftBound || rightBound))
+                {
+                    return true;
+                }
+            }            
+            break;
+        case 5:
+            if (!((c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h') || c == '\n'))
+            {
+                return true;                
+            }
+            if (c == '\n')
+            {
+                return false;
+            }            
+            break;
+        case 6:
+            if (!(isdigit(c)))
+            {
+                return true;
+            } 
+
+            leftBound = (0 >= (int)(c)-48);
+            rightBound = ((int)(c)-48 >= 9);  
+            if ((leftBound || rightBound))
+            {
+                return true;
+            }            
+            break;
+        case 7:
+            if (!(c == '\n'))
+            {
+                return true;
+            }            
+            break;            
+        }
+    } 
+    return false;
+}
+
 void printHistory()
 {
     if (head == NULL)
     {
-        puts("");
-        puts("No moves have been made");
+        puts("---> No moves have been made\n");
     }
     else
     {
-        puts("");
         int *iter = malloc(sizeof(int));
         *iter = 1;
         printMoves(head, iter);
