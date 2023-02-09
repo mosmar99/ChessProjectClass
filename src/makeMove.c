@@ -15,6 +15,7 @@ static enum player switchTurn(enum player turn);
 static void printHistory();
 bool isWrongInput(char *input);
 void printBoard(char *board[8][8]);
+void printBoardBlack(char *board[8][8]);
 
 history *head = NULL;
 
@@ -56,7 +57,15 @@ void play(char *board[size][size])
             if (noSpecificErrors(mx, applyMove(mx, board)))
             {
                 // board is printed, with the desired valid move if its passed both general and specific piece errors
-                printBoard(board);
+                if (turn == NEGRO)
+                {
+                    printBoard(board);
+                }
+                else
+                {
+                    printBoardBlack(board);
+                }
+                
 
                 // move is added to move history
                 moveHistory(mx);
