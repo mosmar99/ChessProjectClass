@@ -346,7 +346,7 @@ bool noSpecificErrors(move *mx, bool isValidMove)
     if (!isValidMove)
     {
         char *piece;
-        piece = malloc(sizeof(char) * size);
+        piece = calloc(size, sizeof(char));
         getPieceString(mx, piece);
         printf("---> Error: The %s does not move in that way\n", piece);
         return false;
