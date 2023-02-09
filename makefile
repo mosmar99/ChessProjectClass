@@ -47,6 +47,5 @@ testPawn:
 	test/tp.exe
 	gcov test/tp-pawn.gcno
 
-
 clean:
 	rm $(gcno) $(gcda) $(exe) $(gcov)
