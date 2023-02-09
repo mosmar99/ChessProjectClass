@@ -3,9 +3,6 @@
 #include "makeMove.h"
 #include <stdio.h>
 
-
-
-
 static void initBoard(char *board[8][8]) {
     for (size_t i = 0; i < 8; i++)
     {
@@ -29,9 +26,7 @@ static void initBoard(char *board[8][8]) {
 int main() {
     char *board[8][8];
     initBoard(board);
-    
-    
-    
+
     move *move1 = createMove(createPoint(0, 0), createPoint(0, 4), "wR", "bp");
     assert(checkRookMove(move1, board) == true);
 

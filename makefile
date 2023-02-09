@@ -40,7 +40,7 @@ testKnight:
 testRook:
 	gcc -fprofile-arcs -ftest-coverage test/testRook.c src/king.c src/knight.c src/makeBoard.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c src/bishop.c -I include -o test/tr.exe
 	test/tr.exe
-	gcov test/tr-Rook.gcno 
+	gcov test/tr-rook.gcno 
 
 testPawn:
 	gcc -fprofile-arcs -ftest-coverage test/testPawn.c src/king.c src/knight.c src/makeBoard.c src/makeMove.c src/pawn.c src/queen.c src/Rook.c src/bishop.c -I include -o test/tp.exe
