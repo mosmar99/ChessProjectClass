@@ -14,7 +14,7 @@ bool checkPieceColor(const move *const move, char *const board[8][8])
     char movingPieceColor = move->movingPiece[0];
     //get the color of the captured piece
     char capturedPieceColor = board[move->toPoint->row][move->toPoint->col][0];
-    // check if the moving piece and captured piece are different color
+    // check if the moving piece and capturzed piece are different color
     if(movingPieceColor != capturedPieceColor && capturedPieceColor != '\0')
     {
         return true;
