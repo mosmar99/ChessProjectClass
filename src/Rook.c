@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
 #include "rook.h"
-
-
-
-
 
 bool checkPieceColor(const move *const move, char *const board[8][8])
 {
