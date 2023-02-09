@@ -3,8 +3,6 @@
 #include "makeMove.h"
 #include "pawn.h"
 
-static void printBoard(char *board[8][8]);
-
 int main()
 {
     char *board[8][8] = {
@@ -127,31 +125,4 @@ int main()
 
     printf("%s\n", "PAWN TEST PASSED");
     system("pause");
-}
-
-static void printBoard(char *board[8][8])
-{
-    char numbers[8] = {'1', '2', '3', '4', '5', '6', '7', '8'};
-    char letters[8] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
-
-    printf("\n");
-    for (size_t i = 0; i < 8; i++)
-    {
-        printf("%c   ", *(numbers + (7 - i)));
-        for (size_t j = 0; j < 8; j++)
-        {
-            printf("%s  ", board[7 - i][j]);
-        }
-        printf("\n");
-    }
-
-    printf("\n    ");
-    fflush(stdout);
-
-    for (size_t i = 0; i < 8; i++)
-    {
-        printf("%c   ", *(letters + i));
-    }
-
-    printf("\n\n");
 }
