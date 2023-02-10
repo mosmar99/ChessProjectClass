@@ -13,4 +13,4 @@ jobs:
         with:
           name: executable-linux
           path: executable
-          retention-days: 90
+          retention-days: 365
