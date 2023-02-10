@@ -3,12 +3,12 @@
 #include <king.h>
 #include <assert.h>
 
-static void initBoard(char *board[8][8]);
+static void initKingBoard(char *board[8][8]);
 
 void main (){
     char *board[8][8];
     bool validMove[8];
-    initBoard(board);
+    initKingBoard(board);
     //COL, ROW
     //d4 - d5
     move * m1 = createMove(createPoint(3,3), createPoint(3,4), "wK", "--");
@@ -66,7 +66,7 @@ void main (){
     system("pause");
 }
 
-static void initBoard(char *board[8][8]) {
+static void initKingBoard(char *board[8][8]) {
     for (size_t i = 0; i < 8; i++)
     {
         for (size_t j = 0; j < 8; j++)

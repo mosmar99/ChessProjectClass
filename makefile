@@ -46,5 +46,10 @@ testPawn:
 	test/tp.exe
 	gcov test/tp-pawn.gcno
 
+testKing:
+	gcc -fprofile-arcs -ftest-coverage test/testKing.c src/*.c -I include -o test/tk.exe
+	test/tk.exe
+	gcov test/tk-king.gcno
+
 clean:
 	rm $(gcno) $(gcda) $(exe) $(gcov)
