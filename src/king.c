@@ -20,27 +20,6 @@ static bool checkKnight(char * const board[8][8], const move * const move, char 
 
 bool checkKingMove(const move * const move, char * const board[8][8]){
 
-    // struct move * temp = malloc(sizeof(struct move));
-    // temp->fromPoint = malloc(sizeof(struct point));
-    // temp->toPoint = malloc(sizeof(struct point));
-
-    // int tempRow, tempCol;
-
-    // temp->capturedPiece = move->capturedPiece;
-    // temp->movingPiece = move->movingPiece;
-
-    // tempRow = move->fromPoint->row;
-    // tempCol = move->fromPoint->col;
-
-    // temp->fromPoint->row = tempCol;
-    // temp->fromPoint->col = tempRow;
-
-    // tempRow = move->toPoint->row;
-    // tempCol = move->toPoint->col;
-
-    // temp->toPoint->col = tempRow;
-    // temp->toPoint->row = tempCol;
-
     if(!checkMovingDistance(move) || !checkLandingSquare(move)){
         return false;
     }
@@ -139,12 +118,12 @@ static bool exploreDiagonal(int rowOffset, int colOffset, char pieceColor, char 
         deltaRow = abs(i - m->fromPoint->row);
         deltaCol = abs(j - m->fromPoint->col);
 
-        pawn = (strrchr(board[i][j],'p') && (deltaRow <= 2 || deltaCol <= 2));
+        pawn = (strrchr(board[i][j],'p') && (deltaRow <= 2 && deltaCol <= 2));
         bishop = strrchr(board[i][j],'B');
         queen = strrchr(board[i][j],'Q');
         knight = strrchr(board[i][j], 'N');
         rook = strrchr(board[i][j], 'R');
-        king = (strrchr(board[i][j],'K') && (deltaRow <= 2 || deltaCol <= 2));
+        king = (strrchr(board[i][j],'K') && (deltaRow < 2 && deltaCol < 2));
         friendlyPiece = (strrchr(board[i][j], pieceColor));
     
         lineBlocked =   (friendlyPiece || rook || knight || (strrchr(board[i][j], 'p') && !pawn) || 
@@ -247,9 +226,11 @@ static bool checkKnight(char * const board[8][8], const move * const m, char pie
     while(n < 8){
         int i = m->toPoint->row + pattern[n][0] , j = m->toPoint->col + pattern[n][1];
         onBoard = isOnBoard(i,j);
-        knight = (strrchr(board[i][j], 'N') && !strrchr(board[i][j], pieceColor));
-        if(knight){
-            danger = true;
+        if(onBoard){
+            knight = (strrchr(board[i][j], 'N') && !strrchr(board[i][j], pieceColor));
+            if(knight){
+                danger = true;
+            }
         }
         n++;
     }

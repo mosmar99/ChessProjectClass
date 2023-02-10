@@ -4,12 +4,12 @@
 #include <queen.h>
 #include <makeMove.h>
 
-static void initBoard(char *board[8][8]);
+static void initQueenBoard(char *board[8][8]);
 
 int main(){
     char *board[8][8];
     bool validMove[8];
-    initBoard(board);
+    initQueenBoard(board);
 
     //move north direction from d5 to d8
     move * m1 = createMove(createPoint(5,4), createPoint(8,4), "wQ", "--");
@@ -69,7 +69,7 @@ int main(){
     system("pause");
 }
 
-static void initBoard(char *board[8][8]) {
+static void initQueenBoard(char *board[8][8]) {
     for (size_t i = 0; i < 8; i++)
     {
         for (size_t j = 0; j < 8; j++)
