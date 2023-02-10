@@ -72,6 +72,15 @@ Using the terminal whilst within the workspaceFolder enter command:
     make testSelfCapture
 There will be two types of output. Firstly the tests will be ran, secondly, its code-coverage will be outputed.
 
+### Artifact: How to run executable
+1. `sudo apt-get install unzip` <br />
+2. `unzip file.zip -d destination_folder`, in our case file is `executable-linux.zip` <br />
+3. `chmod +x executable`
+4. `./executable`
+
+### Issues
+If you're having trouble running the `make clean` command on Windows 10, try adding the following line to your `Path` variable: `<git-installation-directory>/usr/bin`. How to find the `Path` variable: Open File Explorer --> Right click on "This PC" --> Properties --> "Advanced system settings" under "Related Settings" --> Enviroment Variables --> Under "System variables", click "Path" and then "Edit" --> Click "New" and add the path `<git-installation-directory>/usr/bin`. The path may look like this: `C:\Program Files\Git\usr\bin`. Press OK to save and close all the windows. It's recommended to restart your PC to make sure the change is in effect. Please note that this possible solution is only applicable if you have Git installed.
+
 ## Declarations
 I, Isac Paulsson, declare that I am the sole author of the content I add to this repository. <br />
 I, Mahmut Osmanovic, declare that I am the sole author of the content I add to this repository. <br />

@@ -415,7 +415,7 @@ void readInput(char *move)
 
 char *requestMove(enum player turn)
 {
-    char *input = malloc(sizeof(char) * size);
+    char *input = malloc(sizeof(char) * (size + 1));
 
     // prompt user for move
     if (turn == BLANCO)

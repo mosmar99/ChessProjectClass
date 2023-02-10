@@ -5,7 +5,13 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: 
+      - ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: gcc src/*.c -I include/
+      - run: gcc main.c src/*.c -I include/ -o executable
+      - uses: actions/upload-artifact@v3
+        with:
+          name: executable-linux
+          path: executable
+          retention-days: 90

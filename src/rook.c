@@ -4,23 +4,21 @@
 #include <string.h>
 #include "rook.h"
 
-
-
-
-
 bool checkPieceColor(const move *const move, char *const board[8][8])
 {
     //get the color of the moving piece
     char movingPieceColor = move->movingPiece[0];
     //get the color of the captured piece
     char capturedPieceColor = board[move->toPoint->row][move->toPoint->col][0];
-    // check if the moving piece and capturzed piece are different color
-    if(movingPieceColor != capturedPieceColor && capturedPieceColor != '\0')
+    // check if the moving piece and captured piece are different color
+    if (movingPieceColor == capturedPieceColor || capturedPieceColor == '\0')
+    {
+        return false;
+    }
+    else
     {
         return true;
     }
-    else
-     return false;
 }
 
 bool checkRookMove(const move *const move, char *const board[8][8])
@@ -39,26 +37,27 @@ bool checkRookMove(const move *const move, char *const board[8][8])
             int rowDirection = rowDiff / abs(rowDiff);
             for (int i = move->fromPoint->row + rowDirection; i != move->toPoint->row; i += rowDirection) 
             {
-                if (board[i][move->fromPoint->col] != NULL) 
+                //pice blocking the path
+                if (strcmp(board[i][move->fromPoint->col], "--") != 0)
                 {
-                    checkPieceColor(move,board);
-                }
-                return true;
-            }
+                   return false;
+                }  
+            } 
         } else 
         {
             int colDiff = move->toPoint->col - move->fromPoint->col;
             int colDirection = colDiff / abs(colDiff);
             for (int i = move->fromPoint->col + colDirection; i != move->toPoint->col; i += colDirection)
             {
-                if (board[move->fromPoint->row][i] != NULL) 
+                if (strcmp(board[move->fromPoint->row][i], "--") != 0) 
                 {
-                     checkPieceColor(move,board);
+                    return false;     
                 }
-                return true;
-            }
+            } 
         }
-        return true;
+
+        return checkPieceColor(move,board);
     }
+
     return false;
 }
