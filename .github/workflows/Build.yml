@@ -9,3 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: gcc main.c src/*.c -I include/
+      - uses: actions/upload-artifact@v3
+        with:
+          name: executable-linux
+          path: executable
+          retention-days: 365
