@@ -8,9 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: gcc src/*.c -I include/ -o bin/main.exe
-      - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v3
-        with:
-          name: executable_file
-          path: main.exe
+      - run: gcc main.c src/*.c -I include/ -o bin/main.exe
