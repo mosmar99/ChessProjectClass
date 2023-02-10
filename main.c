@@ -1,7 +1,4 @@
-#include "makeMove.h"
-
-void printBoard(char *board[8][8]);
-void initBoard(char *board[8][8]);
+#include "include/makeMove.h"
 
 int main(void) {
 
@@ -12,4 +9,3 @@ int main(void) {
     play(board);
     exit(0);
 }
-
