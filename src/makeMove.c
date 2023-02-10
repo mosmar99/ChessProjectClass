@@ -3,8 +3,8 @@
 #include "pawn.h"
 #include "rook.h"
 #include "bishop.h"
-#include "queen.h"
 #include "king.h"
+#include "queen.h"
 
 point *createPoint(unsigned int x, unsigned int y);
 static void destroyPoint(point *p);
@@ -557,10 +557,11 @@ bool applyMove(move *mx, char *board[size][size])
             action(mx, board);
         return validMove;
     case 'K':
-        validMove = checkKingMove(mx, board); // dellocation error
-        if (validMove)
+        validMove = checkKingMove(mx, board);
+        if(validMove)
             action(mx, board);
         return validMove;
+        break;
     case 'p':
         validMove = checkPawnMove(mx, board);
         if (validMove)

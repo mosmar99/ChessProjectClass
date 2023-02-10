@@ -9,7 +9,7 @@ default:
 
 .PHONY: test
 
-test: testTrashInput testSelfCapture testQueen testBishop testPawn testRook
+test: testTrashInput testSelfCapture testQueen testBishop testPawn testRook testKing
 
 testTrashInput:
 	gcc -fprofile-arcs -ftest-coverage test/testTrashInput.c src/*.c -I include -o test/tTI.exe
@@ -45,6 +45,11 @@ testPawn:
 	gcc -fprofile-arcs -ftest-coverage test/testPawn.c src/*.c -I include -o test/tp.exe
 	test/tp.exe
 	gcov test/tp-pawn.gcno
+
+testKing:
+	gcc -fprofile-arcs -ftest-coverage test/testKing.c src/*.c -I include -o test/tk.exe
+	test/tk.exe
+	gcov test/tk-king.gcno
 
 clean:
 	rm $(gcno) $(gcda) $(exe) $(gcov)
