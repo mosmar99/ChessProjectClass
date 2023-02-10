@@ -4,6 +4,7 @@
 #include "rook.h"
 #include "bishop.h"
 #include "king.h"
+#include "queen.h"
 
 point *createPoint(unsigned int x, unsigned int y);
 static void destroyPoint(point *p);
