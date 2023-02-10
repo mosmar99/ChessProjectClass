@@ -44,7 +44,6 @@ void play(char *board[size][size])
             puts("---> Invalid input, please re-enter a valid move");
             continue;
         }
-        
 
         move *mx = constructMove(input, board);
 
@@ -65,7 +64,6 @@ void play(char *board[size][size])
                 {
                     printBoardBlack(board);
                 }
-                
 
                 // move is added to move history
                 moveHistory(mx);
@@ -78,37 +76,39 @@ void play(char *board[size][size])
     }
 }
 
-bool isWrongInput(char *input) {
+bool isWrongInput(char *input)
+{
 
     char c;
     bool leftBound;
     bool rightBound;
-    for(int iter = 0; iter < 8; iter++) { // "Nb1 Nc3\n" "e9 f8\n"
-        c = *(input+iter);
+    for (int iter = 0; iter < 8; iter++)
+    { // "Nb1 Nc3\n" "e9 f8\n"
+        c = *(input + iter);
 
         switch (iter)
         {
         case 0:
-            if (!((c == 'R') || (c == 'N') || (c == 'B') || (c == 'Q') || (c == 'K') || (c == 'a') || (c == 'b') || (c == 'c') || (c == 'd') || (c == 'e') || (c == 'f') || (c == 'g') ||  (c == 'h')))
+            if (!((c == 'R') || (c == 'N') || (c == 'B') || (c == 'Q') || (c == 'K') || (c == 'a') || (c == 'b') || (c == 'c') || (c == 'd') || (c == 'e') || (c == 'f') || (c == 'g') || (c == 'h')))
             {
                 return true;
-            }                        
+            }
             break;
         case 1:
-            if (!(((c == 'a') || (c == 'b') || (c == 'c') || (c == 'd') || (c == 'e') || (c == 'f') || (c == 'g') ||  (c == 'h')) || (isdigit(c))))
+            if (!(((c == 'a') || (c == 'b') || (c == 'c') || (c == 'd') || (c == 'e') || (c == 'f') || (c == 'g') || (c == 'h')) || (isdigit(c))))
             {
-                return true;   
+                return true;
             }
 
             if (isdigit(c))
             {
                 leftBound = (0 >= (int)(c)-48);
-                rightBound = ((int)(c)-48 >= 9);  
+                rightBound = ((int)(c)-48 >= 9);
                 if ((leftBound || rightBound))
                 {
                     return true;
                 }
-            }            
+            }
             break;
         case 2:
             if (!(isdigit(c) || isspace((c))))
@@ -119,18 +119,18 @@ bool isWrongInput(char *input) {
             if (isdigit(c))
             {
                 leftBound = (0 >= (int)(c)-48);
-                rightBound = ((int)(c)-48 >= 9);  
+                rightBound = ((int)(c)-48 >= 9);
                 if ((leftBound || rightBound))
                 {
                     return true;
                 }
-            }            
+            }
             break;
         case 3:
             if (!(isspace((c)) || (c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h')))
             {
                 return true;
-            }            
+            }
             break;
         case 4:
             if (!((c == 'R' || c == 'N' || c == 'B' || c == 'Q' || c == 'K') || isdigit(c)))
@@ -141,44 +141,44 @@ bool isWrongInput(char *input) {
             if (isdigit(c))
             {
                 leftBound = (0 >= (int)(c)-48);
-                rightBound = ((int)(c)-48 >= 9);  
+                rightBound = ((int)(c)-48 >= 9);
                 if ((leftBound || rightBound))
                 {
                     return true;
                 }
-            }            
+            }
             break;
         case 5:
             if (!((c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h') || c == '\n'))
             {
-                return true;                
+                return true;
             }
             if (c == '\n')
             {
                 return false;
-            }            
+            }
             break;
         case 6:
             if (!(isdigit(c)))
             {
                 return true;
-            } 
+            }
 
             leftBound = (0 >= (int)(c)-48);
-            rightBound = ((int)(c)-48 >= 9);  
+            rightBound = ((int)(c)-48 >= 9);
             if ((leftBound || rightBound))
             {
                 return true;
-            }            
+            }
             break;
         case 7:
             if (!(c == '\n'))
             {
                 return true;
-            }            
-            break;            
+            }
+            break;
         }
-    } 
+    }
     return false;
 }
 
@@ -249,7 +249,6 @@ void printMoves(history *curr, int *iter)
     }
 
     (*iter)++;
-    
 }
 
 void moveHistory(move *mx)
@@ -416,7 +415,7 @@ void readInput(char *move)
 
 char *requestMove(enum player turn)
 {
-    char *input = malloc(sizeof(char) * (size + 1));
+    char *input = calloc((size + 1), sizeof(char));
 
     // prompt user for move
     if (turn == BLANCO)
@@ -558,7 +557,7 @@ bool applyMove(move *mx, char *board[size][size])
         return validMove;
     case 'K':
         validMove = checkKingMove(mx, board);
-        if(validMove)
+        if (validMove)
             action(mx, board);
         return validMove;
         break;
