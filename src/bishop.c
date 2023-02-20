@@ -6,27 +6,11 @@
 #include <stdlib.h>
 #include <makeMove.h>
 
-static bool checkInput(char *input, char *board[8][8]);
-static char * getDirection(move *m);
-static bool exploreDirection (char *dir, move *m, char *board[8][8]);
+static bool checkInput(char *input, char *const board[8][8]);
+static char * getDirection(const move *const m);
+static bool exploreDirection (char *dir, const move *const m, char *const board[8][8]);
 
-bool checkBishopMove(move *m, char *board[8][8]){
-
-    int tempRow;
-    int tempCol;
-
-    tempRow = m->fromPoint->row - 1;
-    tempCol = m->fromPoint->col - 1;
-    
-    m->fromPoint->row = tempCol;
-    m->fromPoint->col = tempRow;
-
-    tempRow = m->toPoint->row - 1;
-    tempCol = m->toPoint->col - 1;
-    
-    m->toPoint->row = tempCol;
-    m->toPoint->col = tempRow;
-
+bool checkBishopMove(const move *const m, char *const board[8][8]){
 
     char *dir = getDirection(m);
     //direction was invalid I.e we did not perform a diagonal move.
@@ -38,7 +22,7 @@ bool checkBishopMove(move *m, char *board[8][8]){
     return validDir;
 }
 
-char * getDirection(move *m){
+char * getDirection(const move *const m){
 
     char *direction;
     int deltaX = abs(m->fromPoint->row - m->toPoint->row);
@@ -62,7 +46,7 @@ char * getDirection(move *m){
     return direction = NULL;
 }
 
-bool exploreDirection (char *dir, move *m, char *board[8][8]){
+bool exploreDirection (char *dir, const move *const m, char *const board[8][8]){
     //explore nw
     if(strcmp(dir, "nw") == 0){
         int i = m->fromPoint->row - 1 , j = m->fromPoint->col + 1;

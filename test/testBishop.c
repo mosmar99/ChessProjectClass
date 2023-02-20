@@ -13,23 +13,23 @@ int main(){
     initBishopBoard(board);
 
     //move north direction from d5 to d8
-    move * m1 = createMove(createPoint(5,4), createPoint(8,4), "wB", "--");
+    move * m1 = createMove(createPoint(3,4), createPoint(3,7), "wB", "--");
     validMove[0] = checkBishopMove(m1, board);
 
     //move north east direction from d5 to g8 will be false since we are trying to "jump" a pawn
-    move * m2 = createMove(createPoint(5,4), createPoint(8,7), "wB", "--");
+    move * m2 = createMove(createPoint(3,4), createPoint(6,7), "wB", "--");
     validMove[1] = checkBishopMove(m2, board);
 
     //move south east direction from d5 to h1
-    move * m3 = createMove(createPoint(5,4), createPoint(1,8), "wB", "--");
+    move * m3 = createMove(createPoint(3,4), createPoint(7,0), "wB", "--");
     validMove[2] = checkBishopMove(m3, board);
 
     //move south west direction from d5 to a2
-    move * m4 = createMove(createPoint(5,4), createPoint(2,1), "wB", "--");
+    move * m4 = createMove(createPoint(3,4), createPoint(0,1), "wB", "--");
     validMove[3] = checkBishopMove(m4, board);
 
     //move north west direction from d5 to a8
-    move * m5 = createMove(createPoint(5,4), createPoint(8,1), "wB", "--");
+    move * m5 = createMove(createPoint(3,4), createPoint(0,7), "wB", "--");
     validMove[4] = checkBishopMove(m5, board);
 
     //pattern should look like this:

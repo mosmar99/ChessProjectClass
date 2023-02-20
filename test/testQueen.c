@@ -12,35 +12,35 @@ int main(){
     initQueenBoard(board);
 
     //move north direction from d5 to d8
-    move * m1 = createMove(createPoint(5,4), createPoint(8,4), "wQ", "--");
+    move * m1 = createMove(createPoint(3,4), createPoint(3,7), "wQ", "--");
     validMove[0] = checkQueenMove(m1, board);
 
     //move north east direction from d5 to g8 will be false since we are trying to "jump" a pawn
-    move * m2 = createMove(createPoint(5,4), createPoint(8,7), "wQ", "--");
+    move * m2 = createMove(createPoint(3,4), createPoint(6,7), "wQ", "--");
     validMove[1] = checkQueenMove(m2, board);
 
     //move east direction from d5 to h5 landing on a pawn of the opposite color.
-    move * m3 = createMove(createPoint(5,4), createPoint(5,8), "wQ", "bp");
+    move * m3 = createMove(createPoint(3,4), createPoint(7,4), "wQ", "bp");
     validMove[2] = checkQueenMove(m3, board);
 
     //move south east direction from d5 to h1
-    move * m4 = createMove(createPoint(5,4), createPoint(1,8), "wQ", "--");
+    move * m4 = createMove(createPoint(3,4), createPoint(7,0), "wQ", "--");
     validMove[3] = checkQueenMove(m4, board);
 
     //move south direction attempting to land on a pawn of the same color will thus be false
-    move * m5 = createMove(createPoint(5,4), createPoint(2,4), "wQ", "wp");
+    move * m5 = createMove(createPoint(3,4), createPoint(3,1), "wQ", "wp");
     validMove[4] = checkQueenMove(m5, board);
 
     //move south west direction from d5 to a2
-    move * m6 = createMove(createPoint(5,4), createPoint(2,1), "wQ", "--");
+    move * m6 = createMove(createPoint(3,4), createPoint(0,1), "wQ", "--");
     validMove[5] = checkQueenMove(m6, board);
 
     //move west direction from d5 to a5
-    move * m7 = createMove(createPoint(5,4), createPoint(5,1), "wQ", "--");
+    move * m7 = createMove(createPoint(3,4), createPoint(0,4), "wQ", "--");
     validMove[6] = checkQueenMove(m7, board);
 
     //move north west direction from d5 to a8
-    move * m8 = createMove(createPoint(5,4), createPoint(8,1), "wQ", "--");
+    move * m8 = createMove(createPoint(3,4), createPoint(0,7), "wQ", "--");
     validMove[7] = checkQueenMove(m8, board);
 
     //pattern should look like this:
