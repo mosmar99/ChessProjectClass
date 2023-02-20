@@ -102,7 +102,7 @@ static bool exploreDiagonal(int rowOffset, int colOffset, char pieceColor, char 
 
     int deltaRow, deltaCol;
 
-    bool onBoard = true;
+    bool onBoard = isOnBoard(i,j);
     bool lineBlocked = false;
 
     bool friendlyPiece = false;
@@ -155,7 +155,7 @@ static bool exploreStraight(int rowOffset, int colOffset, char pieceColor, char 
 
     int deltaRow, deltaCol;
 
-    bool onBoard = true;
+    bool onBoard = isOnBoard(i,j);
     bool lineBlocked = false;
 
     bool friendlyPiece;

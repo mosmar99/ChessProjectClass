@@ -12,6 +12,6 @@
         Boolean value, true if move is valid.
 */
 
-bool checkQueenMove(move *m, char *board[8][8]);
+bool checkQueenMove(const move *const m, char *const board[8][8]);
 
 #endif

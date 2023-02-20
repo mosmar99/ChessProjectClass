@@ -6,26 +6,10 @@
 #include <stdlib.h>
 #include <makeMove.h>
 
-static char * getDirection(move *m);
-static bool exploreDirection (char *dir, move *m, char *board[8][8]);
+static char * getDirection(const move *const m);
+static bool exploreDirection (char *dir, const move *const m, char *const board[8][8]);
 
-bool checkQueenMove(move *m, char *board[8][8]){
-
-    int tempRow;
-    int tempCol;
-
-    tempRow = m->fromPoint->row - 1;
-    tempCol = m->fromPoint->col - 1;
-    
-    m->fromPoint->row = tempCol;
-    m->fromPoint->col = tempRow;
-
-    tempRow = m->toPoint->row - 1;
-    tempCol = m->toPoint->col - 1;
-    
-    m->toPoint->row = tempCol;
-    m->toPoint->col = tempRow;
-
+bool checkQueenMove(const move *const m, char *const board[8][8]){
 
     char *dir = getDirection(m);
     if(dir == NULL){
@@ -37,7 +21,7 @@ bool checkQueenMove(move *m, char *board[8][8]){
 
 }
 
-char * getDirection(move *m){
+char * getDirection(const move *const m){
     char *direction;
     int deltaX = abs(m->fromPoint->row - m->toPoint->row);
     int deltaY = abs(m->fromPoint->col - m->toPoint->col);
@@ -68,7 +52,7 @@ char * getDirection(move *m){
         }
     }
     if(deltaX == 0){
-        if(m->fromPoint->col < m->toPoint->col){
+        if(m->fromPoint->col > m->toPoint->col){
             return direction = "w";
         }
         else{
@@ -78,7 +62,7 @@ char * getDirection(move *m){
     return direction = NULL;
 }
 
-bool exploreDirection (char *dir, move *m, char *board[8][8]){
+bool exploreDirection (char *dir, const move *const m,char *const board[8][8]){
     //explore nw
     if(strcmp(dir, "nw") == 0){
         int i = m->fromPoint->row - 1 , j = m->fromPoint->col + 1;
@@ -135,12 +119,12 @@ bool exploreDirection (char *dir, move *m, char *board[8][8]){
     }
     //explore e
     if(strcmp(dir, "e") == 0){
-        int i = m->fromPoint->row, j = m->fromPoint->col - 1;
+        int i = m->fromPoint->row, j = m->fromPoint->col + 1;
         while(j < m->toPoint->col){
             if(strcmp(board[i][j], "--") != 0){
                 return false;
             }
-            j--;
+            j++;
         }
     }
     //explore s
@@ -155,12 +139,12 @@ bool exploreDirection (char *dir, move *m, char *board[8][8]){
     }
     //explore w
     if(strcmp(dir, "w") == 0){
-        int i = m->fromPoint->row, j = m->fromPoint->col + 1;
+        int i = m->fromPoint->row, j = m->fromPoint->col - 1;
         while(j > m->toPoint->col){
             if(strcmp(board[i][j], "--") != 0){
                 return false;
             }
-            j++;
+            j--;
         }
     }
     //direction was valid now check landing square
