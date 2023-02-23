@@ -562,7 +562,7 @@ bool applyMove(move *mx, char *board[size][size])
         return validMove;
         break;
     case 'p':
-        validMove = checkPawnMove(mx, board);
+        validMove = checkPawnMove(mx, board, head);
         if (validMove)
             action(mx, board);
         return validMove;
