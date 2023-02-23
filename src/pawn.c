@@ -186,7 +186,7 @@ static bool checkEnPassantStep2(const move *const m, char *const board[8][8], co
 static bool checkEnPassantStep3(const move *const move, char *const board[8][8], const history *const head)
 {
     // The en passant capture must be performed on the turn immediately after the pawn being captured moves.
-    // If the player does not capture en passant on that turn, they no longer can do it later.
+    // If the player does not capture en passant on that turn, they no longer can do it later. /
 }
 
 static Color getColor(const char *const piece)
