@@ -9,7 +9,6 @@
 #include "makeBoard.h"
 
 #define size (7+1)
-#define NULL ((void *)0)
 
 typedef struct point {
     unsigned int col;

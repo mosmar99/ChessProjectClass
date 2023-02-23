@@ -7,9 +7,9 @@ Created on Fri Feb 17 05:02:45 2023
 
 import ctypes
 
-# type in command in workspaceFolder (gets shared library)
+# type in command in python folder (gets shared library)
 # gcc -fPIC -shared -o lib.so testPy.c
 # gcc -shared -o lib.dll testPy.c
-lib = ctypes.CDLL("./lib.dll")
+lib = ctypes.CDLL("./lib.so")
 
 lib.display()

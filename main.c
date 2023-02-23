@@ -7,5 +7,5 @@ int main(void) {
     initBoard(board);
     printBoard(board);
     play(board);
-    exit(0);
+    return 0;
 }

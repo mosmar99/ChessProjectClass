@@ -1,55 +1,63 @@
-gcno=test/*.gcno
-gcda=test/*.gcda
-exe=test/*.exe
+gcno=tests/unitTests/*.gcno
+gcda=tests/unitTests/*.gcda
+exe=tests/unitTests/*.exe
 gcov=*.gcov
 
 default:
 	gcc main.c src/*.c -I include/ -o ./bin/main.exe
+
+.PHONY: tests
+
+run: default
 	./bin/main.exe
 
-.PHONY: test
+intTests: intExit
 
-test: testTrashInput testSelfCapture testQueen testBishop testPawn testRook testKing
+intExit: default
+	./bin/main.exe < ./tests/integrationTests/exit/input.txt > ./tests/integrationTests/exit/out.txt
+	diff ./tests/integrationTests/exit/out.txt ./tests/integrationTests/exit/refOut.txt
 
-testTrashInput:
-	gcc -fprofile-arcs -ftest-coverage test/testTrashInput.c src/*.c -I include -o test/tTI.exe
-	test/tTI.exe
-	gcov test/tTI-makeMove.gcno
+unitTests: unitTrashInput unitSelfCapture unitQueen unitBishop unitPawn unitRook unitKing
 
-testSelfCapture:
-	gcc -fprofile-arcs -ftest-coverage test/testSelfCapture.c src/*.c -I include -o test/tSC.exe
-	test/tSC.exe
-	gcov test/tSC-makeMove.gcno
+unitTrashInput:
+	gcc -fprofile-arcs -ftest-coverage tests/unitTests/utTrashInput.c src/*.c -I include -o tests/unitTests/tTI.exe
+	tests/unitTests/tTI.exe
+	gcov tests/unitTests/tTI-makeMove.gcno
 
-testQueen:
-	gcc -fprofile-arcs -ftest-coverage test/testQueen.c src/*.c -I include -o test/tq.exe
-	test/tq.exe
-	gcov test/tq-queen.gcno
+unitSelfCapture:
+	gcc -fprofile-arcs -ftest-coverage tests/unitTests/utSelfCapture.c src/*.c -I include -o tests/unitTests/tSC.exe
+	tests/unitTests/tSC.exe
+	gcov tests/unitTests/tSC-makeMove.gcno
 
-testBishop:
-	gcc -fprofile-arcs -ftest-coverage test/testBishop.c src/*.c -I include -o test/tb.exe
-	test/tb.exe
-	gcov test/tb-bishop.gcno
+unitQueen:
+	gcc -fprofile-arcs -ftest-coverage tests/unitTests/utQueen.c src/*.c -I include -o tests/unitTests/tq.exe
+	tests/unitTests/tq.exe
+	gcov tests/unitTests/tq-queen.gcno
 
-testKnight:
-	gcc -fprofile-arcs -ftest-coverage test/testKnight.c src/*.c -I include -o test/tn.exe
-	test/tn.exe
-	gcov test/tn-knight.gcno
+unitBishop:
+	gcc -fprofile-arcs -ftest-coverage tests/unitTests/utBishop.c src/*.c -I include -o tests/unitTests/tb.exe
+	tests/unitTests/tb.exe
+	gcov tests/unitTests/tb-bishop.gcno
 
-testRook:
-	gcc -fprofile-arcs -ftest-coverage test/testRook.c src/*.c -I include -o test/tr.exe
-	test/tr.exe
-	gcov test/tr-rook.gcno 
+unitKnight:
+	gcc -fprofile-arcs -ftest-coverage tests/unitTests/utKnight.c src/*.c -I include -o tests/unitTests/tn.exe
+	tests/unitTests/tn.exe
+	gcov tests/unitTests/tn-knight.gcno
 
-testPawn:
-	gcc -fprofile-arcs -ftest-coverage test/testPawn.c src/*.c -I include -o test/tp.exe
-	test/tp.exe
-	gcov test/tp-pawn.gcno
+unitRook:
+	gcc -fprofile-arcs -ftest-coverage tests/unitTests/utRook.c src/*.c -I include -o tests/unitTests/tr.exe
+	tests/unitTests/tr.exe
+	gcov tests/unitTests/tr-rook.gcno 
 
-testKing:
-	gcc -fprofile-arcs -ftest-coverage test/testKing.c src/*.c -I include -o test/tk.exe
-	test/tk.exe
-	gcov test/tk-king.gcno
+unitPawn:
+	gcc -fprofile-arcs -ftest-coverage tests/unitTests/utPawn.c src/*.c -I include -o tests/unitTests/tp.exe
+	tests/unitTests/tp.exe
+	gcov tests/unitTests/tp-pawn.gcno
+
+unitKing:
+	gcc -fprofile-arcs -ftest-coverage tests/unitTests/utKing.c src/*.c -I include -o tests/unitTests/tk.exe
+	tests/unitTests/tk.exe
+	gcov tests/unitTests/tk-king.gcno
 
 clean:
 	rm $(gcno) $(gcda) $(exe) $(gcov)
