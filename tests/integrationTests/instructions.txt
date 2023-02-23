@@ -1,0 +1,2 @@
+1)  ./bin/main.exe < ./test/integrationTests/exit/input.txt > ./test/integrationTests/exit/out.txt
+2)  diff ./test/integrationTests/exit/out.txt ./test/integrationTests/exit/refOut.txt
