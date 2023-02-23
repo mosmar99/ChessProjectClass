@@ -180,7 +180,7 @@ static bool checkEnPassantStep2(const move *const m, char *const board[8][8], co
 {
     // The captured pawn must have moved two squares in one move, landing right next to the capturing pawn.
 
-    const move *const last = head->mx;
+    const move *const last = head->mx;//
 }
 
 static bool checkEnPassantStep3(const move *const move, char *const board[8][8], const history *const head)
