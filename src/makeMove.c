@@ -517,7 +517,7 @@ void getTransform(int *dest, char *src)
     }
 }
 
-void action(move *mx, char *board[size][size])
+void action(move *mx, char *board[size][size], bool *wasEnPassant)
 {
     // todo manipulate board according to move: "e2 e4"
     // put "--" in old position
@@ -528,6 +528,21 @@ void action(move *mx, char *board[size][size])
 
     // put "--"" in old position
     board[mx->fromPoint->row][mx->fromPoint->col] = "--";
+
+    /*
+    if move was en passant
+        put "--" behind the pawn
+    */
+    if (*wasEnPassant)
+        switch (*(mx->movingPiece))
+        {
+        case 'w':
+            board[mx->toPoint->row - 1][mx->toPoint->col] = "--";
+            break;
+        case 'b':
+            board[mx->toPoint->row + 1][mx->toPoint->col] = "--";
+            break;
+        }
 }
 
 bool applyMove(move *mx, char *board[size][size])
@@ -538,33 +553,34 @@ bool applyMove(move *mx, char *board[size][size])
     case 'R':
         validMove = checkRookMove(mx, board);
         if (validMove)
-            action(mx, board);
+            action(mx, board, NULL);
         return validMove;
     case 'N':
         validMove = checkKnightMove(mx, board);
         if (validMove)
-            action(mx, board);
+            action(mx, board, NULL);
         return validMove;
     case 'B':
         validMove = checkBishopMove(mx, board); // segfault
         if (validMove)
-            action(mx, board);
+            action(mx, board, NULL);
         return validMove;
     case 'Q':
         validMove = checkQueenMove(mx, board); // segfault
         if (validMove)
-            action(mx, board);
+            action(mx, board, NULL);
         return validMove;
     case 'K':
         validMove = checkKingMove(mx, board);
         if (validMove)
-            action(mx, board);
+            action(mx, board, NULL);
         return validMove;
         break;
     case 'p':
-        validMove = checkPawnMove(mx, board, head);
+        bool *enPassant = false;
+        validMove = checkPawnMove(mx, board, head, enPassant);
         if (validMove)
-            action(mx, board);
+            action(mx, board, enPassant);
         return validMove;
 
     default:
