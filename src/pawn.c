@@ -71,7 +71,8 @@ static bool assertMove(const move *const move);
 // Returns: true if OK, otherwise false.
 static bool assertBoard(char *const board[8][8]);
 
-bool checkPawnMove(const move *const move, char *const board[8][8], const history *const head)
+bool checkPawnMove(const move *const move, char *const board[8][8],
+                   const history *const head, bool *wasEnPassant)
 {
     if (!assertMove(move) || !assertBoard(board))
         return false;
@@ -154,6 +155,10 @@ static bool checkEnPassant(const move *const move, char *const board[8][8], cons
        The checking of 2. and 3. goes hand in hand, hence the joint check method.
     */
 
+    // en passant is critically dependent on the last made move
+    if (head == NULL || head->mx == NULL)
+        return false;
+
     if (checkEnPassantStep1(move, board) &&
         checkEnPassantStep2And3(move, board, head))
         return true;
@@ -185,7 +190,6 @@ static bool checkEnPassantStep2And3(const move *const m, char *const board[8][8]
     3. check that the enemy pawn is directly adjacent to the capturing pawn
     */
 
-    // at least 4 moves has guaranteed been made prior to en passant
     // 1.
     const move *const last = head->mx;
 
