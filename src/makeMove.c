@@ -532,6 +532,8 @@ void action(move *mx, char *board[size][size], bool *wasEnPassant)
     /*
     if move was en passant
         put "--" behind the moved pawn
+        --> if you don't, opponents pawn is still on the board
+            (because the capturing pawn doesn't land on the captured piece in En Passant)
     */
     if (*wasEnPassant)
         switch (*(mx->movingPiece))
