@@ -531,7 +531,7 @@ void action(move *mx, char *board[size][size], bool *wasEnPassant)
 
     /*
     if move was en passant
-        put "--" behind the pawn
+        put "--" behind the moved pawn
     */
     if (*wasEnPassant)
         switch (*(mx->movingPiece))
@@ -577,10 +577,10 @@ bool applyMove(move *mx, char *board[size][size])
         return validMove;
         break;
     case 'p':
-        bool *enPassant = false;
-        validMove = checkPawnMove(mx, board, head, enPassant);
+        bool enPassant = false;
+        validMove = checkPawnMove(mx, board, head, &enPassant);
         if (validMove)
-            action(mx, board, enPassant);
+            action(mx, board, &enPassant);
         return validMove;
 
     default:

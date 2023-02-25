@@ -24,10 +24,12 @@ typedef enum VerticalDirection
 //      deltaX: the delta in horizontal movement.
 //      deltaY: the delta in vertical movement.
 //      head: a linked list, with head pointing to the last made move.
+//      wasEnPassant: boolean flag which is true ONLY if the move was En Passant.
 // Returns: true if collision is detected, otherwise false.
 static bool checkCollisions(const move *const move, char *const board[8][8],
                             short deltaX, short deltaY,
-                            const history *const head);
+                            const history *const head,
+                            bool *wasEnPassant);
 
 // Handler for checking validity of en passant move
 //      move: a move struct filled with neccessary information for the desired move.
@@ -45,7 +47,7 @@ static bool checkEnPassantStep1(const move *const move, char *const board[8][8])
 
 // Checks the criterias: "The captured pawn must have moved two squares in one move,
 //                        landing right next to the capturing pawn.",
-//                        and
+//                        AND
 //                        "The en passant capture must be performed on the turn
 //                        immediately after the pawn being captured moves.
 //                        If the player does not capture en passant on that turn
@@ -104,7 +106,7 @@ bool checkPawnMove(const move *const move, char *const board[8][8],
 
     // at this point the desired move is plausible from the given 'to' and 'from' coordinates
     // check collisions
-    if (checkCollisions(move, board, deltaX, deltaY, head))
+    if (checkCollisions(move, board, deltaX, deltaY, head, wasEnPassant))
         return false;
 
     return true;
@@ -112,16 +114,22 @@ bool checkPawnMove(const move *const move, char *const board[8][8],
 
 static bool checkCollisions(const move *const move, char *const board[8][8],
                             const short deltaX, const short deltaY,
-                            const history *const head)
+                            const history *const head,
+                            bool *wasEnPassant)
 {
     if (abs(deltaX) == 1) // desire to move diagonally 1 step, i.e. attack an enemy piece
     {
-        if (abs(deltaY) != 1)
+        if (abs(deltaY) != 1 || wasEnPassant == NULL)
             return false;
+        assert(*wasEnPassant == true || *wasEnPassant == false);
 
         // check if the desired move is an en passant move
         if (checkEnPassant(move, board, head))
+        {
+            *wasEnPassant = true;
             return false;
+        }
+        *wasEnPassant = false; // make sure flag is set to false if NOT an en passant move
 
         // a normal attack:
         // the piece the pawn is moving to must be an enemy
@@ -188,6 +196,7 @@ static bool checkEnPassantStep2And3(const move *const m, char *const board[8][8]
     1. check the last made move
     2. check that an enemy pawn moved 2 squares in that move
     3. check that the enemy pawn is directly adjacent to the capturing pawn
+    4. check that the capturing pawn lands on an empty spot
     */
 
     // 1.
@@ -211,6 +220,10 @@ static bool checkEnPassantStep2And3(const move *const m, char *const board[8][8]
 
     // 3.
     if (last->toPoint->row != m->fromPoint->row || abs(last->toPoint->col - m->fromPoint->col) != 1)
+        return false;
+
+    // 4.
+    if (strncmp(board[m->toPoint->row][m->toPoint->col], "--", 2) != 0)
         return false;
 
     return true;
