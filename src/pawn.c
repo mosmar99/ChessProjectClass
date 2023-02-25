@@ -23,10 +23,13 @@ typedef enum VerticalDirection
 //      board: the string matrix representation of the current board state.
 //      deltaX: the delta in horizontal movement.
 //      deltaY: the delta in vertical movement.
+//      head: a linked list, with head pointing to the last made move.
+//      wasEnPassant: boolean flag which is true ONLY if the move was En Passant.
 // Returns: true if collision is detected, otherwise false.
 static bool checkCollisions(const move *const move, char *const board[8][8],
                             short deltaX, short deltaY,
-                            const history *const head);
+                            const history *const head,
+                            bool *wasEnPassant);
 
 // Handler for checking validity of en passant move
 //      move: a move struct filled with neccessary information for the desired move.
@@ -42,23 +45,18 @@ static bool checkEnPassant(const move *const move, char *const board[8][8], cons
 // Returns true if the criteria is fulfilled, otherwise false.
 static bool checkEnPassantStep1(const move *const move, char *const board[8][8]);
 
-// Checks the criteria: "The captured pawn must have moved two squares in one move,
-//                       landing right next to the capturing pawn.".
+// Checks the criterias: "The captured pawn must have moved two squares in one move,
+//                        landing right next to the capturing pawn.",
+//                        AND
+//                        "The en passant capture must be performed on the turn
+//                        immediately after the pawn being captured moves.
+//                        If the player does not capture en passant on that turn
+//                        they no longer can do it later."
 //      move: a move struct filled with neccessary information for the desired move.
 //      board: the string matrix representation of the current board state.
 //      head: a linked list, with head pointing to the last made move.
-// Returns true if the criteria is fulfilled, otherwise false.
-static bool checkEnPassantStep2(const move *const move, char *const board[8][8], const history *const head);
-
-// Checks the criteria: "The en passant capture must be performed on the turn
-//                       immediately after the pawn being captured moves.
-//                       If the player does not capture en passant on that turn
-//                       they no longer can do it later."
-//      move: a move struct filled with neccessary information for the desired move.
-//      board: the string matrix representation of the current board state.
-//      head: a linked list, with head pointing to the last made move.
-// Returns true if the criteria is fulfilled, otherwise false.
-static bool checkEnPassantStep3(const move *const move, char *const board[8][8], const history *const head);
+// Returns true if the criterias are fulfilled, otherwise false.
+static bool checkEnPassantStep2And3(const move *const move, char *const board[8][8], const history *const head);
 
 // Get the color of the player that tries to make the move.
 //      piece: the string representation of a piece.
@@ -75,9 +73,10 @@ static bool assertMove(const move *const move);
 // Returns: true if OK, otherwise false.
 static bool assertBoard(char *const board[8][8]);
 
-bool checkPawnMove(const move *const move, char *const board[8][8], const history *const head)
+bool checkPawnMove(const move *const move, char *const board[8][8],
+                   const history *const head, bool *wasEnPassant)
 {
-    if (!assertMove(move) || !assertBoard(board) || head == NULL)
+    if (!assertMove(move) || !assertBoard(board))
         return false;
 
     // get color of the player
@@ -107,7 +106,7 @@ bool checkPawnMove(const move *const move, char *const board[8][8], const histor
 
     // at this point the desired move is plausible from the given 'to' and 'from' coordinates
     // check collisions
-    if (checkCollisions(move, board, deltaX, deltaY, head))
+    if (checkCollisions(move, board, deltaX, deltaY, head, wasEnPassant))
         return false;
 
     return true;
@@ -115,16 +114,22 @@ bool checkPawnMove(const move *const move, char *const board[8][8], const histor
 
 static bool checkCollisions(const move *const move, char *const board[8][8],
                             const short deltaX, const short deltaY,
-                            const history *const head)
+                            const history *const head,
+                            bool *wasEnPassant)
 {
     if (abs(deltaX) == 1) // desire to move diagonally 1 step, i.e. attack an enemy piece
     {
-        if (abs(deltaY) != 1)
+        if (abs(deltaY) != 1 || wasEnPassant == NULL)
             return false;
+        assert(*wasEnPassant == true || *wasEnPassant == false);
 
         // check if the desired move is an en passant move
         if (checkEnPassant(move, board, head))
+        {
+            *wasEnPassant = true;
             return false;
+        }
+        *wasEnPassant = false; // make sure flag is set to false if NOT an en passant move
 
         // a normal attack:
         // the piece the pawn is moving to must be an enemy
@@ -154,11 +159,16 @@ static bool checkEnPassant(const move *const move, char *const board[8][8], cons
     2. The captured pawn must have moved two squares in one move, landing right next to the capturing pawn.
     3. The en passant capture must be performed on the turn immediately after the pawn being captured moves.
        If the player does not capture en passant on that turn, they no longer can do it later.
+
+       The checking of 2. and 3. goes hand in hand, hence the joint check method.
     */
 
+    // en passant is critically dependent on the last made move
+    if (head == NULL || head->mx == NULL)
+        return false;
+
     if (checkEnPassantStep1(move, board) &&
-        checkEnPassantStep2(move, board, head) &&
-        checkEnPassantStep3(move, board, head))
+        checkEnPassantStep2And3(move, board, head))
         return true;
 
     return false;
@@ -168,25 +178,55 @@ static bool checkEnPassantStep1(const move *const move, char *const board[8][8])
 {
     // The capturing pawn must have advanced exactly tree ranks to perform this move.
 
-    if (*(move->movingPiece) == 'b' && move->fromPoint->row == 3)
-        return true;
     if (*(move->movingPiece) == 'w' && move->fromPoint->row == 4)
+        return true;
+    if (*(move->movingPiece) == 'b' && move->fromPoint->row == 3)
         return true;
 
     return false;
 }
 
-static bool checkEnPassantStep2(const move *const m, char *const board[8][8], const history *const head)
+static bool checkEnPassantStep2And3(const move *const m, char *const board[8][8], const history *const head)
 {
     // The captured pawn must have moved two squares in one move, landing right next to the capturing pawn.
-
-    const move *const last = head->mx;//
-}
-
-static bool checkEnPassantStep3(const move *const move, char *const board[8][8], const history *const head)
-{
     // The en passant capture must be performed on the turn immediately after the pawn being captured moves.
-    // If the player does not capture en passant on that turn, they no longer can do it later.
+    //      If the player does not capture en passant on that turn they no longer can do it later.
+
+    /*
+    1. check the last made move
+    2. check that an enemy pawn moved 2 squares in that move
+    3. check that the enemy pawn is directly adjacent to the capturing pawn
+    4. check that the capturing pawn lands on an empty spot
+    */
+
+    // 1.
+    const move *const last = head->mx;
+
+    // 2.
+    if (abs(last->fromPoint->row - last->toPoint->row) != 2)
+        return false;
+
+    switch (*(m->movingPiece))
+    {
+    case 'w':
+        if (strncmp(last->movingPiece, "bp", 2) != 0)
+            return false;
+        break;
+    case 'b':
+        if (strncmp(last->movingPiece, "wp", 2) != 0)
+            return false;
+        break;
+    }
+
+    // 3.
+    if (last->toPoint->row != m->fromPoint->row || abs(last->toPoint->col - m->fromPoint->col) != 1)
+        return false;
+
+    // 4.
+    if (strncmp(board[m->toPoint->row][m->toPoint->col], "--", 2) != 0)
+        return false;
+
+    return true;
 }
 
 static Color getColor(const char *const piece)
