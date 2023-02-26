@@ -1,5 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "makeBoard.h"
 
 void printBoardBlack(char *board[8][8]) {
     char numbers[8] = {'1', '2', '3', '4', '5', '6', '7', '8'};
@@ -11,7 +12,18 @@ void printBoardBlack(char *board[8][8]) {
         printf("%c   ", *(numbers+(i)));
         for (size_t j = 0; j < 8; j++)
         {
-            printf("%s  ", board[i][7-j]);
+            if (*board[i][7-j] == 'w')
+            {
+                printf(BLU "%s  " reset, board[i][7-j]);
+            }
+            else if(*board[i][7-j] == 'b')
+            {
+                printf(RED "%s  " reset, board[i][7-j]);
+            }
+            else
+            {
+                printf("%s  ", board[i][7-j]);
+            }
         }
         printf("\n");
     }
@@ -38,7 +50,18 @@ void printBoard(char *board[8][8]) {
         printf("%c   ", *(numbers+(7-i)));
         for (size_t j = 0; j < 8; j++)
         {
-            printf("%s  ", board[7-i][j]);
+            if (*board[7-i][j] == 'w')
+            {
+                printf(BLU "%s  " reset, board[7-i][j]);
+            }
+            else if (*board[7-i][j] == 'b')
+            {
+                printf(RED "%s  " reset, board[7-i][j]);
+            }
+            else
+            {
+                printf("%s  ", board[7-i][j]);
+            }
         }
         printf("\n");
     }

@@ -191,7 +191,7 @@ void printHistory()
     else
     {
         int *iter = malloc(sizeof(int));
-        *iter = 1;
+        *iter = 3;
         printMoves(head, iter);
         puts("");
     }
@@ -223,28 +223,29 @@ void printMoves(history *curr, int *iter)
 
     char letter = (curr->mx->toPoint->col + 49) + '0';
     int digit = curr->mx->toPoint->row + 1;
+    int historyIter = 1;
 
     if (*iter % 2 != 0) // whites turn
     {
 
         if (curr->mx->movingPiece[1] == 'p')
         {
-            printf("%2d.%4c%d", *iter, letter, digit);
+            printf(WHT "%2d." reset BLU "%4c%d" reset, (*iter)/2, letter, digit);
         }
         else
         {
-            printf("%2d.%4c%c%d", *iter, curr->mx->movingPiece[1], letter, digit);
+            printf(WHT "%2d." reset RED "%4c%c%d" reset, (*iter)/2, curr->mx->movingPiece[1], letter, digit);
         }
     }
     else // black turn
     {
         if (curr->mx->movingPiece[1] == 'p')
         {
-            printf("%4c%d\n", letter, digit);
+            printf(RED "%4c%d" reset "\n", letter, digit);
         }
         else
         {
-            printf("%3c%c%d\n", curr->mx->movingPiece[1], letter, digit);
+            printf(RED "%3c%c%d" reset "\n", curr->mx->movingPiece[1], letter, digit);
         }
     }
 
@@ -253,7 +254,7 @@ void printMoves(history *curr, int *iter)
 
 void moveHistory(move *mx)
 {
-    history *curr = malloc(sizeof(history));
+    history *curr = calloc(1, sizeof(history));
     if (head == NULL)
     {
         curr->mx = mx;
@@ -276,7 +277,6 @@ bool noGeneralErrors(move *mx, enum player turn)
     if (*(mx->movingPiece) == *(mx->capturedPiece))
     {
         puts("---> Error: Not a valid move");
-        puts("---> Reason: Can not capture same colored piece");
         return false;
     }
 
@@ -284,7 +284,6 @@ bool noGeneralErrors(move *mx, enum player turn)
     if (turn == BLANCO && *(mx->movingPiece) == 'b' || turn == NEGRO && *(mx->movingPiece) == 'w')
     {
         puts("---> Error: Not a valid move");
-        puts("---> Reason: Can not move opponents pieces");
         return false;
     }
 
@@ -420,12 +419,12 @@ char *requestMove(enum player turn)
     // prompt user for move
     if (turn == BLANCO)
     {
-        printf("Enter white's move [Piece][Square]-->[Piece][Square]: ");
+        printf("Enter " BLU "white's" reset " move: ");
         fflush(stdout);
     }
     else
     {
-        printf("Enter black's move [Piece][Square]-->[Piece][Square]: ");
+        printf("Enter " RED "black's" reset " move: ");
         fflush(stdout);
     }
 
@@ -549,7 +548,7 @@ void action(move *mx, char *board[size][size], bool *wasEnPassant)
 
 bool applyMove(move *mx, char *board[size][size])
 {
-    bool validMove;
+    bool validMove, enPassant = false;
     switch (mx->movingPiece[1])
     {
     case 'R':
@@ -579,7 +578,6 @@ bool applyMove(move *mx, char *board[size][size])
         return validMove;
         break;
     case 'p':
-        bool enPassant = false;
         validMove = checkPawnMove(mx, board, head, &enPassant);
         if (validMove)
             action(mx, board, &enPassant);
