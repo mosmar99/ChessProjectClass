@@ -277,7 +277,6 @@ bool noGeneralErrors(move *mx, enum player turn)
     if (*(mx->movingPiece) == *(mx->capturedPiece))
     {
         puts("---> Error: Not a valid move");
-        puts("---> Reason: Can not capture same colored piece");
         return false;
     }
 
@@ -285,7 +284,6 @@ bool noGeneralErrors(move *mx, enum player turn)
     if (turn == BLANCO && *(mx->movingPiece) == 'b' || turn == NEGRO && *(mx->movingPiece) == 'w')
     {
         puts("---> Error: Not a valid move");
-        puts("---> Reason: Can not move opponents pieces");
         return false;
     }
 
