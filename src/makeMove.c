@@ -419,12 +419,12 @@ char *requestMove(enum player turn)
     // prompt user for move
     if (turn == BLANCO)
     {
-        printf("Enter white's move [Piece][Square]-->[Piece][Square]: ");
+        printf("Enter " BLU "white's" reset " move: ");
         fflush(stdout);
     }
     else
     {
-        printf("Enter black's move [Piece][Square]-->[Piece][Square]: ");
+        printf("Enter " RED "black's" reset " move: ");
         fflush(stdout);
     }
 
