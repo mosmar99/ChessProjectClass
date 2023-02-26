@@ -254,7 +254,7 @@ void printMoves(history *curr, int *iter)
 
 void moveHistory(move *mx)
 {
-    history *curr = malloc(sizeof(history));
+    history *curr = calloc(1, sizeof(history));
     if (head == NULL)
     {
         curr->mx = mx;
