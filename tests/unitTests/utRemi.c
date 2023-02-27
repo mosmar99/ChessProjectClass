@@ -155,6 +155,7 @@ void main (void){
 
     #pragma endregion
 
+    printf("REMI TEST PASSED");
     system("pause");
 }
 
