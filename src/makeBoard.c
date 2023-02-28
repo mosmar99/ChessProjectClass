@@ -14,15 +14,15 @@ void printBoardBlack(char *board[8][8]) {
         {
             if (*board[i][7-j] == 'w')
             {
-                printf(BLU "%s  " reset, board[i][7-j]);
+                printf(BLU "%c  " reset, *(board[i][7-j]+1));
             }
             else if(*board[i][7-j] == 'b')
             {
-                printf(RED "%s  " reset, board[i][7-j]);
+                printf(RED "%c  " reset, *(board[i][7-j]+1));
             }
             else
             {
-                printf("%s  ", board[i][7-j]);
+                printf("%c  ", *(board[i][7-j]+1));
             }
         }
         printf("\n");
@@ -52,15 +52,15 @@ void printBoard(char *board[8][8]) {
         {
             if (*board[7-i][j] == 'w')
             {
-                printf(BLU "%s  " reset, board[7-i][j]);
+                printf(BLU "%c  " reset, *(board[7-i][j]+1));
             }
             else if (*board[7-i][j] == 'b')
             {
-                printf(RED "%s  " reset, board[7-i][j]);
+                printf(RED "%c  " reset, *(board[7-i][j]+1));
             }
             else
             {
-                printf("%s  ", board[7-i][j]);
+                printf("%c  ", *(board[7-i][j]+1));
             }
         }
         printf("\n");
@@ -71,7 +71,7 @@ void printBoard(char *board[8][8]) {
 
     for (size_t i = 0; i < 8; i++)
     {
-        printf("%c   ", *(letters+i));
+        printf("%c  ", *(letters+i));
     }
     
 
