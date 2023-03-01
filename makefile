@@ -8,6 +8,12 @@ default:
 
 .PHONY: tests
 
+dll:
+	gcc src/*.c -I include/ -shared -o ./bin/chess.dll
+
+so:
+	gcc src/*.c -I include/ -shared -o ./bin/chess.so
+
 run: default
 	./bin/main.exe
 

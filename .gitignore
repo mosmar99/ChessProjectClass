@@ -1,5 +1,7 @@
 *.json
 *.exe
+*.dll
+*.so
 *.gcov
 *.gcda
 *.gcno
