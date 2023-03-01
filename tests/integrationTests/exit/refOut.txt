@@ -1,14 +1,27 @@
-    ### New Game ###  
+[1;36m
+### New Game ###  [0m
 
-8   bR  bN  bB  bQ  bK  bB  bN  bR  
-7   bp  bp  bp  bp  bp  bp  bp  bp  
-6   --  --  --  --  --  --  --  --  
-5   --  --  --  --  --  --  --  --  
-4   --  --  --  --  --  --  --  --  
-3   --  --  --  --  --  --  --  --  
-2   wp  wp  wp  wp  wp  wp  wp  wp  
-1   wR  wN  wB  wQ  wK  wB  wN  wR  
+[4;33mMove Format:[0m
+[0;33m--> Pawns: [0m<From Column><From Row>--<Space>--<To Column><To Row>[0;32m e2 e4[0m
+[0;33m--> Minor or Major Pieces: [0m<Piece Letter><From Column><From Row>--<Space>--<Piece Letter><To Column><To Row>[0;32m Nb1 Nc3[0m
+
+8   [0;31mR   [0m[0;31mN   [0m[0;31mB   [0m[0;31mQ   [0m[0;31mK   [0m[0;31mB   [0m[0;31mN   [0m[0;31mR   [0m
+
+7   [0;31mp   [0m[0;31mp   [0m[0;31mp   [0m[0;31mp   [0m[0;31mp   [0m[0;31mp   [0m[0;31mp   [0m[0;31mp   [0m
+
+6   -   -   -   -   -   -   -   -   
+
+5   -   -   -   -   -   -   -   -   
+
+4   -   -   -   -   -   -   -   -   
+
+3   -   -   -   -   -   -   -   -   
+
+2   [0;34mp   [0m[0;34mp   [0m[0;34mp   [0m[0;34mp   [0m[0;34mp   [0m[0;34mp   [0m[0;34mp   [0m[0;34mp   [0m
+
+1   [0;34mR   [0m[0;34mN   [0m[0;34mB   [0m[0;34mQ   [0m[0;34mK   [0m[0;34mB   [0m[0;34mN   [0m[0;34mR   [0m
+
 
     a   b   c   d   e   f   g   h   
 
-Enter white's move [Piece][Square]-->[Piece][Square]: 
+Enter [0;34mwhite's[0m move: 
