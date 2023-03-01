@@ -123,7 +123,7 @@ static bool exploreDiagonal(int rowOffset, int colOffset, char pieceColor, char 
         queen = strrchr(board[i][j],'Q');
         knight = strrchr(board[i][j], 'N');
         rook = strrchr(board[i][j], 'R');
-        king = (strrchr(board[i][j],'K') && (deltaRow < 2 && deltaCol < 2));
+        king = (strrchr(board[i][j],'K') && (deltaRow <= 2 && deltaCol <= 2));
         friendlyPiece = (strrchr(board[i][j], pieceColor));
     
         lineBlocked =   (friendlyPiece || rook || knight || (strrchr(board[i][j], 'p') && !pawn) || 
@@ -177,7 +177,7 @@ static bool exploreStraight(int rowOffset, int colOffset, char pieceColor, char 
         queen = strrchr(board[i][j],'Q');
         knight = strrchr(board[i][j], 'N');
         rook = strrchr(board[i][j], 'R');
-        king = (strrchr(board[i][j],'K') && (deltaRow <= 2 || deltaCol <= 2));
+        king = (strrchr(board[i][j],'K') && (deltaRow <= 2 && deltaCol <= 2));
         friendlyPiece = (strrchr(board[i][j], pieceColor));
 
         //FIX THIS 

@@ -15,6 +15,7 @@ struct history *hs = NULL;
 void main (void){
 
     char *board[8][8];
+    char *flag = "whatever";
     history *temp;
     
     #pragma region ***Sufficient Material***
@@ -23,20 +24,20 @@ void main (void){
         board[5][5] = "wK";
         board[5][6] = "wp";
         board[3][3] = "bK";
-        assert(remi(board, hs) == false);
+        assert(remi(board, hs, &flag) == false);
         baseBoard(board);
         //king v king + 2 bishops = not draw
         board[5][5] = "wK";
         board[3][3] = "bK";
         board[4][4] = "bB";
         board[4][5] = "bB";
-        assert(remi(board, hs) == false);
+        assert(remi(board, hs, &flag) == false);
         baseBoard(board);
         //king v king + any material other than horse or bishop = not draw
         board[5][5] = "wK";
         board[3][3] = "bK";
         board[4][5] = "bQ";
-        assert(remi(board, hs) == false);
+        assert(remi(board, hs, &flag) == false);
         baseBoard(board);
         //king + material v. king + 2 horses = not draw
         board[5][5] = "wK";
@@ -44,7 +45,7 @@ void main (void){
         board[4][4] = "bB";
         board[4][5] = "wN";
         board[4][6] = "wN";
-        assert(remi(board, hs) == false);
+        assert(remi(board, hs, &flag) == false);
 
     #pragma endregion
 
@@ -53,26 +54,26 @@ void main (void){
         //king v. king is draw
         board[4][4] = "wK";
         board[5][7] = "bK";
-        assert(remi(board, hs) == true);
+        assert(remi(board, hs, &flag) == true);
         baseBoard(board);
         //king v. king + 1 knight = draw
         board[4][4] = "wK";
         board[4][4] = "wN";
         board[5][7] = "bK";
-        assert(remi(board, hs) == true);
+        assert(remi(board, hs, &flag) == true);
         baseBoard(board);
         //king v. king + 2 knights = draw
         board[4][4] = "wK";
         board[4][6] = "wN";
         board[0][0] = "wN";
         board[5][7] = "bK";
-        assert(remi(board, hs) == true);
+        assert(remi(board, hs, &flag) == true);
         baseBoard(board);
         //king v. king + 1 bishop = draw
         board[4][4] = "wK";
         board[4][4] = "wB";
         board[5][7] = "bK";
-        assert(remi(board, hs) == true);
+        assert(remi(board, hs, &flag) == true);
 
     #pragma endregion
 
@@ -83,10 +84,10 @@ void main (void){
         board[3][3] = "bK";
 
         baseHistory(50); //50 moves no captures = draw
-        assert(remi(board, hs) == true);
+        assert(remi(board, hs, &flag) == true);
 
         baseHistory(49); //49 moves no captures = not draw
-        assert(remi(board,hs) == false);
+        assert(remi(board,hs, &flag) == false);
 
         //put random move in middle that isnt empty
         baseHistory(50);
@@ -95,7 +96,7 @@ void main (void){
             temp = temp->next;
         }
         temp->mx->capturedPiece = "bp";
-        assert(remi(board, hs) == false); //random capture move making not draw;
+        assert(remi(board, hs, &flag) == false); //random capture move making not draw;
 
     #pragma endregion
 
@@ -117,7 +118,7 @@ void main (void){
             }
             temp = temp->next;
         }
-        assert(remi(board,hs) == true); // 3 fold repetition same position is repeted 3 times = draw
+        assert(remi(board,hs, &flag) == true); // 3 fold repetition same position is repeted 3 times = draw
 
         baseHistory(6);
         temp = hs;
@@ -133,7 +134,7 @@ void main (void){
             }
             temp = temp->next;
         }
-        assert(remi(board,hs) == false);
+        assert(remi(board,hs, &flag) == false);
     #pragma endregion
 
 
@@ -150,12 +151,12 @@ void main (void){
         board[7][7] = "bK";
         board[3][1] = "bp";
 
-        assert(remi(board, hs) == true);
+        assert(remi(board, hs, &flag) == true);
 
 
     #pragma endregion
 
-    printf("REMI TEST PASSED");
+    printf("REMI TEST PASSED\n");
     system("pause");
 }
 

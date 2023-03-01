@@ -24,15 +24,17 @@ void play(char *board[size][size])
 {
     bool play = true;
     enum player turn = BLANCO;
+    char *remi_flag = malloc(sizeof(char[50]));
+    int remi_offer = 0;
     while (play)
     {
         char *input = requestMove(turn);
 
         if (strcmp(input, "exit\n") == 0)
         {
-            play = false;
-            continue;
-        }
+            play = false;                                                
+            continue;                                                                                     
+        }     
 
         if (strcmp(input, "history\n") == 0)
         {
@@ -70,7 +72,8 @@ void play(char *board[size][size])
                 moveHistory(mx);
 
                 //check for draw before continuing with game
-                if(remi(board, head)){
+                if(remi(board, head, &remi_flag)){
+                    printf("\n--->DRAW: %s\n", remi_flag);
                     play = false;
                 }
                 // switch turn

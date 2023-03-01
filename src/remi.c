@@ -11,25 +11,25 @@
 #include <knight.h>
 #include <pawn.h>
 
-bool checkMaterial(char * const board[8][8]);
-bool checkMoves(history *const hs);
-bool checkRepetition(history *const hs);
+bool checkMaterial(char * const board[8][8], char **flag);
+bool checkMoves(history *const hs, char **flag);
+bool checkRepetition(history *const hs, char **flag);
 bool compareMoves(move *m1, move *m2);
-bool checkValidMoves(char * const board[8][8], history * const hs);
+bool checkValidMoves(char * const board[8][8], history * const hs, char **flag);
 
 static bool isOnBoard(int row, int col);
 
-bool remi (char * const board[8][8], history *const hs){
+bool remi (char * const board[8][8], history *const hs, char **flag){
     bool sufficientMaterial;
     bool manyMovesNoCaptures = false;
     bool repetition = false;
     bool ValidMoves = true;
 
-    sufficientMaterial = checkMaterial(board); //returns true if material is sufficient
+    sufficientMaterial = checkMaterial(board, flag); //returns true if material is sufficient
     if(hs != NULL){
-        ValidMoves = checkValidMoves(board, hs); //returns true if valid moves exist.
-        manyMovesNoCaptures = checkMoves(hs); //returns true if we have many moves (50) with no captures
-        repetition = checkRepetition(hs); //returns true if we have repetition
+        ValidMoves = checkValidMoves(board, hs, flag); //returns true if valid moves exist.
+        manyMovesNoCaptures = checkMoves(hs, flag); //returns true if we have many moves (50) with no captures
+        repetition = checkRepetition(hs, flag); //returns true if we have repetition
     }
     if(!sufficientMaterial || manyMovesNoCaptures || repetition || !ValidMoves){ 
         return true; //we have draw
@@ -39,7 +39,7 @@ bool remi (char * const board[8][8], history *const hs){
     //((win by time but no material))
 }
 
-bool checkMaterial(char * const board[8][8]){
+bool checkMaterial(char * const board[8][8], char **flag){
     //king v king
     //king v king + bishop / horse
 
@@ -121,10 +121,11 @@ bool checkMaterial(char * const board[8][8]){
     }
 
     //now neither player has sufficient material & special cases dont match.
+    *(flag) = "Insufficient Material";
     return false;
 }
 
-bool checkMoves(history *const hs){
+bool checkMoves(history *const hs, char **flag){
     history *temp = hs;
     int moveCount = 0;
     while(temp != NULL){
@@ -138,12 +139,13 @@ bool checkMoves(history *const hs){
         temp = temp->next;
     }
     if(moveCount >= 50){
+        *(flag) = "50 Moves Without Any Captures";
         return true;
     }
     return false;
 }
 
-bool checkRepetition(history *const hs){
+bool checkRepetition(history *const hs, char **flag){
     //check last 6 moves (3 white) (3 black) if we have the same positions.
 
     //count # of moves
@@ -161,10 +163,6 @@ bool checkRepetition(history *const hs){
 
 
     temp = hs;
-    // for(int i = 0; i < noMoves-6; i++){
-    //     temp = temp->next;
-    // }
-
     move *whiteMove = NULL;
     move *blackMove = NULL;
 
@@ -198,6 +196,7 @@ bool checkRepetition(history *const hs){
     }
 
     if(repetitions > 3){
+        *(flag) = "3 Fold Repetition";
         return true;
     }
     return false;
@@ -217,7 +216,7 @@ bool compareMoves(move *m1, move *m2){
     return false;
 }
 
-bool checkValidMoves(char * const board[8][8], history * const hs){
+bool checkValidMoves(char * const board[8][8], history * const hs, char **flag){
     //FIND ALL PIECES AND CHECK IF THEM MOVING ATLEST ONE SQUARE IS VALID.
     int offset[8][2] = {
         {1, -1},
@@ -389,6 +388,7 @@ bool checkValidMoves(char * const board[8][8], history * const hs){
     if(whiteMove && blackMove){
         return true;
     }
+    *(flag) = "No Valid Moves Left";
     return false;
 }
 
