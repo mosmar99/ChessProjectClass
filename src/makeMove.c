@@ -73,7 +73,7 @@ void play(char *board[size][size])
 
                 //check for draw before continuing with game
                 if(remi(board, head, &remi_flag)){
-                    printf("\n--->DRAW: %s\n", remi_flag);
+                    printf("\n---> " BCYN "Draw: %s\n" reset, remi_flag);
                     play = false;
                 }
                 // switch turn
