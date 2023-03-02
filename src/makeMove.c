@@ -216,6 +216,7 @@ void printHistory()
     }
 }
 
+// takes current player and gives turn to other
 enum player switchTurn(enum player turn)
 {
     if (turn == BLANCO)
