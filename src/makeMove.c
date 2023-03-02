@@ -18,6 +18,21 @@ bool isWrongInput(char *input);
 void printBoard(char *board[8][8]);
 void printBoardBlack(char *board[8][8]);
 
+// Prompts the user for what piece they desire during a Pawn Promotion.
+// Returns: 'Q' (queen), 'R' (rook), 'B' (bishop), or 'N' (knight).
+static char promptPiece();
+
+// Checks if the move is eligle for pawn promotion.
+//      mx: a move struct filled with neccessary information for the played move.
+// Returns true if a promotion is possible, otherwise false.
+static bool checkPromotion(const move *const mx);
+
+// Handler for pawn specific rules. (keep actions() clean)
+//      mx: a move struct filled with neccessary information for the played move.
+//      board: the string matrix representation of the current board state.
+//      wasEnPassant: boolean flag which is true ONLY if the move was En Passant.
+static void checkPawnStuff(const move *const mx, char *board[size][size], const bool *const wasEnPassant);
+
 history *head = NULL;
 
 void play(char *board[size][size])
@@ -32,9 +47,9 @@ void play(char *board[size][size])
 
         if (strcmp(input, "exit\n") == 0)
         {
-            play = false;                                                
-            continue;                                                                                     
-        }     
+            play = false;
+            continue;
+        }
 
         if (strcmp(input, "history\n") == 0)
         {
@@ -71,8 +86,9 @@ void play(char *board[size][size])
                 // move is added to move history
                 moveHistory(mx);
 
-                //check for draw before continuing with game
-                if(remi(board, head, &remi_flag)){
+                // check for draw before continuing with game
+                if (remi(board, head, &remi_flag))
+                {
                     printf("\n---> " BCYN "Draw: %s\n" reset, remi_flag);
                     play = false;
                 }
@@ -238,11 +254,11 @@ void printMoves(history *curr, int *iter)
 
         if (curr->mx->movingPiece[1] == 'p')
         {
-            printf(WHT "%2d." reset BLU "%4c%d" reset, (*iter)/2, letter, digit);
+            printf(WHT "%2d." reset BLU "%4c%d" reset, (*iter) / 2, letter, digit);
         }
         else
         {
-            printf(WHT "%2d." reset RED "%4c%c%d" reset, (*iter)/2, curr->mx->movingPiece[1], letter, digit);
+            printf(WHT "%2d." reset RED "%4c%c%d" reset, (*iter) / 2, curr->mx->movingPiece[1], letter, digit);
         }
     }
     else // black turn
@@ -524,7 +540,86 @@ void getTransform(int *dest, char *src)
     }
 }
 
-void action(move *mx, char *board[size][size], bool *wasEnPassant)
+static char promptPiece()
+{
+    while (true)
+    {
+        printf("%s", "Which piece do you want? (Q, R, B, N): ");
+        fflush(stdin);
+        char c = getchar();
+        if (c == 'Q')
+            return 'Q';
+        if (c == 'R')
+            return 'R';
+        if (c == 'B')
+            return 'B';
+        if (c == 'N')
+            return 'N';
+    }
+}
+
+static bool checkPromotion(const move *const mx)
+{
+    if (mx == NULL)
+        return false;
+
+    // ONLY pawn may be promoted
+    if (*(mx->movingPiece + 1) != 'p')
+        return false;
+
+    // check if the pawn reached the end
+    if (*(mx->movingPiece) == 'w' && mx->toPoint->row == 7)
+        return true;
+    if (*(mx->movingPiece) == 'b' && mx->toPoint->row == 0)
+        return true;
+
+    return false;
+}
+
+static void checkPawnStuff(const move *const mx, char *board[size][size], const bool *const wasEnPassant)
+{
+    // if move was en passant
+    //    put "--" behind the moved pawn
+    //    --> if you don't, opponents pawn is still on the board
+    //        (because the capturing pawn doesn't land on the captured piece in En Passant)
+    if (*wasEnPassant && *(mx->movingPiece) == 'w')
+        board[mx->toPoint->row - 1][mx->toPoint->col] = "--";
+    if (*wasEnPassant && *(mx->movingPiece) == 'b')
+        board[mx->toPoint->row + 1][mx->toPoint->col] = "--";
+
+    if (checkPromotion(mx)) // check if a pawn can be promoted
+    {
+        char c = promptPiece();
+
+        // this switch is absolutely horrendous, but was forced to do
+        // it like this since any kind of strncpy yielded seg faults :(
+        switch (*(mx->movingPiece))
+        {
+        case 'w':
+            if (c == 'Q')
+                board[mx->toPoint->row][mx->toPoint->col] = "wQ";
+            else if (c == 'R')
+                board[mx->toPoint->row][mx->toPoint->col] = "wR";
+            else if (c == 'B')
+                board[mx->toPoint->row][mx->toPoint->col] = "wB";
+            else if (c == 'N')
+                board[mx->toPoint->row][mx->toPoint->col] = "wN";
+            break;
+        case 'b':
+            if (c == 'Q')
+                board[mx->toPoint->row][mx->toPoint->col] = "bQ";
+            else if (c == 'R')
+                board[mx->toPoint->row][mx->toPoint->col] = "bR";
+            else if (c == 'B')
+                board[mx->toPoint->row][mx->toPoint->col] = "bB";
+            else if (c == 'N')
+                board[mx->toPoint->row][mx->toPoint->col] = "bN";
+            break;
+        }
+    }
+}
+
+void action(move *mx, char *board[size][size], const bool *const wasEnPassant)
 {
     // todo manipulate board according to move: "e2 e4"
     // put "--" in old position
@@ -536,22 +631,7 @@ void action(move *mx, char *board[size][size], bool *wasEnPassant)
     // put "--"" in old position
     board[mx->fromPoint->row][mx->fromPoint->col] = "--";
 
-    /*
-    if move was en passant
-        put "--" behind the moved pawn
-        --> if you don't, opponents pawn is still on the board
-            (because the capturing pawn doesn't land on the captured piece in En Passant)
-    */
-    if (*wasEnPassant)
-        switch (*(mx->movingPiece))
-        {
-        case 'w':
-            board[mx->toPoint->row - 1][mx->toPoint->col] = "--";
-            break;
-        case 'b':
-            board[mx->toPoint->row + 1][mx->toPoint->col] = "--";
-            break;
-        }
+    checkPawnStuff(mx, board, wasEnPassant);
 }
 
 bool applyMove(move *mx, char *board[size][size])
