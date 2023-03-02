@@ -23,7 +23,7 @@ intExit: default
 	./bin/main.exe < ./tests/integrationTests/exit/input.txt > ./tests/integrationTests/exit/out.txt
 	diff ./tests/integrationTests/exit/out.txt ./tests/integrationTests/exit/refOut.txt
 
-unitTests: unitTrashInput unitSelfCapture unitQueen unitBishop unitPawn unitRook unitKing
+unitTests: unitTrashInput unitSelfCapture unitQueen unitBishop unitPawn unitRook unitKing unitRemi
 
 unitTrashInput:
 	gcc -fprofile-arcs -ftest-coverage tests/unitTests/utTrashInput.c src/*.c -I include -o tests/unitTests/tTI.exe
@@ -64,6 +64,11 @@ unitKing:
 	gcc -fprofile-arcs -ftest-coverage tests/unitTests/utKing.c src/*.c -I include -o tests/unitTests/tk.exe
 	tests/unitTests/tk.exe
 	gcov tests/unitTests/tk-king.gcno
+
+unitRemi:
+	gcc -fprofile-arcs -ftest-coverage tests/unitTests/utRemi.c src/*.c -I include -o tests/unitTests/ur.exe
+	tests/unitTests/ur.exe
+	gcov tests/unitTests/ur-remi.gcno
 
 clean:
 	rm $(gcno) $(gcda) $(exe) $(gcov)
