@@ -2,6 +2,8 @@
 #include "stdlib.h"
 #include "makeBoard.h"
 
+//  sasa
+
 void printBoardBlack(char *board[8][8]) {
     char numbers[8] = {'1', '2', '3', '4', '5', '6', '7', '8'};
     char letters[8] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
@@ -9,31 +11,47 @@ void printBoardBlack(char *board[8][8]) {
     printf("\n");
     for (size_t i = 0; i < 8; i++)
     {
+
+        printf("      ");
+        for (size_t i = 0; i < 8; i++)
+        {
+            printf("+-----");
+        }
+        printf("+"); //outer border
+        printf("\n  "); 
+
         printf("%c   ", *(numbers+(i)));
         for (size_t j = 0; j < 8; j++)
         {
             if (*board[i][7-j] == 'w')
             {
-                printf(BLU "%c   " reset, *(board[i][7-j]+1));
+                printf("|  " BLU "%c" reset "  ", *(board[i][7-j]+1));
             }
             else if(*board[i][7-j] == 'b')
             {
-                printf(RED "%c   " reset, *(board[i][7-j]+1));
+                printf("|  " RED "%c" reset "  ", *(board[i][7-j]+1));
             }
             else
             {
-                printf("%c   ", *(board[i][7-j]+1));
+                printf("|     ");
             }
         }
-        printf("\n\n");
+        printf("|\n");
     }
 
-    printf("\n    ");
-    fflush(stdout);
-
+    printf("      ");
     for (size_t i = 0; i < 8; i++)
     {
-        printf("%c   ", *(letters+7-i));
+    printf("+-----");
+    }
+    printf("+"); //outer border
+    printf("\n\n    ");
+    fflush(stdout);
+
+    printf("     ");
+    for (size_t i = 0; i < 8; i++)
+    {
+        printf("%c     ", *(letters+7-i));
     }
     
 
@@ -47,34 +65,48 @@ void printBoard(char *board[8][8]) {
     printf("\n");
     for (size_t i = 0; i < 8; i++)
     {
+        printf("      ");
+        for (size_t i = 0; i < 8; i++)
+        {
+            printf("+-----");
+        }
+        printf("+"); //outer border
+        printf("\n  ");        
+
         printf("%c   ", *(numbers+(7-i)));
         for (size_t j = 0; j < 8; j++)
         {
             if (*board[7-i][j] == 'w')
             {
-                printf(BLU "%c   " reset, *(board[7-i][j]+1));
+                printf("|  " BLU "%c" reset "  ", *(board[7-i][j]+1));
             }
             else if (*board[7-i][j] == 'b')
             {
-                printf(RED "%c   " reset, *(board[7-i][j]+1));
+                printf("|  " RED "%c" reset "  ", *(board[7-i][j]+1));
             }
             else
             {
-                printf("%c   ", *(board[7-i][j]+1));
+                printf("|     ");
             }
         }
-        printf("\n\n");
+        printf("|\n"); //outer border
     }
 
-    printf("\n    ");
-    fflush(stdout);
-
+    printf("      ");
     for (size_t i = 0; i < 8; i++)
     {
-        printf("%c   ", *(letters+i));
+    printf("+-----");
+    }
+    printf("+"); //outer border
+    printf("\n\n    ");
+    fflush(stdout);
+
+    printf("     ");
+    for (size_t i = 0; i < 8; i++)
+    {
+        printf("%c     ", *(letters+i));
     }
     
-
     printf("\n\n");
 }
 
