@@ -5,6 +5,7 @@
 #include "bishop.h"
 #include "king.h"
 #include "queen.h"
+#include "remi.h"
 
 point *createPoint(unsigned int x, unsigned int y);
 static void destroyPoint(point *p);
@@ -23,15 +24,17 @@ void play(char *board[size][size])
 {
     bool play = true;
     enum player turn = BLANCO;
+    char *remi_flag = malloc(sizeof(char[50]));
+    int remi_offer = 0;
     while (play)
     {
         char *input = requestMove(turn);
 
         if (strcmp(input, "exit\n") == 0)
         {
-            play = false;
-            continue;
-        }
+            play = false;                                                
+            continue;                                                                                     
+        }     
 
         if (strcmp(input, "history\n") == 0)
         {
@@ -68,6 +71,11 @@ void play(char *board[size][size])
                 // move is added to move history
                 moveHistory(mx);
 
+                //check for draw before continuing with game
+                if(remi(board, head, &remi_flag)){
+                    printf("\n--->DRAW: %s\n", remi_flag);
+                    play = false;
+                }
                 // switch turn
                 turn = switchTurn(turn);
                 continue;
@@ -554,27 +562,27 @@ bool applyMove(move *mx, char *board[size][size])
     case 'R':
         validMove = checkRookMove(mx, board);
         if (validMove)
-            action(mx, board, NULL);
+            action(mx, board, &enPassant);
         return validMove;
     case 'N':
         validMove = checkKnightMove(mx, board);
         if (validMove)
-            action(mx, board, NULL);
+            action(mx, board, &enPassant);
         return validMove;
     case 'B':
         validMove = checkBishopMove(mx, board); // segfault
         if (validMove)
-            action(mx, board, NULL);
+            action(mx, board, &enPassant);
         return validMove;
     case 'Q':
         validMove = checkQueenMove(mx, board); // segfault
         if (validMove)
-            action(mx, board, NULL);
+            action(mx, board, &enPassant);
         return validMove;
     case 'K':
         validMove = checkKingMove(mx, board);
         if (validMove)
-            action(mx, board, NULL);
+            action(mx, board, &enPassant);
         return validMove;
         break;
     case 'p':
