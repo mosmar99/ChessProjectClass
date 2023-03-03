@@ -33,7 +33,7 @@ int tryTurn(int fx, int fy, int tx, int ty, char* mp, char* cp){
         return 0;
     }
 
-    if (!noSpecificErrors(mx, applyMove(mx, board))){
+    if (noSpecificErrors(mx, applyMove(mx, board))){
         moveHistory(mx);
 
         if(remi(board, head, &remi_flag)){
