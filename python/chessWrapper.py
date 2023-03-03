@@ -14,5 +14,8 @@ def printboard(arr):
         for col in range(8):
             print(arr[7-row][7-col].decode("utf-8"), end = " ")
 
+def getBoard(arr: int[8][8]) -> int[8][8]:
+    return None
+
 printboard(arr)
 
