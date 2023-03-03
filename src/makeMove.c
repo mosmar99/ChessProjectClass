@@ -12,13 +12,12 @@ static void destroyPoint(point *p);
 move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece);
 void destroyMove(move *move);
 static void printMoves(history *head, int *iter);
-static enum player switchTurn(enum player turn);
 static void printHistory();
 bool isWrongInput(char *input);
 void printBoard(char *board[8][8]);
 void printBoardBlack(char *board[8][8]);
 
-history *head = NULL;
+static history *head = NULL;
 
 void clrscr()
 {

@@ -12,10 +12,15 @@ def printboard(arr):
     for row in range(8):
         print()
         for col in range(8):
-            print(arr[7-row][7-col].decode("utf-8"), end = " ")
+            print(arr[7-row][7-col].decode(), end = " ")
+    print()
 
-def getBoard(arr: int[8][8]) -> int[8][8]:
-    return None
+printboard(arr)
+chessLib.tryTurn(1,1,1,2,"wp".encode(),"--".encode())
+chessLib.readBoard(arr)
+printboard(arr)
 
+chessLib.tryTurn(1,6,1,5,"bp".encode(),"--".encode())
+chessLib.readBoard(arr)
 printboard(arr)
 

@@ -13,6 +13,6 @@
 
 void EXPORT initGame();
 void EXPORT readBoard(char *rboard[8][8]);
-bool EXPORT proposeMove();
+int EXPORT tryTurn(int fx, int fy, int tx, int ty, char* mp, char* cp);
 
 #endif
