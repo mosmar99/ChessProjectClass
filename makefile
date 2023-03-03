@@ -12,7 +12,10 @@ dll:
 	gcc src/*.c -I include/ -shared -o ./bin/chess.dll
 
 so:
-	gcc src/*.c -I include/ -shared -o ./bin/chess.so
+	gcc -fPIC -shared -o ./bin/chess.so src/*.c -I include/
+
+prun:
+	python3 "./python/chessWrapper.py"
 
 run: default
 	./bin/main.exe
