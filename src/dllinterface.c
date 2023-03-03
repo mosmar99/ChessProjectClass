@@ -29,7 +29,7 @@ int tryTurn(int fx, int fy, int tx, int ty, char* mp, char* cp){
 
     move* mx = createMove(fp, tp, mp, cp);
 
-    if(!noGeneralErrors()){
+    if(!noGeneralErrors(mx, turn)){
         return 0;
     }
 
@@ -42,7 +42,7 @@ int tryTurn(int fx, int fy, int tx, int ty, char* mp, char* cp){
         
         turn = switchTurn(turn);
     } else {
-        return 0
+        return 0;
     }
 
     return 1;
