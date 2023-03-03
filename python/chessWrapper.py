@@ -1,7 +1,7 @@
 
 import ctypes as ct
 
-chessLib = ct.CDLL("./bin/chess.so")
+chessLib = ct.CDLL("./bin/chess")
 
 chessLib.initGame()
 

@@ -12,7 +12,7 @@ dll:
 	gcc src/*.c -I include/ -shared -o ./bin/chess.dll
 
 so:
-	gcc -fPIC -shared -o ./bin/chess.so src/*.c -I include/
+	gcc -fPIC -shared -o ./bin/chess src/*.c -I include/
 
 prun:
 	python3 "./python/chessWrapper.py"
