@@ -428,11 +428,11 @@ move *constructMove(char *input, char *board[size][size])
     return createMove(from, to, movingPiece, capturingPiece);
 }
 
-void readInput(char *move)
+void readInput(char *move, int S)
 {
     char c;
     fflush(stdin);
-    for (size_t i = 0; i < size; i++)
+    for (size_t i = 0; i < S; i++)
     {
         c = getchar();
         if (c == '\n' || c == '\0')
@@ -464,7 +464,7 @@ char *requestMove(enum player turn)
     }
 
     // collect all input until eol
-    readInput(input);
+    readInput(input, size);
 
     return input;
 }
@@ -553,19 +553,25 @@ void getTransform(int *dest, char *src)
 
 static char promptPiece()
 {
+    char *piece = calloc(2, sizeof(char));
     while (true)
     {
-        printf("%s", "Which piece do you want? (Q, R, B, N): ");
-        fflush(stdin);
-        char c = getchar();
-        if (c == 'Q')
+        printf("Which piece do you want? (Q, R, B, N): ");
+        fflush(stdout);
+
+        readInput(piece, 2);
+
+        switch (*piece)
+        {
+        case 'Q':
             return 'Q';
-        if (c == 'R')
+        case 'R':
             return 'R';
-        if (c == 'B')
+        case 'B':
             return 'B';
-        if (c == 'N')
+        case 'N':
             return 'N';
+        }
     }
 }
 
