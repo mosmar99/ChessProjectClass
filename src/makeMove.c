@@ -35,6 +35,11 @@ static void checkPawnStuff(const move *const mx, char *board[size][size], const 
 
 history *head = NULL;
 
+void clrscr()
+{
+    system("@cls||clear");
+}
+
 void play(char *board[size][size])
 {
     bool play = true;
@@ -76,20 +81,25 @@ void play(char *board[size][size])
                 // board is printed, with the desired valid move if its passed both general and specific piece errors
                 if (turn == NEGRO)
                 {
+                    printBoardBlack(board);
+                    sleep(1);
+                    clrscr();
                     printBoard(board);
                 }
                 else
                 {
+                    printBoard(board);
+                    sleep(1);
+                    clrscr();
                     printBoardBlack(board);
                 }
 
                 // move is added to move history
                 moveHistory(mx);
 
-                // check for draw before continuing with game
-                if (remi(board, head, &remi_flag))
-                {
-                    printf("\n---> " BCYN "Draw: %s\n" reset, remi_flag);
+                //check for draw before continuing with game
+                if(remi(board, head, &remi_flag)){
+                    printf("\n--->" BCYN "DRAW: %s\n" reset, remi_flag);
                     play = false;
                 }
                 // switch turn
@@ -221,6 +231,7 @@ void printHistory()
     }
 }
 
+// takes current player and gives turn to other
 enum player switchTurn(enum player turn)
 {
     if (turn == BLANCO)
