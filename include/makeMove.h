@@ -44,7 +44,7 @@ bool noSpecificErrors(move *mx, bool isValidMove);
 enum player switchTurn(enum player turn);
 bool noGeneralErrors(move *mx, enum player turn);
 bool applyMove(move *mx, char *board[size][size]);
-void action(move *mx, char *board[size][size], bool *wasEnPassant);
+void action(move *mx, char *board[size][size], const bool *const wasEnPassant);
 bool isWrongInput(char *input);
 
 point *createPoint(unsigned int x, unsigned int y);

@@ -2,8 +2,6 @@
 #include "stdlib.h"
 #include "makeBoard.h"
 
-//  sasa
-
 void printBoardBlack(char *board[8][8]) {
     char numbers[8] = {'1', '2', '3', '4', '5', '6', '7', '8'};
     char letters[8] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
@@ -135,7 +133,7 @@ void initBoard(char *board[8][8]) {
     board[1][4] = "wp";
     board[1][5] = "wp";
     board[1][6] = "wp";
-    board[1][7] = "wp";
+    board[6][7] = "wp";
 
     // black
     board[7][0] = "bR";
