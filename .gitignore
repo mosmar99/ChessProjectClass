@@ -7,3 +7,4 @@
 *.gcno
 *.html
 *.log
+*.pyc
