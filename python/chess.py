@@ -38,18 +38,21 @@ class Chessboard(Canvas):
         for x in range(12):
             if pieceName == self.images[x].name:
                 return x
-        return 0
+        return NONE
     
     def mouseDown(self,e):
         self.fx = int(e.x/100)
         self.fy = int(e.y/100)
         self.mp = self.chessboard.getPiece(int(e.x/100),int(e.y/100))
-        self.delete(f"x{int(e.x/100)}y{int(e.y/100)}")
-        self.create_image(e.x,e.y, image=self.images[self.getImageIndex(self.mp)], tags = "moving")
+        
+        if self.mp != "--":
+            self.delete(f"x{int(e.x/100)}y{int(e.y/100)}")
+            self.create_image(e.x,e.y, image=self.images[self.getImageIndex(self.mp)], tags = "moving")
 
     def move(self, e):
-        self.delete("moving")
-        self.create_image(e.x,e.y, image=self.images[self.getImageIndex(self.mp)], tags = "moving")
+        if self.mp != "--":
+            self.delete("moving")
+            self.create_image(e.x,e.y, image=self.images[self.getImageIndex(self.mp)], tags = "moving")
 
     def mouseUp(self, e):
         self.delete("moving")
