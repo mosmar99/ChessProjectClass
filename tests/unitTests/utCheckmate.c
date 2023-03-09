@@ -12,6 +12,7 @@ void main (void){
     char * board[8][8];
     char * flag = malloc(sizeof(char[50]));
 
+    free(hs);
     baseHistory(2);
     baseBoard(board);
     flag = "reset";
