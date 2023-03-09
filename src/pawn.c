@@ -120,8 +120,7 @@ static bool checkCollisions(const move *const move, char *const board[8][8],
     if (abs(deltaX) == 1) // desire to move diagonally 1 step, i.e. attack an enemy piece
     {
         if (abs(deltaY) != 1 || wasEnPassant == NULL)
-            return false;
-        assert(*wasEnPassant == true || *wasEnPassant == false);
+            return true;
 
         // check if the desired move is an en passant move
         if (checkEnPassant(move, board, head))
@@ -133,14 +132,23 @@ static bool checkCollisions(const move *const move, char *const board[8][8],
 
         // a normal attack:
         // the piece the pawn is moving to must be an enemy
-        if (strcmp(board[move->toPoint->row][move->toPoint->col], *(move->movingPiece) == 'w' ? "bp" : "wp") != 0)
-            return true;
+        switch (*(move->movingPiece))
+        {
+        case 'w':
+            if (*(move->capturedPiece) == 'b')
+                return false;
+            break;
+        case 'b':
+            if (*(move->capturedPiece) == 'w')
+                return false;
+            break;
+        }
 
-        return false;
+        return true;
     }
 
     if (deltaX != 0 || abs(deltaY) > 2)
-        return false;
+        return true;
 
     // start at fromPoint and explore direction to toPoint, checks for any obstacle
     // fromPoint and toPoint have already been checked for invalid indices
