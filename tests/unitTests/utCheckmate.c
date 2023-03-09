@@ -23,7 +23,6 @@ void main (void){
     assert(strcmp(flag, "CHECK") == 0);
 
     flag = "reset";
-    baseHistory(2);
     baseBoard(board);
 
     board[7][7] = "wK";
@@ -31,7 +30,6 @@ void main (void){
     checkmate(board, hs, &flag);
     assert(strcmp(flag, "CHECK") == 0);
 
-    baseHistory(2);
     baseBoard(board);
     flag = "reset";
 
@@ -43,7 +41,6 @@ void main (void){
     checkmate(board, hs, &flag);
     assert(strcmp(flag, "CHECK") == 0);
 
-    baseHistory(2);
     baseBoard(board);
     flag = "reset";
 
@@ -55,7 +52,6 @@ void main (void){
     assert(strcmp(flag, "CHECK") == 0);
 
 
-    baseHistory(2);
     baseBoard(board);
     flag = "reset";
 
@@ -66,7 +62,6 @@ void main (void){
     checkmate(board, hs, &flag);
     assert(strcmp(flag, "CHECKMATE") == 0);
 
-    baseHistory(2);
     baseBoard(board);
     flag = "reset";
 
@@ -78,7 +73,6 @@ void main (void){
     checkmate(board, hs, &flag);
     assert(strcmp(flag, "CHECKMATE") == 0);
 
-    baseHistory(2);
     baseBoard(board);
     flag = "reset";
 
@@ -104,7 +98,6 @@ static void baseBoard(char * board[8][8]){
 
 static void baseHistory (int no){
 
-    free(hs);
     hs = malloc(sizeof(history));
     move *m = createMove(createPoint(1,1),createPoint(1,1), "bp", "--");
     hs->mx = malloc(sizeof(move));

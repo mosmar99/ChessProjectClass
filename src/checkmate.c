@@ -88,8 +88,6 @@ static void populateArray(int rowOffset, int colOffset, const move *const m, cha
         else{
             while(isOnBoard(i,j) && strcmp(board[i][j], "--") == 0){
                 poi->line[index] = createPoint(j, i);
-                m->toPoint->col = pieceCol;
-                m->toPoint->row = pieceRow;
                 index++;
                 i = i + rowOffset;
                 j = j + colOffset;
