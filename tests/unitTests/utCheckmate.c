@@ -1,25 +1,31 @@
 #include <stdio.h>
-#include "checkmate.h"
+#include <checkmate.h>
 #include <makeMove.h>
 #include <assert.h>
 
 static void baseBoard(char * board[8][8]);
-static void baseHistory (int no);
 
 history * hs = NULL;
+
+static void haha(move *mx);
 
 void main (void){
     char * board[8][8];
     char * flag = malloc(sizeof(char[50]));
 
-    free(hs);
-    baseHistory(2);
-    baseBoard(board);
+    move *m1 = createMove(createPoint(7,7), createPoint(7,7), "wK", "wK");
+    haha(m1);
+
+    move *m2 = createMove(createPoint(7,0), createPoint(7,0), "bQ", "bQ");
+    haha(m2);
+
+    history *check = hs;
+
     flag = "reset";
+    baseBoard(board);
 
     board[7][7] = "wK";
     board[0][7] = "bQ";
-    
     checkmate(board, hs, &flag);
     assert(strcmp(flag, "CHECK") == 0);
 
@@ -97,26 +103,18 @@ static void baseBoard(char * board[8][8]){
     }
 }
 
-static void baseHistory (int no){
-
-    hs = malloc(sizeof(history));
-    move *m = createMove(createPoint(1,1),createPoint(1,1), "bp", "--");
-    hs->mx = malloc(sizeof(move));
-    hs->mx = m;
-    hs->next = NULL;
-
-    history * temp, *head;
-    temp = hs;
-    for(int i = 0; i < no-1; i++){
-        move *m = createMove(createPoint(1,1),createPoint(1,1), "wp", "--");
-        while(temp->next != NULL){
-            temp = temp->next;
-        }
-        temp->next = malloc(sizeof(history));
-        temp = temp->next;
-        temp->mx = malloc(sizeof(move));
-        temp->mx = m;
-        temp->next = NULL;
-
+static void haha(move *mx)
+{
+    history *curr = calloc(1, sizeof(history));
+    if (hs == NULL)
+    {
+        curr->mx = mx;
+        hs = curr;
+    }
+    else
+    {
+        curr->mx = mx;
+        curr->next = hs;
+        hs = curr;
     }
 }

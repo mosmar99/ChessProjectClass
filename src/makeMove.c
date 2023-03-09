@@ -108,12 +108,14 @@ void play(char *board[size][size])
                 // move is added to move history
                 moveHistory(mx);
 
-                //check for draw before continuing with game
-                if(remi(board, head, &gameEventFlag)){
-                    printf("\n--->" BCYN "DRAW: %s\n" reset, gameEventFlag);
-                    play = false;
-                }
+                // check for draw before continuing with game
                 checkmate(board,head,&gameEventFlag);
+                if(strcmp(gameEventFlag, "IDLE") == 0){
+                    if(remi(board, head, &gameEventFlag)){
+                        printf("\n--->" BCYN "DRAW: %s\n" reset, gameEventFlag);
+                        play = false;
+                    }
+                }
                 if(strcmp(gameEventFlag, "CHECK") == 0){
                     printf("\n--->" BCYN "%s\n " reset, gameEventFlag);
                 }

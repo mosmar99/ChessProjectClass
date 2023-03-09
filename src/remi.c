@@ -15,7 +15,7 @@ bool checkMaterial(char * const board[8][8], char **flag);
 bool checkMoves(history *const hs, char **flag);
 bool checkRepetition(history *const hs, char **flag);
 bool compareMoves(move *m1, move *m2);
-bool checkValidMoves(char * const board[8][8], history * const hs, char **flag);
+bool checkValidMoves(char * const board[8][8], const history *const hs, char **flag);
 
 static bool isOnBoard(int row, int col);
 
@@ -126,7 +126,8 @@ bool checkMaterial(char * const board[8][8], char **flag){
 }
 
 bool checkMoves(history *const hs, char **flag){
-    history *temp = hs;
+    history *temp = (history *)malloc(sizeof(history));
+    temp = hs;
     int moveCount = 0;
     while(temp != NULL){
         //if blank move increase moveCount
@@ -138,6 +139,7 @@ bool checkMoves(history *const hs, char **flag){
         }
         temp = temp->next;
     }
+    free(temp);
     if(moveCount >= 50){
         *(flag) = "50 Moves Without Any Captures";
         return true;
@@ -150,7 +152,8 @@ bool checkRepetition(history *const hs, char **flag){
 
     //count # of moves
     int noMoves = 0;
-    history *temp = hs;
+    history *temp = malloc(sizeof(history));
+    temp = hs;
     while(temp != NULL){
         temp = temp->next;
         noMoves++;
@@ -216,7 +219,7 @@ bool compareMoves(move *m1, move *m2){
     return false;
 }
 
-bool checkValidMoves(char * const board[8][8], history * const hs, char **flag){
+bool checkValidMoves(char * const board[8][8], const history *const hs, char **flag){
     //FIND ALL PIECES AND CHECK IF THEM MOVING ATLEST ONE SQUARE IS VALID.
     int offset[8][2] = {
         {1, -1},

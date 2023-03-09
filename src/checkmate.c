@@ -12,8 +12,8 @@
 
 typedef struct POI{
     point **line;
-    int dangerousLines;
-    int noPoints;
+    unsigned int dangerousLines;
+    unsigned int noPoints;
 }POI;
 
 //EXPORTED FUNCTIONS
@@ -31,7 +31,7 @@ static POI * createStruct();
 static point * getPosition(char * const board[8][8], char piece[2], int index);
 static bool valid(char * const board[8][8], history * const hs, char piece[2], point *p);
 static move * generateMoves(point *p, char * const board[8][8]);
-static bool attemptMove(char * const board[8][8], history * const hs, move * const m, char *piece);
+static bool attemptMove(char * const board[8][8], const history * const hs, const move * const m, char *piece);
 static void populateArray(int rowOffset, int colOffset, const move *const m, char * const board[8][8]);
 static char getColor(const move * const m);
 static bool moveKing(char * const board[8][8], point * p);
@@ -53,13 +53,16 @@ bool checkmate(char * const board[8][8], history * const hs, char **flag){
             if(check(m, board)){ //check if king moving from the square it is standing on to the square it is standing on, will result in a check.
                 if(!valid(board, hs, piece, p)){
                     *(flag) = "CHECKMATE";
+                    free(poi);
                     return true;
                 }
                 *(flag) = "CHECK";
+                free(poi);
                 return true;
             }
         }
     }
+    free(poi);
     *(flag) = "IDLE";
     return false;
 }
@@ -67,7 +70,7 @@ bool checkmate(char * const board[8][8], history * const hs, char **flag){
 static POI * createStruct(){
     poi = malloc(sizeof(POI));
     if(poi != NULL){
-        poi->line = malloc(sizeof(point *));
+        poi->line = (point **)malloc(sizeof(point *) * 8);
         poi->dangerousLines = 0;
         poi->noPoints = 0;
         return poi;
@@ -76,18 +79,16 @@ static POI * createStruct(){
 }
 
 static void populateArray(int rowOffset, int colOffset, const move *const m, char * const board[8][8]){
-    int pieceCol = m->toPoint->col;
-    int pieceRow = m->toPoint->row;
     if(poi->dangerousLines == 0){
-        int i = pieceRow + rowOffset , j = pieceCol + colOffset;
+        int i = m->toPoint->row + rowOffset , j = m->toPoint->col + colOffset;
         int index = 0;
         //check if it was a knight because populating the array of points will not be the same. since we will only be looking for a singular point
         if(abs(rowOffset) > 1 || abs(colOffset) > 1){
             poi->line[0] = createPoint(j,i);
         }
         else{
-            while(isOnBoard(i,j) && strcmp(board[i][j], "--") == 0){
-                poi->line[index] = createPoint(j, i);
+            while(isOnBoard(i,j)){
+                poi->line[index] = createPoint(j,i);
                 index++;
                 i = i + rowOffset;
                 j = j + colOffset;
@@ -142,26 +143,29 @@ static bool moveKing(char * const board[8][8], point * p){
 }
 
 static move * generateMoves(point *p, char * const board[8][8]){
-    int col, row;
-    col = poi->line[poi->noPoints]->col;
-    row = poi->line[poi->noPoints]->row;
-    move * new = createMove(p, poi->line[poi->noPoints], board[p->row][p->col], board[poi->line[poi->noPoints]->row][poi->line[poi->noPoints]->col]);
+    poi->noPoints--;
+    int col = poi->line[poi->noPoints]->col;
+    int row = poi->line[poi->noPoints]->row;
+    point *newPoint = createPoint(col,row);
+    move * new = createMove(p, newPoint, board[p->row][p->col], board[row][col]);
     return new;
 }
 
 static bool loopPieces(char * const board[8][8], history * const hs, char piece[2]){
     bool blocked = false;
+
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
-            if(strrchr(board[i][j], piece[0])){
+            if(strrchr(board[i][j], piece[0]) && !strrchr(board[i][j], 'K')){
                 point * p = createPoint(j,i);
                 int temp = poi->noPoints;
-                for(int k = 0; poi->noPoints >= 0; k++){
-                    move * m = generateMoves(p, board);
-                    if(attemptMove(board, hs, m, board[i][j])){
-                        blocked = true;
+                for(int k = 0; k <= temp; k++){
+                    if(poi->noPoints > 0){
+                        move * m = generateMoves(p, board);
+                        if(attemptMove(board, hs, m, board[i][j])){
+                            blocked = true;
+                        }
                     }
-                    poi->noPoints--;
                 }
                 poi->noPoints = temp;
             }
@@ -170,20 +174,24 @@ static bool loopPieces(char * const board[8][8], history * const hs, char piece[
     return blocked;
 }
 
-static bool attemptMove(char * const board[8][8], history * const hs, move * const m, char *piece){
+static bool attemptMove(char * const board[8][8], const history * const hs, const move * const m, char *piece){
     bool passant = false;
-    if(strrchr(piece, 'p'))
+    if(strrchr(piece, 'p')){
         return checkPawnMove(m, board, hs, &passant);
-    if(strrchr(piece, 'K'))
-        return checkKingMove(m, board);
-    if(strrchr(piece, 'Q'))
+    }
+    if(strrchr(piece, 'Q')){
         return checkQueenMove(m, board);
-    if(strrchr(piece, 'B'))
+    }
+    if(strrchr(piece, 'B')){
         return checkBishopMove(m, board);
-    if(strrchr(piece, 'N'))
+    }
+    if(strrchr(piece, 'N')){
         return checkKnightMove(m, board);
-    if(strrchr(piece, 'R'))
+    }
+    if(strrchr(piece, 'R')){
         return checkRookMove(m, board);
+    }
+    return false;
 }
 
 
@@ -217,7 +225,6 @@ bool check(const move * const m, char * const board[8][8]){
     bool diagonals = checkDiagonals(m, board, getColor(m));
     bool straights = checkStraights(m, board, getColor(m));
     bool knights = checkKnight(board, m, getColor(m));
-
     if(!diagonals || !straights || !knights){
         return true;
     }
