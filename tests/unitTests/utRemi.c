@@ -3,9 +3,6 @@
 #include "makeMove.h"
 #include <assert.h>
 
-
-#include "pawn.h"
-
 static void baseBoard(char * board[8][8]);
 static void baseHistory (int no);
 static void utPrintBoard(char * board[8][8]);

@@ -64,5 +64,9 @@ unitRemi:
 	tests/unitTests/ur.exe
 	gcov tests/unitTests/ur-remi.gcno
 
+unitCheckmate:
+	gcc -fprofile-arcs -ftest-coverage tests/unitTests/utCheckmate.c src/*.c -I include -o tests/unitTests/uc.exe
+	tests/unitTests/uc.exe
+	gcov tests/unitTests/uc-checkmate.gcno
 clean:
 	rm $(gcno) $(gcda) $(exe) $(gcov)
