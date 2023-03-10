@@ -61,7 +61,7 @@ class Chessboard(Canvas):
         self.ty = int(e.y/100)
         self.cp = self.chessboard.getPiece(int(e.x/100),int(e.y/100))
 
-        self.chessboard.tryTurn(fy=self.fx, fx=self.fy, ty=self.tx, tx=self.ty, mp=self.mp, cp=self.cp)
+        self.chessboard.tryTurn(fx=self.fx, fy=self.fy, tx=self.tx, ty=self.ty, mp=self.mp, cp=self.cp)
         self.chessboard.updateBoard()
         self.drawPieces()
 
