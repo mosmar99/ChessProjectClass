@@ -131,10 +131,22 @@ static bool checkCollisions(const move *const move, char *const board[8][8],
         }
         *wasEnPassant = false; // make sure flag is set to false if NOT an en passant move
 
-        // a normal attack:
+                // a normal attack:
         // the piece the pawn is moving to must be an enemy
-        if (strcmp(board[move->toPoint->row][move->toPoint->col], *(move->movingPiece) == 'w' ? "bp" : "wp") != 0)
-            return true;
+        switch (*(move->movingPiece))
+        {
+        case 'w':
+            if (*(move->capturedPiece) == 'b')
+                return false;
+            break;
+        case 'b':
+            if (*(move->capturedPiece) == 'w')
+                return false;
+            break;
+        }
+
+        return true;
+    }
 
         return false;
     }
