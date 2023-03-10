@@ -7,17 +7,17 @@ static void baseBoard(char * board[8][8]);
 
 history * hs = NULL;
 
-static void haha(move *mx);
+static void addMoves(move *mx);
 
 void main (void){
     char * board[8][8];
     char * flag = malloc(sizeof(char[50]));
 
     move *m1 = createMove(createPoint(7,7), createPoint(7,7), "wK", "wK");
-    haha(m1);
+    addMoves(m1);
 
     move *m2 = createMove(createPoint(7,0), createPoint(7,0), "bQ", "bQ");
-    haha(m2);
+    addMoves(m2);
 
     history *check = hs;
 
@@ -103,7 +103,7 @@ static void baseBoard(char * board[8][8]){
     }
 }
 
-static void haha(move *mx)
+static void addMoves(move *mx)
 {
     history *curr = calloc(1, sizeof(history));
     if (hs == NULL)
