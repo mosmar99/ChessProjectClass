@@ -6,6 +6,7 @@
 #include "king.h"
 #include "queen.h"
 #include "remi.h"
+#include "checkmate.h"
 
 point *createPoint(unsigned int x, unsigned int y);
 static void destroyPoint(point *p);
@@ -17,6 +18,7 @@ static void printHistory();
 bool isWrongInput(char *input);
 void printBoard(char *board[8][8]);
 void printBoardBlack(char *board[8][8]);
+static void undoMove(move *mx, char *board[size][size]);
 
 // Prompts the user for what piece they desire during a Pawn Promotion.
 // Returns: 'Q' (queen), 'R' (rook), 'B' (bishop), or 'N' (knight).
@@ -35,6 +37,8 @@ static void checkPawnStuff(const move *const mx, char *board[size][size], const 
 
 history *head = NULL;
 
+char *gameEventFlag = NULL;
+
 void clrscr()
 {
     system("@cls||clear");
@@ -44,7 +48,8 @@ void play(char *board[size][size])
 {
     bool play = true;
     enum player turn = BLANCO;
-    char *remi_flag = malloc(sizeof(char[50]));
+    gameEventFlag = malloc(sizeof(char[50]));
+    gameEventFlag = "IDLE";
     int remi_offer = 0;
     while (play)
     {
@@ -67,7 +72,7 @@ void play(char *board[size][size])
             puts("---> Invalid input, please re-enter a valid move");
             continue;
         }
-
+        
         move *mx = constructMove(input, board);
 
         if (mx == NULL)
@@ -79,29 +84,52 @@ void play(char *board[size][size])
             if (noSpecificErrors(mx, applyMove(mx, board)))
             {
                 // board is printed, with the desired valid move if its passed both general and specific piece errors
+                if(strcmp(gameEventFlag, "BADMOVE") == 0){
+                    puts("---> BAD MOVE");
+                    checkmate(board,head,&gameEventFlag);
+                    continue;
+                }
+
                 if (turn == NEGRO)
                 {
                     printBoardBlack(board);
                     sleep(1);
-                    clrscr();
+                    //clrscr();
                     printBoard(board);
                 }
                 else
                 {
                     printBoard(board);
                     sleep(1);
-                    clrscr();
+                    //clrscr();
                     printBoardBlack(board);
                 }
 
                 // move is added to move history
                 moveHistory(mx);
 
-                //check for draw before continuing with game
-                if(remi(board, head, &remi_flag)){
-                    printf("\n--->" BCYN "DRAW: %s\n" reset, remi_flag);
+                // check for draw before continuing with game
+                checkmate(board,head,&gameEventFlag);
+                if(strcmp(gameEventFlag, "IDLE") == 0){
+                    if(remi(board, head, &gameEventFlag)){
+                        printf("\n--->" BCYN "DRAW: %s\n" reset, gameEventFlag);
+                        play = false;
+                    }
+                }
+                if(strcmp(gameEventFlag, "CHECK") == 0){
+                    printf("\n--->" BCYN "%s\n " reset, gameEventFlag);
+                }
+                if(strcmp(gameEventFlag, "CHECKMATE") == 0){
+                    printf("\n--->" BCYN "%s: " reset, gameEventFlag);
+                    if(turn == 0){
+                        printf(BCYN "WHITE WINS\n");
+                    }
+                    else{
+                        printf(BCYN "BLACK WINS\n");
+                    }
                     play = false;
                 }
+
                 // switch turn
                 turn = switchTurn(turn);
                 continue;
@@ -648,7 +676,30 @@ void action(move *mx, char *board[size][size], const bool *const wasEnPassant)
     // put "--"" in old position
     board[mx->fromPoint->row][mx->fromPoint->col] = "--";
 
+    //Was the player checked?
+    if(strcmp(gameEventFlag, "CHECK") == 0){
+        checkmate(board, head, &gameEventFlag); //Did the move fix the check?
+        if(strcmp(gameEventFlag, "CHECK") == 0 || strcmp(gameEventFlag, "CHECKMATE") == 0){ //If not then undo the move.
+            undoMove(mx, board);
+        }
+    }
+
+    //Now that the move has been made, check so that the player didnt put themselves in check.
+    if(strcmp(gameEventFlag, "IDLE") == 0){
+        checkmate(board, head, &gameEventFlag);
+        if(strcmp(gameEventFlag, "CHECK") == 0 || strcmp(gameEventFlag, "CHECKMATE") == 0){ //If the player did put themselfs in check undo the move.
+            undoMove(mx, board);
+        }
+    }
+
     checkPawnStuff(mx, board, wasEnPassant);
+
+}
+
+static void undoMove(move *mx, char *board[size][size]){
+    board[mx->fromPoint->row][mx->fromPoint->col] = board[mx->toPoint->row][mx->toPoint->col];
+    board[mx->toPoint->row][mx->toPoint->col] = "--";
+    gameEventFlag = "BADMOVE";
 }
 
 bool applyMove(move *mx, char *board[size][size])
