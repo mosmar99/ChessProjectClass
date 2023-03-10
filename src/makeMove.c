@@ -6,6 +6,7 @@
 #include "king.h"
 #include "queen.h"
 #include "remi.h"
+#include "castling.h"
 
 point *createPoint(unsigned int x, unsigned int y);
 static void destroyPoint(point *p);
@@ -96,6 +97,8 @@ void play(char *board[size][size])
 
                 // move is added to move history
                 moveHistory(mx);
+                
+                
 
                 //check for draw before continuing with game
                 if(remi(board, head, &remi_flag)){
