@@ -13,7 +13,6 @@ static void destroyPoint(point *p);
 move *createMove(point *fromPoint, point *toPoint, char *movingPiece, char *CapturedPiece);
 void destroyMove(move *move);
 static void printMoves(history *head, int *iter);
-static enum player switchTurn(enum player turn);
 static void printHistory();
 bool isWrongInput(char *input);
 void printBoard(char *board[8][8]);
@@ -35,7 +34,7 @@ static bool checkPromotion(const move *const mx);
 //      wasEnPassant: boolean flag which is true ONLY if the move was En Passant.
 static void checkPawnStuff(const move *const mx, char *board[size][size], const bool *const wasEnPassant);
 
-history *head = NULL;
+static history *head = NULL;
 
 char *gameEventFlag = NULL;
 

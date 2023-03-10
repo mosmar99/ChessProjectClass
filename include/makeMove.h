@@ -41,6 +41,7 @@ void extractChessCoord(char *dest, char *src, int cpyFrom, int cpyTo);
 void getTransform(int *dest, char *src);
 void moveHistory(move *mx);
 bool noSpecificErrors(move *mx, bool isValidMove); 
+enum player switchTurn(enum player turn);
 bool noGeneralErrors(move *mx, enum player turn);
 bool applyMove(move *mx, char *board[size][size]);
 void action(move *mx, char *board[size][size], const bool *const wasEnPassant);

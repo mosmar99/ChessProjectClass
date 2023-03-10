@@ -8,6 +8,15 @@ default:
 
 .PHONY: tests
 
+dll:
+	gcc -fPIC -shared -o ./bin/chess.dll src/*.c -I include/
+
+prunw:
+	python3 ".\python\chess.py"
+
+prunu:
+	python3 "./python/chess.py"
+
 run: default
 	./bin/main.exe
 

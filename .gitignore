@@ -1,7 +1,10 @@
 *.json
 *.exe
+*.dll
+*.so
 *.gcov
 *.gcda
 *.gcno
 *.html
 *.log
+*.pyc
