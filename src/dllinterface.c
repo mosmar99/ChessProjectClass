@@ -7,7 +7,7 @@ char *board[8][8];
 
 void init(){
     initBoard(board);
-    initGame();
+    initGame(false);
 }
 
 void readBoard(char *rboard[8][8]){
@@ -26,8 +26,4 @@ int tryTurn(int fx, int fy, int tx, int ty, char* mp, char* cp){
     move* mx = createMove(fp, tp, mp, cp);
 
     gameTurn(mx, board);
-}
-
-bool proposeMove(){
-
 }

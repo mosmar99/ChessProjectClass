@@ -37,20 +37,22 @@ static void checkPawnStuff(const move *const mx, char *board[size][size], const 
 static history *head = NULL;
 static enum player turn = BLANCO;
 static char *gameEventFlag = NULL;
+static bool isCli = true;
 
 void clrscr()
 {
     system("@cls||clear");
 }
 
-void initGame(){
+void initGame(bool enableCli){
     gameEventFlag = malloc(sizeof(char[50]));
     gameEventFlag = "IDLE";
+    isCli = enableCli;
 }
 
 void play(char *board[size][size])
 {
-    initGame();
+    initGame(true);
     bool play = true;
     while (play)
     {
@@ -76,8 +78,6 @@ void play(char *board[size][size])
         
         move *mx = constructMove(input, board);
         gameTurn(mx, board);
-        
-
     }
 }
 
@@ -98,30 +98,32 @@ int gameTurn(move* mx, char *board[size][size]){
                 return 0;
             }
 
-            if (turn == NEGRO)
-            {
-                printBoardBlack(board);
-                sleep(1);
-                //clrscr();
-                printBoard(board);
+            if (isCli){
+                if (turn == NEGRO)
+                {
+                    printBoardBlack(board);
+                    sleep(1);
+                    //clrscr();
+                    printBoard(board);
+                }
+                else
+                {
+                    printBoard(board);
+                    sleep(1);
+                    //clrscr();
+                    printBoardBlack(board);
+                }
             }
-            else
-            {
-                printBoard(board);
-                sleep(1);
-                //clrscr();
-                printBoardBlack(board);
-            }
-
             // move is added to move history
             moveHistory(mx);
 
             // check for draw before continuing with game
             checkmate(board,head,&gameEventFlag);
+
             if(strcmp(gameEventFlag, "IDLE") == 0){
                 if(remi(board, head, &gameEventFlag)){
                     printf("\n--->" BCYN "DRAW: %s\n" reset, gameEventFlag);
-                    //play = false;
+                    return 5;
                 }
             }
             if(strcmp(gameEventFlag, "CHECK") == 0){
@@ -139,7 +141,7 @@ int gameTurn(move* mx, char *board[size][size]){
             }
 
             turn = switchTurn(turn);
-            return 0;
+            return 1;
         }
     }
 }

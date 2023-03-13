@@ -35,7 +35,7 @@ typedef struct history {
 } history;
 
 void play(char *board[size][size]);
-void initGame();
+void initGame(bool enableCli);
 int gameTurn(move* mx, char *board[size][size]);
 char *requestMove(enum player turn);
 move *constructMove(char *input, char *board[size][size]);

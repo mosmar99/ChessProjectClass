@@ -17,20 +17,13 @@ class chessGame():
         chessLib.readBoard(arr)
         for x in range(8):
             for y in range(8):
-                self.board[self.coordInDir(y)][self.coordInDir(x)] = arr[x][y].decode("utf-8")
+                self.board[self.coordInDir(7-y)][self.coordInDir(x)] = arr[x][y].decode("utf-8")
 
     def tryTurn(self, fx, fy, tx, ty, mp, cp):
-        result = int(chessLib.tryTurn(self.coordInDir(fx), self.coordInDir(fy), self.coordInDir(tx), self.coordInDir(ty), mp.encode(), cp.encode()))
+        result = int(chessLib.tryTurn(self.coordInDir(7-fx), self.coordInDir(fy), self.coordInDir(7-tx), self.coordInDir(ty), mp.encode(), cp.encode()))
         if result == 1:
             self.swapDir()
         return result
-
-    def printBoard(self):
-        for row in range(8):
-            print()
-            for col in range(8):
-                print(self.arr[7-row][7-col].decode(), end = " ")
-        print()
 
     def getPiece(self,x,y) -> str:
         return self.board[x][y]
