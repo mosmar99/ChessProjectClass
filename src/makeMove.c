@@ -35,21 +35,23 @@ static bool checkPromotion(const move *const mx);
 static void checkPawnStuff(const move *const mx, char *board[size][size], const bool *const wasEnPassant);
 
 static history *head = NULL;
-
-char *gameEventFlag = NULL;
+static enum player turn = BLANCO;
+static char *gameEventFlag = NULL;
 
 void clrscr()
 {
     system("@cls||clear");
 }
 
-void play(char *board[size][size])
-{
-    bool play = true;
-    enum player turn = BLANCO;
+void initGame(){
     gameEventFlag = malloc(sizeof(char[50]));
     gameEventFlag = "IDLE";
-    int remi_offer = 0;
+}
+
+void play(char *board[size][size])
+{
+    initGame();
+    bool play = true;
     while (play)
     {
         char *input = requestMove(turn);
@@ -73,66 +75,71 @@ void play(char *board[size][size])
         }
         
         move *mx = constructMove(input, board);
+        gameTurn(mx, board);
+        
 
-        if (mx == NULL)
-            continue;
+    }
+}
 
-        if (noGeneralErrors(mx, turn))
+int gameTurn(move* mx, char *board[size][size]){
+
+    if (mx == NULL)
+        return 0;
+
+    if (noGeneralErrors(mx, turn))
+    {
+        // move is never applied if there are general piece errors
+        if (noSpecificErrors(mx, applyMove(mx, board)))
         {
-            // move is never applied if there are general piece errors
-            if (noSpecificErrors(mx, applyMove(mx, board)))
-            {
-                // board is printed, with the desired valid move if its passed both general and specific piece errors
-                if(strcmp(gameEventFlag, "BADMOVE") == 0){
-                    puts("---> BAD MOVE");
-                    checkmate(board,head,&gameEventFlag);
-                    continue;
-                }
-
-                if (turn == NEGRO)
-                {
-                    printBoardBlack(board);
-                    sleep(1);
-                    //clrscr();
-                    printBoard(board);
-                }
-                else
-                {
-                    printBoard(board);
-                    sleep(1);
-                    //clrscr();
-                    printBoardBlack(board);
-                }
-
-                // move is added to move history
-                moveHistory(mx);
-
-                // check for draw before continuing with game
+            // board is printed, with the desired valid move if its passed both general and specific piece errors
+            if(strcmp(gameEventFlag, "BADMOVE") == 0){
+                puts("---> BAD MOVE");
                 checkmate(board,head,&gameEventFlag);
-                if(strcmp(gameEventFlag, "IDLE") == 0){
-                    if(remi(board, head, &gameEventFlag)){
-                        printf("\n--->" BCYN "DRAW: %s\n" reset, gameEventFlag);
-                        play = false;
-                    }
-                }
-                if(strcmp(gameEventFlag, "CHECK") == 0){
-                    printf("\n--->" BCYN "%s\n " reset, gameEventFlag);
-                }
-                if(strcmp(gameEventFlag, "CHECKMATE") == 0){
-                    printf("\n--->" BCYN "%s: " reset, gameEventFlag);
-                    if(turn == 0){
-                        printf(BCYN "WHITE WINS\n");
-                    }
-                    else{
-                        printf(BCYN "BLACK WINS\n");
-                    }
-                    play = false;
-                }
-
-                // switch turn
-                turn = switchTurn(turn);
-                continue;
+                return 0;
             }
+
+            if (turn == NEGRO)
+            {
+                printBoardBlack(board);
+                sleep(1);
+                //clrscr();
+                printBoard(board);
+            }
+            else
+            {
+                printBoard(board);
+                sleep(1);
+                //clrscr();
+                printBoardBlack(board);
+            }
+
+            // move is added to move history
+            moveHistory(mx);
+
+            // check for draw before continuing with game
+            checkmate(board,head,&gameEventFlag);
+            if(strcmp(gameEventFlag, "IDLE") == 0){
+                if(remi(board, head, &gameEventFlag)){
+                    printf("\n--->" BCYN "DRAW: %s\n" reset, gameEventFlag);
+                    //play = false;
+                }
+            }
+            if(strcmp(gameEventFlag, "CHECK") == 0){
+                printf("\n--->" BCYN "%s\n " reset, gameEventFlag);
+            }
+            if(strcmp(gameEventFlag, "CHECKMATE") == 0){
+                printf("\n--->" BCYN "%s: " reset, gameEventFlag);
+                if(turn == 0){
+                    printf(BCYN "WHITE WINS\n");
+                }
+                else{
+                    printf(BCYN "BLACK WINS\n");
+                }
+                //play = false;
+            }
+
+            turn = switchTurn(turn);
+            return 0;
         }
     }
 }

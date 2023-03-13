@@ -8,7 +8,7 @@ class chessGame():
     direction = True
 
     def __init__(self):
-        chessLib.initGame()
+        chessLib.init()
         self.board = [["--"]*8 for i in range(8)]
         self.updateBoard()
 

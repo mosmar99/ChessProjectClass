@@ -11,7 +11,7 @@
 #define EXPORT
 #endif
 
-void EXPORT initGame();
+void EXPORT init();
 void EXPORT readBoard(char *rboard[8][8]);
 int EXPORT tryTurn(int fx, int fy, int tx, int ty, char* mp, char* cp);
 

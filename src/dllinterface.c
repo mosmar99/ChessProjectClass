@@ -4,14 +4,10 @@
 #include "remi.h"
 
 char *board[8][8];
-history *head = NULL;
-enum player turn = BLANCO;
-char *remi_flag = NULL;
-int remi_offer = 0;
 
-void initGame(){
+void init(){
     initBoard(board);
-    remi_flag = malloc(sizeof(char) * 50);
+    initGame();
 }
 
 void readBoard(char *rboard[8][8]){
@@ -29,23 +25,7 @@ int tryTurn(int fx, int fy, int tx, int ty, char* mp, char* cp){
 
     move* mx = createMove(fp, tp, mp, cp);
 
-    if(!noGeneralErrors(mx, turn)){
-        return 0;
-    }
-
-    if (noSpecificErrors(mx, applyMove(mx, board))){
-        moveHistory(mx);
-
-        if(remi(board, head, &remi_flag)){
-            return 0;
-        }
-        
-        turn = switchTurn(turn);
-    } else {
-        return 0;
-    }
-
-    return 1;
+    gameTurn(mx, board);
 }
 
 bool proposeMove(){
